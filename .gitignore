@@ -1,0 +1,39 @@
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.dist
+!.env.test
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+key.properties
+
+# Dependencias y archivos generados
+/backend/vendor/
+/backend/var/
+/backend/node_modules/
+/backend/public/build/
+/mobile/.dart_tool/
+/mobile/.flutter-plugins
+/mobile/.flutter-plugins-dependencies
+/mobile/build/
+/mobile/android/.gradle/
+/mobile/android/local.properties
+/mobile/ios/Pods/
+/mobile/ios/.symlinks/
+/mobile/ios/Flutter/ephemeral/
+/mobile/ios/Flutter/Generated.xcconfig
+/mobile/ios/Flutter/flutter_export_environment.sh
+
+# IDE, sistema y temporales Word
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+~$*.docx
+*.log
