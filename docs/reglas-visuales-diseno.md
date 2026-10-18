@@ -4,7 +4,7 @@ Versión 0.1 · 18 de octubre de 2026
 
 ## Dirección aprobada
 
-Nombre provisional: **Aselto**. Estilo profesional y cercano, con mucho espacio, tipografía limpia y color usado con moderación. La aplicación debe resultar comprensible para autónomos con poca experiencia tecnológica, incluidas personas mayores. Web y app compartirán lenguaje, jerarquía y componentes, adaptando la disposición al dispositivo.
+Nombre: **Aselto**. Eslogan: **Tus finanzas bajo control**. Dominio web: **aselto.com**. Estilo profesional y cercano, con mucho espacio, tipografía limpia y color usado con moderación. La aplicación debe resultar comprensible para autónomos con poca experiencia tecnológica, incluidas personas mayores. Web y app compartirán lenguaje, jerarquía y componentes, adaptando la disposición al dispositivo.
 
 El primer boceto de inicio ha sido aceptado como base visual. Las medidas y colores siguientes son propuestas iniciales para implementar y verificar; una imagen no acredita accesibilidad.
 
