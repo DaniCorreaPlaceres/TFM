@@ -27,8 +27,8 @@ Estas instrucciones se aplican a todo el monorepo. Consultar también el AGENTS.
 - Los Word DOC-01 a DOC-09 son referencias: no editarlos, renombrarlos, moverlos ni eliminarlos sin una petición expresa.
 - Registrar decisiones, criterios y evidencias de uso de IA de forma trazable, sin inventar resultados. El índice de evidencias vive en docs/evidence/. Una prueba no ejecutada permanece como no ejecutada.
 - La entrega en curso es E0, cimientos técnicos, según la planificación de DOC-07 (PLT-001 a PLT-006).
-- E0.1 deja alineadas estas instrucciones con esa estructura. Symfony se inicializa en E0.3, Flutter en E0.4, el contrato mínimo de API en E0.5, la CI en E0.6, el cierre de pruebas y evidencias en E0.7 y MinIO en E0.8.
-- Cada tarea posterior exige autorización explícita del responsable. Hasta entonces no inicializar Symfony ni Flutter, no instalar dependencias y no añadir workflows.
+- E0.1 deja alineadas estas instrucciones con esa estructura. E0.3 deja el esqueleto Symfony y Compose. Flutter se inicializa en E0.4, el contrato mínimo de API en E0.5, la CI en E0.6, el cierre de pruebas y evidencias en E0.7 y MinIO en E0.8.
+- Cada tarea posterior exige autorización explícita del responsable. Hasta entonces no inicializar Flutter, no instalar su SDK y no añadir workflows.
 - El runtime PHP del proyecto es 8.4, dentro de PHP-FPM. El esquema fiscal completo de DOC-06 y la elección de proveedor de IA del producto quedan fuera de E0.
 
 ## Seguimiento de E0

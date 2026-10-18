@@ -33,12 +33,12 @@ Estado: configuración verificada en esta sesión. main es producción; develop 
 
 Traza: PLT-002.
 
-- [ ] Inicializar Symfony 7.4 con PHP 8.4 y Doctrine.
-- [ ] Preparar Docker Compose con Nginx, PHP-FPM 8.4, MySQL 8.4 y Redis.
-- [ ] Comprobar healthchecks y una migración de ejemplo reversible.
-- [ ] Documentar arranque, parada y verificación del entorno.
+- [x] Inicializar Symfony 7.4 con PHP 8.4 y Doctrine.
+- [x] Preparar Docker Compose con Nginx, PHP-FPM 8.4, MySQL 8.4 y Redis.
+- [x] Comprobar healthchecks y una migración de ejemplo reversible.
+- [x] Documentar arranque, parada y verificación del entorno.
 
-Estado: pendiente. El modelo fiscal completo de DOC-06 queda fuera de E0.
+Estado: comprobado el 18 de octubre de 2026 en `feature/e0-entorno-symfony`. PHP 8.4.26, Symfony 7.4.21, MySQL 8.4.9, Redis 7.4.11 y Nginx 1.28.3 quedaron healthy. La migración `Version20261018030000` subió, bajó y volvió a subir. `GET /nginx-health` respondió 200. `GET /` mostró la bienvenida de Symfony 7.4. El modelo fiscal completo de DOC-06 queda fuera de E0. La ficha de evidencia de esta tarea se registra en E0.7.
 
 ## E0.4 — Entorno Android y esqueleto Flutter
 

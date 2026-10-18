@@ -4,13 +4,41 @@ Monorepositorio del TFM. Documentación y decisiones: [docs/README.md](docs/READ
 
 ## Estructura
 
-- backend/: Symfony 7.4 previsto. Hoy solo contiene instrucciones. Se inicializa en E0.3, con PHP 8.4 en PHP-FPM.
+- backend/: esqueleto Symfony 7.4 con Doctrine. El runtime es PHP 8.4 en PHP-FPM.
 - mobile/: Flutter previsto. Hoy solo contiene instrucciones. Se inicializa en E0.4.
-- infrastructure/: Docker, proxy y despliegue. El directorio está preparado; Compose llega en E0.3 y MinIO en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
+- infrastructure/: Compose local con Nginx, PHP-FPM, MySQL 8.4 y Redis. MinIO llega en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
 - docs/: documentos Word de referencia, índice Markdown y registro de evidencias. Ver [docs/README.md](docs/README.md).
 - .github/: nota de los pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/README.md](.github/README.md).
 
-Todavía no hay aplicación inicializada ni instrucciones de ejecución de Symfony o Flutter.
+Flutter todavía no está inicializado. El detalle de versiones, healthchecks y la migración de ejemplo está en [infrastructure/README.md](infrastructure/README.md).
+
+## Entorno local
+
+Requisito: Docker con Compose. El runtime es el contenedor PHP 8.4; no hace falta instalar PHP ni Composer en el equipo.
+
+Desde la raíz del repositorio:
+
+```powershell
+docker compose -f infrastructure/compose.yaml up -d --build --wait
+```
+
+El primer arranque construye la imagen PHP e instala las dependencias de `backend/` si falta `vendor`. Cuando los healthchecks terminan, la aplicación queda en http://127.0.0.1:8080. Esa página es la bienvenida de Symfony 7.4 y responde HTTP 404 porque el esqueleto aún no tiene ruta de aplicación.
+
+Aplicar la migración de ejemplo:
+
+```powershell
+docker compose -f infrastructure/compose.yaml exec php php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+MySQL solo es accesible dentro de Compose. Base `app`, usuario `app`, contraseña `app`. Son credenciales locales de desarrollo.
+
+Parar los contenedores:
+
+```powershell
+docker compose -f infrastructure/compose.yaml stop
+```
+
+`docker compose -f infrastructure/compose.yaml down` elimina los contenedores y conserva los datos de MySQL. Añadir `-v` borra también ese volumen.
 
 ## Entrega en curso
 
@@ -18,7 +46,8 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 
 - E0.1: alinear instrucciones y estructura del monorepositorio.
 - E0.2: rama de trabajo y estado de la protección. El estado conocido de main está en Flujo Git.
-- E0.3 a E0.8: pendientes de autorización explícita.
+- E0.3: entorno Symfony reproducible. El arranque está en Entorno local.
+- E0.4 a E0.8: pendientes de autorización explícita.
 
 ## Flujo Git
 
@@ -32,7 +61,7 @@ Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlac
 
 ## Arranque del trabajo
 
-Trabajar desde develop y crear una rama feature/<descripcion> para cada tarea. Consultar el AGENTS.md del componente antes de realizar cambios. Las instrucciones de arranque de Symfony y Flutter se añadirán cuando E0.3 y E0.4 estén implementadas.
+Trabajar desde develop y crear una rama feature/<descripcion> para cada tarea. Consultar el AGENTS.md del componente antes de realizar cambios. El entorno Symfony se levanta con la sección Entorno local. Flutter se documentará en E0.4.
 
 ## Seguimiento de E0
 
