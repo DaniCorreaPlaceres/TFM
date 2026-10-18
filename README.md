@@ -8,7 +8,7 @@ Monorepositorio del TFM. Documentación y decisiones: [docs/README.md](docs/READ
 - mobile/: Flutter previsto. Hoy solo contiene instrucciones. Se inicializa en E0.4.
 - infrastructure/: Docker, proxy y despliegue. El directorio está preparado; Compose llega en E0.3 y MinIO en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
 - docs/: documentos Word de referencia, índice Markdown y registro de evidencias. Ver [docs/README.md](docs/README.md).
-- .github/workflows/: pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/workflows/README.md](.github/workflows/README.md).
+- .github/: nota de los pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/README.md](.github/README.md).
 
 Todavía no hay aplicación inicializada ni instrucciones de ejecución de Symfony o Flutter.
 

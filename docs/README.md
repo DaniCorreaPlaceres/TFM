@@ -22,7 +22,7 @@
 - [Documentación](AGENTS.md)
 - [Evidencias de IA](evidence/README.md)
 - [Infraestructura](../infrastructure/README.md)
-- [Workflows previstos](../.github/workflows/README.md)
+- [Workflows previstos](../.github/README.md)
 
 ## Acuerdos de referencia
 

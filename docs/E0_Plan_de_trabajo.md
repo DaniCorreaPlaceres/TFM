@@ -10,7 +10,7 @@ Traza: PLT-001.
 
 - [x] Crear instrucciones AGENTS.md raíz, backend, mobile y docs.
 - [x] Crear índice Markdown con los nueve Word y enlaces relativos.
-- [x] Preparar README general y directorios backend/, mobile/, infrastructure/, docs/ y .github/workflows/.
+- [x] Preparar README general y directorios backend/, mobile/, infrastructure/, docs/ y .github/.
 - [x] Preparar docs/evidence/ e índice de evidencias.
 - [x] Revisar e integrar los cambios locales adicionales de E0.1 que todavía no están confirmados en Git.
 
@@ -70,7 +70,7 @@ Traza: parte restante de PLT-004 y validación CI de PLT-005.
 - [ ] Asegurar que las comprobaciones requeridas también se ejecuten en PR hacia main antes de exigirlas en su protección.
 - [ ] Configurar las comprobaciones obligatorias de main utilizando sus nombres reales, una vez publicadas y ejecutadas.
 
-Estado: pendiente. Un archivo README en .github/workflows/ no ejecuta CI. El despliegue de producción queda fuera del mínimo de E0.
+Estado: pendiente. Los YAML de `.github/workflows/` se añaden en esta tarea. El despliegue de producción queda fuera del mínimo de E0.
 
 ## E0.7 — Revisión de pruebas y evidencias
 
