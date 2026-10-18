@@ -2,6 +2,7 @@
 
 Aplicar también [las instrucciones raíz](../AGENTS.md). Ámbito: mobile/.
 
+- Nombre visible: Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com. El paquete y el identificador siguen siendo `app_fiscal` y `es.tfm.app_fiscal`.
 - Stack: Flutter, Riverpod para estado, GoRouter para navegación y Dio para acceso HTTP.
 - Priorizar Android con VS Code y Android Studio/SDK. Los runners `ios/` y `windows/` ya están en el proyecto. iOS no se compila ni se valida en Windows: hace falta un Mac con Xcode. El escritorio Windows requiere Visual Studio con la carga «Desarrollo de escritorio con C++».
 - Organizar por módulos funcionales y separar presentación, casos de uso y acceso a datos, aplicando arquitectura hexagonal solo donde aporte valor.

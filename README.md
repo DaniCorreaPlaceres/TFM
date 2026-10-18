@@ -1,6 +1,8 @@
-# TFM — App Fiscal
+# Aselto
 
-Monorepositorio del TFM. Documentación y decisiones: [docs/README.md](docs/README.md). Instrucciones para agentes: [AGENTS.md](AGENTS.md).
+Tus finanzas bajo control.
+
+Monorepositorio del TFM. Aselto es la aplicación fiscal y documental. El dominio de la web será aselto.com. Documentación y decisiones: [docs/README.md](docs/README.md). Instrucciones para agentes: [AGENTS.md](AGENTS.md).
 
 ## Estructura
 

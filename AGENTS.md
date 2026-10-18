@@ -1,6 +1,8 @@
-# Instrucciones del proyecto TFM — App Fiscal
+# Instrucciones del proyecto TFM — Aselto
 
 Estas instrucciones se aplican a todo el monorepo. Consultar también el AGENTS.md del directorio de trabajo y el índice [docs/README.md](docs/README.md).
+
+El nombre de la aplicación es Aselto y el eslogan es «Tus finanzas bajo control». El dominio de la web será aselto.com. El identificador técnico del proyecto móvil sigue siendo `app_fiscal`.
 
 ## Organización y herramientas
 - Monorepo con backend/, mobile/, infrastructure/, docs/ y .github/workflows/.

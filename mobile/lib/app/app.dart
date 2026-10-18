@@ -10,7 +10,7 @@ class AppFiscal extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'App Fiscal',
+      title: 'Aselto',
       routerConfig: router,
     );
   }

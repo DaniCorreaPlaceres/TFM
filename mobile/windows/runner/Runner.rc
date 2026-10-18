@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "es.tfm" "\0"
-            VALUE "FileDescription", "app_fiscal" "\0"
+            VALUE "FileDescription", "Aselto" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "app_fiscal" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 es.tfm. All rights reserved." "\0"
             VALUE "OriginalFilename", "app_fiscal.exe" "\0"
-            VALUE "ProductName", "app_fiscal" "\0"
+            VALUE "ProductName", "Aselto" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

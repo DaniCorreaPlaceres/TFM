@@ -1,6 +1,15 @@
-# Documentación del TFM — App Fiscal
+# Documentación del TFM — Aselto
+
+Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com.
 
 Índice de los documentos Word existentes. Los enlaces son relativos a este directorio y conservan sus nombres originales.
+
+## Identidad y diseño
+
+- Nombre: Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com.
+- [Reglas visuales](reglas-visuales-diseno.md), versión 0.1.
+- [Logo con eslogan](aselto-logo-eslogan-v2.png) e [icono](icono.png).
+- Bocetos: [inicio](bocetos/aselto-inicio-web-movil-v1.png) y [documentos](bocetos/aselto-documentos-movil-v1.png).
 
 ## Documentos de referencia
 

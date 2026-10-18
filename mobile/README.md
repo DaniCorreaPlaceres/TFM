@@ -1,6 +1,8 @@
-# Aplicación móvil
+# Aselto
 
-Esqueleto Flutter de E0.4. Android es la plataforma comprobada. El proyecto incluye también los runners de iOS (`ios/`, identificador `es.tfm.app_fiscal`) y de escritorio Windows (`windows/`). iOS se abre después en un Mac con Xcode. El escritorio Windows se compila cuando esté instalado Visual Studio con la carga de C++. La app no llama todavía a la API: Dio está preparado y el consumo de `GET /api/v1/health` corresponde a E0.5.
+Tus finanzas bajo control.
+
+Esqueleto Flutter de E0.4. El nombre visible es Aselto y el dominio de la web será aselto.com. El paquete Dart y el identificador siguen siendo `app_fiscal` y `es.tfm.app_fiscal`. Android es la plataforma comprobada. El proyecto incluye también los runners de iOS (`ios/`, identificador `es.tfm.app_fiscal`) y de escritorio Windows (`windows/`). iOS se abre después en un Mac con Xcode. El escritorio Windows se compila cuando esté instalado Visual Studio con la carga de C++. La app no llama todavía a la API: Dio está preparado y el consumo de `GET /api/v1/health` corresponde a E0.5.
 
 ## Arranque
 
