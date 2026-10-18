@@ -33,7 +33,7 @@
 - Monolito modular con hexagonal selectiva, SDD/TDD y separación estricta por entidad fiscal.
 - IA documental siempre sujeta a validación humana; reglas fiscales deterministas y soporte limitado a los modelos 130, 303 y 420 en el ámbito documentado.
 
-Los Word se conservan sin cambios. La implementación de Symfony y Flutter no se ha iniciado. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). El índice de evidencias está creado y todavía no tiene filas.
+Los Word se conservan sin cambios. E0.3 inicializa el esqueleto Symfony; Flutter no se ha iniciado. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). El índice de evidencias está creado y todavía no tiene filas.
 
 ## Seguimiento de E0
 

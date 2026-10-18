@@ -9,5 +9,5 @@ Aplicar también [las instrucciones raíz](../AGENTS.md). Ámbito: backend/.
 - Implementar cálculos fiscales deterministas y comprobables solo para los modelos 130, 303 y 420 soportados y sus ámbitos documentados. No usar IA generativa para decidir importes o reglas.
 - Conservar el estado pendiente de revisión de datos extraídos por IA hasta la validación humana explícita; mantener trazabilidad de la validación.
 - Consultar DOC-04, DOC-05, DOC-06 y DOC-08 en [el índice](../docs/README.md) para funcionalidad, arquitectura, datos, contratos y pruebas.
-- La inicialización de Symfony 7.4, PHP-FPM 8.4, MySQL 8.4, Redis y las dependencias corresponde a E0.3, cuando esa tarea esté autorizada. Hasta entonces backend/ solo contiene estas instrucciones.
-- En E0 la migración permitida es un ejemplo reversible. El catálogo físico de DOC-06 sigue siendo propuesta hasta su implementación posterior.
+- E0.3 deja el esqueleto Symfony 7.4, Doctrine y la migración reversible `e0_example`. El arranque está en [infrastructure/README.md](../infrastructure/README.md). El runtime es el contenedor PHP 8.4.
+- El catálogo físico de DOC-06 sigue siendo propuesta. No añadir tablas fiscales en E0.
