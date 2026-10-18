@@ -14,7 +14,7 @@ Traza: PLT-001.
 - [x] Preparar docs/evidence/ e índice de evidencias.
 - [x] Revisar e integrar los cambios locales adicionales de E0.1 que todavía no están confirmados en Git.
 
-Estado: archivos presentes localmente; cierre pendiente de revisión e integración. La existencia del registro de evidencias no acredita pruebas ejecutadas.
+Estado: integrado en `develop` mediante el pull request #2. La especificación reconstruida está en [docs/sdd/e0-1-instrucciones-estructura.md](sdd/e0-1-instrucciones-estructura.md). La existencia del registro de evidencias no acredita pruebas ejecutadas.
 
 ## E0.2 — Git, remoto y protección de ramas
 

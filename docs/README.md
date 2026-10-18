@@ -29,6 +29,7 @@ Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com.
 - [Backend](../backend/AGENTS.md)
 - [Aplicación móvil](../mobile/AGENTS.md)
 - [Documentación](AGENTS.md)
+- [Especificaciones por tarea](sdd/README.md)
 - [Evidencias de IA](evidence/README.md)
 - [Infraestructura](../infrastructure/README.md)
 - [Workflows previstos](../.github/README.md)
