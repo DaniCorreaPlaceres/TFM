@@ -2,13 +2,23 @@
 
 Monorepositorio del TFM. Documentación y decisiones: [docs/README.md](docs/README.md). Instrucciones para agentes: [AGENTS.md](AGENTS.md).
 
-## Estructura actual
+## Estructura
 
-- backend/: componente Symfony previsto; contiene instrucciones de trabajo.
-- mobile/: aplicación Flutter prevista; contiene instrucciones de trabajo.
-- docs/: documentos Word de referencia e índice Markdown.
+- backend/: Symfony 7.4 previsto. Hoy solo contiene instrucciones. Se inicializa en E0.3, con PHP 8.4 en PHP-FPM.
+- mobile/: Flutter previsto. Hoy solo contiene instrucciones. Se inicializa en E0.4.
+- infrastructure/: Docker, proxy y despliegue. El directorio está preparado; Compose llega en E0.3 y MinIO en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
+- docs/: documentos Word de referencia, índice Markdown y registro de evidencias. Ver [docs/README.md](docs/README.md).
+- .github/: nota de los pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/README.md](.github/README.md).
 
 Todavía no hay aplicación inicializada ni instrucciones de ejecución de Symfony o Flutter.
+
+## Entrega en curso
+
+E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operativo está en [AGENTS.md](AGENTS.md).
+
+- E0.1: alinear instrucciones y estructura del monorepositorio.
+- E0.2: rama de trabajo y estado de la protección. El estado conocido de main está en Flujo Git.
+- E0.3 a E0.8: pendientes de autorización explícita.
 
 ## Flujo Git
 
@@ -22,4 +32,8 @@ Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlac
 
 ## Arranque del trabajo
 
-Tras el commit inicial, trabajar desde develop y crear una rama feature/<descripcion> para cada tarea. Consultar el AGENTS.md del componente antes de realizar cambios.
+Trabajar desde develop y crear una rama feature/<descripcion> para cada tarea. Consultar el AGENTS.md del componente antes de realizar cambios. Las instrucciones de arranque de Symfony y Flutter se añadirán cuando E0.3 y E0.4 estén implementadas.
+
+## Seguimiento de E0
+
+Consultar [Plan operativo E0.1–E0.8](docs/E0_Plan_de_trabajo.md) para las subdivisiones, su correspondencia con PLT-001 a PLT-006 y las comprobaciones pendientes.
