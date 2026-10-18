@@ -20,14 +20,21 @@
 - [Backend](../backend/AGENTS.md)
 - [Aplicación móvil](../mobile/AGENTS.md)
 - [Documentación](AGENTS.md)
+- [Evidencias de IA](evidence/README.md)
+- [Infraestructura](../infrastructure/README.md)
+- [Workflows previstos](../.github/workflows/README.md)
 
 ## Acuerdos de referencia
 
-- Monorepo: main protegida para producción y develop para integración.
+- Monorepo: backend/, mobile/, infrastructure/, docs/ y .github/workflows/. main protegida para producción y develop para integración.
 - PHP 8.4, Symfony 7.4, MySQL 8.4 y Doctrine; Twig, Bootstrap, Stimulus y Turbo para la web.
 - Flutter con Riverpod, GoRouter y Dio; Android primero con VS Code y Android Studio/SDK; iOS futuro con Mac/Xcode.
 - ChatGPT Plus para ideación y Cursor Pro para código.
 - Monolito modular con hexagonal selectiva, SDD/TDD y separación estricta por entidad fiscal.
 - IA documental siempre sujeta a validación humana; reglas fiscales deterministas y soporte limitado a los modelos 130, 303 y 420 en el ámbito documentado.
 
-Los Word se conservan sin cambios. La implementación no se ha iniciado. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md).
+Los Word se conservan sin cambios. La implementación de Symfony y Flutter no se ha iniciado. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). El índice de evidencias está creado y todavía no tiene filas.
+
+## Seguimiento de E0
+
+Consultar [Plan operativo E0.1–E0.8](E0_Plan_de_trabajo.md) para las subdivisiones, su correspondencia con PLT-001 a PLT-006 y las comprobaciones pendientes.

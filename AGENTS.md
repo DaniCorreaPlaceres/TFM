@@ -3,7 +3,7 @@
 Estas instrucciones se aplican a todo el monorepo. Consultar también el AGENTS.md del directorio de trabajo y el índice [docs/README.md](docs/README.md).
 
 ## Organización y herramientas
-- Monorepo con backend/, mobile/ y docs/.
+- Monorepo con backend/, mobile/, infrastructure/, docs/ y .github/workflows/.
 - main es la rama protegida de producción; develop es la rama de integración. Proponer cambios mediante ramas de trabajo y revisión antes de integrar; no publicar ni cambiar protecciones sin autorización.
 - ChatGPT Plus para ideación, análisis y documentación; Cursor Pro para desarrollo de código.
 - No introducir decisiones de producto o arquitectura incompatibles con los documentos sin señalar el conflicto y solicitar una decisión.
@@ -25,5 +25,12 @@ Estas instrucciones se aplican a todo el monorepo. Consultar también el AGENTS.
 
 ## Documentación y alcance actual
 - Los Word DOC-01 a DOC-09 son referencias: no editarlos, renombrarlos, moverlos ni eliminarlos sin una petición expresa.
-- Registrar decisiones, criterios y evidencias de uso de IA de forma trazable, sin inventar resultados.
-- La tarea actual se limita a los cuatro AGENTS.md y docs/README.md. No iniciar proyectos, instalar dependencias ni generar código Symfony o Flutter.
+- Registrar decisiones, criterios y evidencias de uso de IA de forma trazable, sin inventar resultados. El índice de evidencias vive en docs/evidence/. Una prueba no ejecutada permanece como no ejecutada.
+- La entrega en curso es E0, cimientos técnicos, según la planificación de DOC-07 (PLT-001 a PLT-006).
+- E0.1 deja alineadas estas instrucciones con esa estructura. Symfony se inicializa en E0.3, Flutter en E0.4, el contrato mínimo de API en E0.5, la CI en E0.6, el cierre de pruebas y evidencias en E0.7 y MinIO en E0.8.
+- Cada tarea posterior exige autorización explícita del responsable. Hasta entonces no inicializar Symfony ni Flutter, no instalar dependencias y no añadir workflows.
+- El runtime PHP del proyecto es 8.4, dentro de PHP-FPM. El esquema fiscal completo de DOC-06 y la elección de proveedor de IA del producto quedan fuera de E0.
+
+## Seguimiento de E0
+
+Consultar [docs/E0_Plan_de_trabajo.md](docs/E0_Plan_de_trabajo.md) para las subdivisiones, su correspondencia con PLT-001 a PLT-006 y las comprobaciones pendientes.

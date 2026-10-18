@@ -2,10 +2,12 @@
 
 Aplicar también [las instrucciones raíz](../AGENTS.md). Ámbito: docs/.
 
-- DOC-01 a DOC-09 en formato Word son documentos de referencia: no modificar, renombrar, mover ni eliminar en esta tarea.
+- DOC-01 a DOC-09 en formato Word son documentos de referencia: no modificar, renombrar, mover ni eliminar sin una petición expresa.
 - Mantener [README.md](README.md) como índice Markdown con los nombres reales y rutas relativas a los documentos.
 - Conservar trazabilidad entre decisiones, especificaciones, contratos, backlog, criterios de aceptación, pruebas y evidencias de IA.
+- DOC-04 y DOC-05 son línea base aprobada. DOC-06, DOC-07 y DOC-08 siguen identificados en su ficha como propuesta o diseño pendiente de implementación. No elevar ese estado desde el índice Markdown.
 - No presentar propuestas como decisiones aprobadas ni pruebas no ejecutadas como superadas; señalar discrepancias para su resolución.
 - Mantener el stack, las ramas main/develop, Android primero y el alcance fiscal acordado de los modelos 130, 303 y 420.
 - Documentar el aislamiento estricto de entidad fiscal y la validación humana obligatoria de resultados de IA documental.
-- La tarea actual crea únicamente las instrucciones y el índice Markdown; no modifica los Word ni inicia código Symfony/Flutter.
+- [evidence/README.md](evidence/README.md) y [evidence/index.csv](evidence/index.csv) preparan el registro de DOC-09. E0.1 deja el índice sin filas: las fichas se añaden cuando exista una tarea ejecutada.
+- E0.1 no modifica los Word ni inicia código Symfony o Flutter.
