@@ -44,12 +44,12 @@ Estado: comprobado el 18 de octubre de 2026 en `feature/e0-entorno-symfony`. PHP
 
 Traza: PLT-003.
 
-- [ ] Preparar VS Code con Flutter/Dart y Android Studio/SDK, con cadena JDK/Gradle/AGP compatible.
-- [ ] Registrar versiones y comprobar flutter doctor -v, licencias, flutter devices y adb devices.
-- [ ] Crear el esqueleto Flutter con Riverpod, GoRouter y Dio y navegación protegida provisional.
+- [x] Preparar VS Code con Flutter/Dart y Android Studio/SDK, con cadena JDK/Gradle/AGP compatible.
+- [x] Registrar versiones y comprobar flutter doctor -v, licencias, flutter devices y adb devices.
+- [x] Crear el esqueleto Flutter con Riverpod, GoRouter y Dio y navegación protegida provisional.
 - [ ] Ejecutar en emulador y dispositivo Android físico; comprobar análisis Dart y pruebas pertinentes.
 
-Estado: pendiente. iOS queda para una fase futura con Mac/Xcode y no bloquea E0.
+Estado: comprobado el 18 de octubre de 2026 en `feature/e0-flutter-android`, salvo el dispositivo físico. Flutter 3.47.7, Dart 3.13.5, Android Studio 2026.2.1.8, OpenJDK 21.0.12.1, SDK 36, AGP 9.1.0 y Gradle 9.3.1. `flutter analyze` sin incidencias y `flutter test` con 2 pruebas superadas. El emulador `tfm_api_36` mostró la sesión provisional y, tras Entrar, el inicio. El dispositivo Android físico queda no ejecutado: `adb devices` solo listó el emulador. `flutter doctor` no dejó incidencias. Visual Studio Build Tools 2026 18.11.0 está en `D:\Microsoft\VisualStudio\18\BuildTools`, con Windows 10 SDK 10.0.26100.0. Los runners `ios/` y `windows/` siguen sin ejecutar: iOS requiere un Mac con Xcode. La ficha de evidencia se registra en E0.7.
 
 ## E0.5 — Contrato mínimo de API y logging
 

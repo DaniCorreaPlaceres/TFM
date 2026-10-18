@@ -5,12 +5,12 @@ Monorepositorio del TFM. Documentación y decisiones: [docs/README.md](docs/READ
 ## Estructura
 
 - backend/: esqueleto Symfony 7.4 con Doctrine. El runtime es PHP 8.4 en PHP-FPM.
-- mobile/: Flutter previsto. Hoy solo contiene instrucciones. Se inicializa en E0.4.
+- mobile/: esqueleto Flutter con Riverpod, GoRouter y Dio. Android está comprobado; iOS y el escritorio Windows están preparados. Ver [mobile/README.md](mobile/README.md).
 - infrastructure/: Compose local con Nginx, PHP-FPM, MySQL 8.4 y Redis. MinIO llega en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
 - docs/: documentos Word de referencia, índice Markdown y registro de evidencias. Ver [docs/README.md](docs/README.md).
 - .github/: nota de los pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/README.md](.github/README.md).
 
-Flutter todavía no está inicializado. El detalle de versiones, healthchecks y la migración de ejemplo está en [infrastructure/README.md](infrastructure/README.md).
+El detalle de versiones, healthchecks y la migración de ejemplo está en [infrastructure/README.md](infrastructure/README.md). El arranque de Flutter está en [mobile/README.md](mobile/README.md).
 
 ## Entorno local
 
@@ -40,6 +40,19 @@ docker compose -f infrastructure/compose.yaml stop
 
 `docker compose -f infrastructure/compose.yaml down` elimina los contenedores y conserva los datos de MySQL. Añadir `-v` borra también ese volumen.
 
+## Aplicación Android
+
+Desde `mobile/`, con Flutter y el Android SDK en el `PATH`:
+
+```powershell
+flutter pub get
+flutter analyze
+flutter test
+flutter run
+```
+
+La pantalla inicial es una sesión provisional. La guía de versiones y del emulador `tfm_api_36` está en [mobile/README.md](mobile/README.md).
+
 ## Entrega en curso
 
 E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operativo está en [AGENTS.md](AGENTS.md).
@@ -47,7 +60,8 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - E0.1: alinear instrucciones y estructura del monorepositorio.
 - E0.2: rama de trabajo y estado de la protección. El estado conocido de main está en Flujo Git.
 - E0.3: entorno Symfony reproducible. El arranque está en Entorno local.
-- E0.4 a E0.8: pendientes de autorización explícita.
+- E0.4: esqueleto Flutter. El arranque Android está en Aplicación Android. El dispositivo físico, iOS y el escritorio Windows siguen sin ejecutarse.
+- E0.5 a E0.8: pendientes de autorización explícita.
 
 ## Flujo Git
 
@@ -61,7 +75,7 @@ Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlac
 
 ## Arranque del trabajo
 
-Trabajar desde develop y crear una rama feature/<descripcion> para cada tarea. Consultar el AGENTS.md del componente antes de realizar cambios. El entorno Symfony se levanta con la sección Entorno local. Flutter se documentará en E0.4.
+Trabajar desde develop y crear una rama feature/<descripcion> para cada tarea. Consultar el AGENTS.md del componente antes de realizar cambios. El entorno Symfony se levanta con la sección Entorno local y Flutter con Aplicación Android.
 
 ## Seguimiento de E0
 
