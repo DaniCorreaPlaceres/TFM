@@ -30,4 +30,4 @@
 - Monolito modular con hexagonal selectiva, SDD/TDD y separación estricta por entidad fiscal.
 - IA documental siempre sujeta a validación humana; reglas fiscales deterministas y soporte limitado a los modelos 130, 303 y 420 en el ámbito documentado.
 
-Los Word se conservan sin cambios. Este índice y las guías no implican que se haya iniciado la implementación ni configurado las protecciones de ramas.
+Los Word se conservan sin cambios. La implementación no se ha iniciado. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md).
