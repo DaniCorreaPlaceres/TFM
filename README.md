@@ -18,7 +18,7 @@ Todavía no hay aplicación inicializada ni instrucciones de ejecución de Symfo
 - No guardar secretos, credenciales, firmas Android ni datos fiscales personales reales.
 - Conservar los archivos de bloqueo de dependencias cuando se inicialicen los proyectos.
 
-La protección de main es una política documentada: su aplicación efectiva requiere un remoto y configurar sus reglas. No hay despliegue de producción configurado.
+Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlaceres/TFM). Las ramas main y develop están publicadas. main tiene protección activa: exige PR con una aprobación de otra persona, descarta aprobaciones tras nuevos cambios y requiere resolver las conversaciones. Las reglas se aplican también a administradores; no se permiten pushes directos, pushes forzados ni borrados. Las comprobaciones obligatorias de CI quedan pendientes de crear los pipelines. No hay despliegue de producción configurado.
 
 ## Arranque del trabajo
 
