@@ -9,7 +9,7 @@ Monorepositorio del TFM. Aselto es la aplicación fiscal y documental. El domini
 - backend/: esqueleto Symfony 7.4 con Doctrine. El runtime es PHP 8.4 en PHP-FPM.
 - mobile/: esqueleto Flutter con Riverpod, GoRouter y Dio. Android está comprobado; iOS y el escritorio Windows están preparados. Ver [mobile/README.md](mobile/README.md).
 - infrastructure/: Compose local con Nginx, PHP-FPM, MySQL 8.4 y Redis. MinIO llega en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
-- docs/: documentos Word de referencia, índice Markdown y registro de evidencias. Ver [docs/README.md](docs/README.md).
+- docs/: documentos Word de referencia, especificaciones por tarea en docs/sdd/ y registro de evidencias. Ver [docs/README.md](docs/README.md).
 - .github/: nota de los pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/README.md](.github/README.md).
 
 El detalle de versiones, healthchecks y la migración de ejemplo está en [infrastructure/README.md](infrastructure/README.md). El arranque de Flutter está en [mobile/README.md](mobile/README.md).

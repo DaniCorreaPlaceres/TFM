@@ -18,7 +18,7 @@ El nombre de la aplicación es Aselto y el eslogan es «Tus finanzas bajo contro
 
 ## Arquitectura y desarrollo
 - Monolito modular con arquitectura hexagonal selectiva donde aporte aislamiento del dominio y facilidad de prueba; evitar complejidad sin necesidad.
-- SDD: partir de especificaciones y criterios de aceptación antes de implementar. TDD: probar el comportamiento esperado, implementar y refactorizar.
+- SDD: partir de especificaciones y criterios de aceptación antes de implementar. Cada tarea tiene su Markdown en [docs/sdd/](docs/sdd/README.md) antes de codificar. TDD: probar el comportamiento esperado, implementar y refactorizar.
 - Mantener contratos de API, modelo de datos, pruebas y documentación coherentes.
 - Separación estricta por entidad fiscal: toda consulta, operación, documento, cálculo y acceso debe comprobar su pertenencia y autorización; impedir cruces entre entidades, también en pruebas.
 - Las reglas fiscales y los cálculos son deterministas, explícitos y verificables. Solo soportar los modelos 130, 303 y 420 dentro del alcance documentado; no inferir soporte para otros modelos ni aplicar modelos sin comprobar su ámbito fiscal.
