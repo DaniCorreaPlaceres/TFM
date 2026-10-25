@@ -55,11 +55,11 @@ Estado: comprobado el 18 de octubre de 2026 en `feature/e0-flutter-android`, sal
 
 Traza: PLT-005.
 
-- [ ] Crear /api/v1/health.
-- [ ] Definir errores problem+json y requestId.
-- [ ] Preparar y validar el contrato OpenAPI mínimo, sin implementar el esquema fiscal completo.
+- [x] Crear /api/v1/health.
+- [x] Definir errores problem+json y requestId.
+- [x] Preparar y validar el contrato OpenAPI mínimo, sin implementar el esquema fiscal completo.
 
-Estado: pendiente. La validación automatizada en CI se conectará en E0.6.
+Estado: comprobado el 18 de octubre de 2026 en `feature/e0-contrato-api`. PHPUnit superó 5 pruebas. `GET /api/v1/health` respondió 200 `{"status":"ok"}` con `X-Request-Id`. Una ruta desconocida respondió 404 `application/problem+json`. `GET /nginx-health` sigue respondiendo 200. El contrato está en `backend/openapi/openapi.yaml`. La validación en CI se conectará en E0.6. La app Flutter no llama a la API. La ficha de evidencia se registra en E0.7.
 
 ## E0.6 — Integración continua y comprobaciones obligatorias
 

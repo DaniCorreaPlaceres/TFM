@@ -28,12 +28,14 @@ El primer arranque construye la imagen PHP e instala dependencias si falta `back
 ```powershell
 docker compose ps
 curl http://127.0.0.1:8080/nginx-health
+curl http://127.0.0.1:8080/api/v1/health
 curl http://127.0.0.1:8080/
 docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 - `GET /nginx-health` responde `200` y el texto `ok`. Comprueba Nginx, no la aplicación.
-- `GET /` muestra la página de bienvenida de Symfony 7.4. El esqueleto no tiene ruta de aplicación, así que el código HTTP de esa página es `404`.
+- `GET /api/v1/health` responde `200` y `{"status":"ok"}`. Es la comprobación de la aplicación.
+- `GET /` muestra la página de bienvenida de Symfony 7.4. El esqueleto no tiene ruta de inicio, así que el código HTTP de esa página es `404`.
 - La migración `Version20261018030000` crea `e0_example`. Para revertirla: `docker compose exec php php bin/console doctrine:migrations:migrate prev --no-interaction`. Vuelve a aplicarse con el comando `migrate` anterior.
 
 Comprobado el 18 de octubre de 2026: los cuatro healthchecks pasaron, la migración subió, bajó y volvió a subir, y el navegador mostró la bienvenida de Symfony 7.4.

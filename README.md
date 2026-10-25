@@ -24,7 +24,7 @@ Desde la raíz del repositorio:
 docker compose -f infrastructure/compose.yaml up -d --build --wait
 ```
 
-El primer arranque construye la imagen PHP e instala las dependencias de `backend/` si falta `vendor`. Cuando los healthchecks terminan, la aplicación queda en http://127.0.0.1:8080. Esa página es la bienvenida de Symfony 7.4 y responde HTTP 404 porque el esqueleto aún no tiene ruta de aplicación.
+El primer arranque construye la imagen PHP e instala las dependencias de `backend/` si falta `vendor`. Cuando los healthchecks terminan, la aplicación queda en http://127.0.0.1:8080. Esa página es la bienvenida de Symfony 7.4 y responde HTTP 404 porque el esqueleto aún no tiene ruta de inicio. `GET /api/v1/health` responde 200 `{"status":"ok"}`. `GET /nginx-health` solo comprueba Nginx.
 
 Aplicar la migración de ejemplo:
 
