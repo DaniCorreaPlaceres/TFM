@@ -21,4 +21,8 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [Reglas visuales y bocetos](reglas-visuales-aselto.md)
 - [Nombre, eslogan y dominio](nombre-eslogan-dominio.md)
 
-E0.5 a E0.8 siguen pendientes. Su Markdown se escribe cuando el responsable autorice la tarea, antes de implementarla.
+## Tarea en curso
+
+- [E0.5 Contrato mínimo de API](e0-5-contrato-api.md)
+
+E0.6 a E0.8 siguen pendientes. Su Markdown se escribe cuando el responsable autorice la tarea, antes de implementarla.

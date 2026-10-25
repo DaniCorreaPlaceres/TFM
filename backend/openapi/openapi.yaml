@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Aselto API
+  version: 0.1.0
+  description: Contrato mínimo de E0.5. No incluye el esquema fiscal.
+paths:
+  /api/v1/health:
+    get:
+      operationId: getHealth
+      summary: Comprueba que la aplicación responde.
+      responses:
+        '200':
+          description: La aplicación responde.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/RequestId'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - ok
+        default:
+          description: Error de la API.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/RequestId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+components:
+  headers:
+    RequestId:
+      description: Identificador de la solicitud, generado por el servidor.
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Problem:
+      type: object
+      required:
+        - type
+        - title
+        - status
+        - requestId
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        requestId:
+          type: string
+          format: uuid
