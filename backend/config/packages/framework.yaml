@@ -4,6 +4,10 @@ framework:
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true
+    csrf_protection: true
+    http_client:
+        default_options:
+            timeout: 5
 
     #esi: true
     #fragments: true

@@ -4,3 +4,6 @@
 - Imagen: [infrastructure/docker/minio/Dockerfile](../../../infrastructure/docker/minio/Dockerfile)
 - Código fuente fijado: https://github.com/minio/minio/tree/RELEASE.2025-10-15T17-29-55Z
 - Commit de MinIO: https://github.com/minio/minio/commit/9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a
+- Pull request: https://github.com/DaniCorreaPlaceres/TFM/pull/14
+- Backend run 40212630147: https://github.com/DaniCorreaPlaceres/TFM/actions/runs/40212630147
+- Flutter run 40212630177: https://github.com/DaniCorreaPlaceres/TFM/actions/runs/40212630177

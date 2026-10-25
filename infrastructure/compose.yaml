@@ -33,12 +33,16 @@ services:
       MINIO_BUCKET: documents
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio-dev-only
+      MAILER_DSN: smtp://mailpit:1025
+      MAILER_FROM: noreply@localhost
     depends_on:
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
       minio:
+        condition: service_healthy
+      mailpit:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000 | grep -q pong"]
@@ -56,6 +60,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init-test-grant.sql:/docker-entrypoint-initdb.d/init-test-grant.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
       interval: 10s
@@ -84,6 +89,17 @@ services:
       - minio_data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
+  mailpit:
+    image: axllent/mailpit:v1.32.0
+    ports:
+      - "127.0.0.1:8025:8025"
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
       interval: 5s
       timeout: 5s
       retries: 20

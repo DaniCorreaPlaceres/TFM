@@ -138,4 +138,6 @@ Flutter analiza la app y ejecuta dos pruebas: el cliente HTTP queda preparado y 
 3. Implementar y comprobar. Lo no ejecutado se deja escrito como no ejecutado.
 4. Abrir la pull request hacia `develop`.
 
-El 25 de octubre de 2026, E0.8 dejó MinIO en el entorno local. El bucket `documents` responde 403 a una descarga sin credenciales. El responsable aceptó EVI-0005 ese mismo día. La rama `feature/e0-minio` todavía no está integrada y GitHub Actions no ha construido la imagen. E0 no queda cerrado: faltan el dispositivo físico, iOS, el escritorio, la llamada de la app a la API y la promoción a `main`.
+El 25 de octubre de 2026, E0.8 dejó MinIO en el entorno local y entró en `develop` con la pull request #14, merge `7ea57d3`. El bucket `documents` responde 403 a una descarga sin credenciales. PHPUnit pasó también en GitHub, run 40212630147, con 6 pruebas y 42 aserciones. El responsable aceptó EVI-0005 ese mismo día. E0 no queda cerrado: faltan el dispositivo físico, iOS, el escritorio, la llamada de la app a la API y la promoción a `main`.
+
+Ese mismo día empezó E1 en `feature/e1-registro`. El alta web pide correo y contraseña, rechaza menos de 12 caracteres y contraseñas que Have I Been Pwned marca como filtradas, y envía un enlace de 30 minutos a Mailpit. La cuenta no accede a información fiscal hasta confirmar el correo. No hay inicio de sesión. La rama todavía no está integrada y GitHub Actions no ha ejecutado este cambio. La revisión de EVI-0006 está pendiente.

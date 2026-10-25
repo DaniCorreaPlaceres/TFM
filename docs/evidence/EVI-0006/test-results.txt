@@ -1,0 +1,17 @@
+Resumen anotado el 25 de octubre de 2026. No es un log íntegro.
+
+PHPUnit, contenedor PHP 8.4.26:
+OK (19 tests, 97 assertions)
+
+Navegador, http://127.0.0.1:8080/registro:
+- Contraseña corta: la página muestra el error de 12 caracteres y conserva el correo.
+- Alta aceptada: redirección a /registro/enviado.
+- Mailpit v1.32.0, http://127.0.0.1:8025, mostró el mensaje de confirmación.
+- El enlace respondió «Correo confirmado».
+- El mismo enlace, abierto otra vez, respondió «Enlace no válido».
+
+No ejecutado:
+- GitHub Actions no ha ejecutado esta rama.
+- No hay inicio de sesión.
+- La app Flutter no llama a la API.
+- No se eligió correo de producción.

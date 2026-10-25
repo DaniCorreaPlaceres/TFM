@@ -91,7 +91,7 @@ Traza: PLT-006.
 - [x] Versionar .env.example sin secretos y mantener credenciales fuera de Git.
 - [x] Añadir las pruebas y evidencias correspondientes y revisar el cierre global de E0.
 
-Estado: comprobado el 25 de octubre de 2026. MinIO `RELEASE.2025-10-15T17-29-55Z` escucha solo en localhost y el bucket `documents` responde 403 a una descarga anónima. PHPUnit pasó 6 pruebas. El responsable aceptó EVI-0005 ese mismo día. E0 no se cierra: faltan el dispositivo físico, iOS, el escritorio Windows, la llamada de la app a la API, la promoción a `main` y el despliegue. La rama `feature/e0-minio` todavía no está integrada y GitHub Actions no ha construido esta imagen.
+Estado: comprobado el 25 de octubre de 2026 e integrado en `develop` con la pull request #14, merge `7ea57d3`. MinIO `RELEASE.2025-10-15T17-29-55Z` escucha solo en localhost y el bucket `documents` responde 403 a una descarga anónima. PHPUnit pasó 6 pruebas y 42 aserciones en local y en el run 40212630147. El responsable aceptó EVI-0005 ese mismo día. E0 no se cierra: faltan el dispositivo físico, iOS, el escritorio Windows, la llamada de la app a la API, la promoción a `main` y el despliegue.
 
 ## Puerta de salida de E0
 
