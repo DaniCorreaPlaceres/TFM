@@ -1,0 +1,23 @@
+Resumen anotado el 25 de octubre de 2026 a partir de la especificación E0.3.
+No se conserva el log íntegro de aquella sesión. Esto no es una salida cruda.
+
+Fecha de la comprobación: 2026-10-18
+Entorno: Docker Compose en el equipo de desarrollo. Runtime PHP dentro del contenedor, no el PHP del anfitrión.
+
+Versiones observadas:
+- PHP 8.4.26
+- Symfony 7.4.21
+- MySQL 8.4.9
+- Redis 7.4.11
+- Nginx 1.28.3
+
+Resultados:
+- Healthchecks de Nginx, PHP-FPM, MySQL y Redis: healthy.
+- Migración Version20261018030000: subió, bajó y volvió a subir.
+- GET /nginx-health: 200.
+- GET /: bienvenida de Symfony 7.4, HTTP 404, porque no había ruta de inicio.
+
+No ejecutado en esta ficha:
+- GET /api/v1/health. Corresponde a EVI-0003.
+- Esquema fiscal de DOC-06.
+- MinIO.

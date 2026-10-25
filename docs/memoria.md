@@ -32,7 +32,7 @@ La entrega en curso es E0, los cimientos técnicos de DOC-07 (PLT-001 a PLT-006)
 
 Cada tarea tiene un Markdown en `docs/sdd/` antes de codificar. Las fichas de E0.1 a E0.4, de las reglas visuales y del nombre se reconstruyeron el 18 de octubre de 2026, después del código, y lo dicen en el propio archivo. A partir de E0.5 el Markdown existió antes de implementar.
 
-La ideación y la documentación de producto se apoyan en ChatGPT Plus. El código se escribe con Cursor Pro. Las fichas de evidencia de ese uso viven en `docs/evidence/`. El índice está creado y solo tiene la cabecera. No hay fichas EVI. Eso corresponde a E0.7.
+La ideación y la documentación de producto se apoyan en ChatGPT Plus. El código se escribe con Cursor Pro. Las fichas de evidencia de ese uso viven en `docs/evidence/`. El 25 de octubre de 2026, E0.7 añadió EVI-0001 a EVI-0004. Los prompts y los tiempos que no se habían anotado no se reconstruyeron. El responsable las aceptó ese mismo día.
 
 ## Qué quedó construido
 
@@ -123,7 +123,6 @@ Flutter analiza la app y ejecuta dos pruebas: el cliente HTTP queda preparado y 
 
 ## Qué no está hecho
 
-- E0.7: fichas de evidencia con versiones, comandos, incidencias y commits. El índice existe y no tiene filas.
 - E0.8: MinIO, buckets privados y el cierre de secretos.
 - Promocionar `develop` a `main`.
 - Ejecutar la app en un Android físico, en iOS y en el escritorio Windows.
@@ -139,6 +138,6 @@ Flutter analiza la app y ejecuta dos pruebas: el cliente HTTP queda preparado y 
 2. Escribir antes `docs/sdd/<tarea>.md` con objetivo, fuera de alcance, criterios y traza.
 3. Implementar y comprobar. Lo no ejecutado se deja escrito como no ejecutado.
 4. Abrir la pull request hacia `develop`.
-5. E0.7 y E0.8 no empiezan solas: hace falta pedirlo.
+5. E0.8 no empieza sola: hace falta pedirla.
 
-El siguiente paso del plan, cuando se autorice, es E0.7.
+El siguiente paso del plan, cuando se autorice, es E0.8.

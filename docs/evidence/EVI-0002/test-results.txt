@@ -1,0 +1,29 @@
+Resumen anotado el 25 de octubre de 2026 a partir de la especificación E0.4.
+No se conserva el log íntegro de aquella sesión. Esto no es una salida cruda.
+
+Fecha de la comprobación: 2026-10-18
+Equipo: Windows. Flutter SDK en C:\Users\dierr\sdk\flutter.
+
+Versiones observadas:
+- Flutter 3.47.7
+- Dart 3.13.5
+- Android Studio 2026.2.1.8
+- OpenJDK 21.0.12.1
+- Android SDK 36
+- Android Gradle Plugin 9.1.0
+- Gradle 9.3.1
+- Emulador: tfm_api_36
+
+Resultados:
+- flutter analyze: sin incidencias.
+- flutter test: 2 pruebas superadas. «Dio queda preparado y no llama a la API» y «la sesión provisional protege el inicio».
+- Emulador tfm_api_36: la app mostró la sesión provisional y, tras Entrar, el inicio.
+- adb devices: solo el emulador.
+- Tras instalar Visual Studio Build Tools, flutter doctor no dejó incidencias.
+
+No ejecutado:
+- Dispositivo Android físico.
+- Compilación y ejecución de iOS. Hace falta un Mac con Xcode.
+- Ejecución del escritorio Windows.
+- Llamada de la app a la API.
+- APK o AAB de release, firma y hash. No hay keystore en el repositorio.

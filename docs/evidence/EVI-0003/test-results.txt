@@ -1,0 +1,25 @@
+Resumen anotado el 25 de octubre de 2026 a partir de la especificación E0.5.
+No se conserva el log íntegro de aquella sesión. Esto no es una salida cruda.
+
+Fecha de la comprobación: 2026-10-18
+Entorno: contenedor PHP 8.4.26. PHPUnit 13.4.3.
+
+Comando de pruebas:
+docker compose -f infrastructure/compose.yaml exec php vendor/bin/phpunit
+
+Resultado: 5 pruebas, 30 aserciones, OK.
+- testLaSaludRespondeOkConRequestId
+- testLaBienvenidaNoUsaProblemJson
+- testUnaRutaDesconocidaDevuelveProblemJson
+- testUnMetodoNoPermitidoDevuelveProblemJson
+- testElContratoMinimoDescribeSaludYErrores
+
+Peticiones observadas en http://127.0.0.1:8080:
+- GET /api/v1/health: 200, cuerpo {"status":"ok"}, cabecera X-Request-Id. El log de desarrollo registró la solicitud.
+- Ruta desconocida bajo /api/: 404, Content-Type application/problem+json, mismo requestId en cuerpo y cabecera.
+- GET /nginx-health: 200 ok.
+- GET /: sigue siendo la bienvenida HTML de Symfony.
+
+No ejecutado:
+- La app Flutter no llamó a GET /api/v1/health.
+- No hay autenticación ni recursos fiscales en el contrato.
