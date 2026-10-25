@@ -40,4 +40,4 @@ Comprobado en local el 25 de octubre de 2026, en `feature/e0-ci`. El backend se 
 
 Flutter 3.47.7 en el host: `flutter analyze` sin incidencias y `flutter test` con 2 pruebas OK.
 
-En la pull request #10, el 25 de octubre de 2026, la primera ejecución dejó Flutter en verde y los cuatro jobs del backend en rojo: `composer install` no encontró `backend/.env`. La ejecución siguiente, en el commit `4904366`, dejó en verde PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. Las comprobaciones obligatorias de `main` no están configuradas. Una pull request hacia `main` todavía no ha ejecutado estos workflows.
+En la pull request #10, el 25 de octubre de 2026, la primera ejecución dejó Flutter en verde y los cuatro jobs del backend en rojo: `composer install` no encontró `backend/.env`. La ejecución siguiente, en el commit `4904366`, dejó en verde PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. Ese mismo día esos cinco nombres quedaron como comprobaciones obligatorias de `main`. La rama no tiene que estar actualizada con `main` para que cuenten. Una pull request hacia `main` todavía no ha ejecutado estos workflows.

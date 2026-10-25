@@ -67,10 +67,10 @@ Traza: parte restante de PLT-004 y validación CI de PLT-005.
 
 - [x] Crear pipelines de PR hacia develop: formato PHP, PHPStan, PHPUnit y validación OpenAPI; análisis y pruebas Flutter.
 - [x] Ejecutarlos y corregir fallos hasta obtener resultados verificables.
-- [ ] Asegurar que las comprobaciones requeridas también se ejecuten en PR hacia main antes de exigirlas en su protección.
-- [ ] Configurar las comprobaciones obligatorias de main utilizando sus nombres reales, una vez publicadas y ejecutadas.
+- [x] Asegurar que las comprobaciones requeridas también se ejecuten en PR hacia main antes de exigirlas en su protección.
+- [x] Configurar las comprobaciones obligatorias de main utilizando sus nombres reales, una vez publicadas y ejecutadas.
 
-Estado: los YAML están en la rama `feature/e0-ci` y también se disparan hacia `main`. El 25 de octubre de 2026 pasaron en local y, tras corregir la ausencia de `.env`, en la pull request #10. Los jobs en verde son PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. Las comprobaciones obligatorias de `main` siguen sin configurarse. No hay `deploy.yml`.
+Estado: los workflows se disparan hacia `develop` y hacia `main`. El 25 de octubre de 2026 pasaron en local y en la pull request #10. Desde ese día, `main` exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. La rama no tiene que estar actualizada con `main` para que esas comprobaciones cuenten. Una pull request hacia `main` todavía no ha ejecutado estos workflows. No hay `deploy.yml`.
 
 ## E0.7 — Revisión de pruebas y evidencias
 
