@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sesión — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Has entrado</h1>
+    <p>Sesión de {{ email }}. La información fiscal todavía no está disponible.</p>
+
+    <form method="post" action="{{ path('account_logout') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('salir') }}">
+        <button type="submit">Salir</button>
+    </form>
+{% endblock %}

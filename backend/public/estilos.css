@@ -69,7 +69,12 @@ button {
 }
 
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+a:focus-visible {
     outline: 3px solid #14243B;
     outline-offset: 2px;
+}
+
+a {
+    color: #006B70;
 }

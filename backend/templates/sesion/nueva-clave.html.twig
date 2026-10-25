@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contraseña nueva — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Elige una contraseña nueva</h1>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{{ path('account_password_reset', {token: token}) }}" novalidate>
+        <input type="hidden" name="_token" value="{{ csrf_token('nueva-clave') }}">
+
+        <label for="password">Contraseña nueva (obligatorio)</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required>
+        <p class="ayuda">Mínimo 12 caracteres. No uses una contraseña que ya haya aparecido en una filtración.</p>
+
+        <button type="submit">Guardar contraseña</button>
+    </form>
+{% endblock %}

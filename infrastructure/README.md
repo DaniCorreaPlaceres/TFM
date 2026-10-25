@@ -9,11 +9,11 @@ Docker Compose del entorno local. MinIO entra en E0.8.
 | nginx | nginx 1.28.3 | http://127.0.0.1:8080 |
 | php | PHP 8.4.26 FPM, Symfony 7.4.21 | interno 9000 |
 | mysql | MySQL 8.4.9 | solo red de Compose |
-| redis | Redis 7.4.11 | solo red de Compose |
+| redis | Redis 7.4.11, sesiones web | solo red de Compose |
 | minio | RELEASE.2025-10-15T17-29-55Z, compilado desde el código fuente | http://127.0.0.1:9000 |
-| mailpit | v1.32.0, buzón local del alta | http://127.0.0.1:8025 |
+| mailpit | v1.32.0, buzón local del alta y de la recuperación | http://127.0.0.1:8025 |
 
-Las credenciales de MySQL son locales y solo valen dentro de Compose: base `app`, usuario `app`, contraseña `app`, root `root`. `APP_SECRET` del contenedor es `dev-only-not-for-production`. MinIO usa el usuario `minio` y la contraseña `minio-dev-only`, y el bucket `documents` es privado. Mailpit recibe el correo de confirmación del alta y no tiene contraseña. No reutilizar estos valores fuera del entorno de desarrollo. La consola de MinIO no se publica. El puerto 9000 y la bandeja de Mailpit solo escuchan en localhost. El SMTP de Mailpit no se publica.
+Las credenciales de MySQL son locales y solo valen dentro de Compose: base `app`, usuario `app`, contraseña `app`, root `root`. `APP_SECRET` del contenedor es `dev-only-not-for-production`. MinIO usa el usuario `minio` y la contraseña `minio-dev-only`, y el bucket `documents` es privado. Mailpit recibe el correo de confirmación del alta y el de recuperación de contraseña, y no tiene contraseña. No reutilizar estos valores fuera del entorno de desarrollo. La consola de MinIO no se publica. El puerto 9000 y la bandeja de Mailpit solo escuchan en localhost. El SMTP de Mailpit no se publica.
 
 ## Arranque
 

@@ -7,6 +7,7 @@ namespace App\Tests\Identity;
 use App\Identity\ConfirmEmail;
 use App\Identity\InvalidConfirmation;
 use App\Identity\InvalidRegistration;
+use App\Identity\PasswordPolicy;
 use App\Identity\RegisterAccount;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
@@ -154,7 +155,7 @@ final class RegisterAccountTest extends TestCase
             $confirmations,
             new InMemoryRegistrationStore(),
             new PrefixPasswordHasher(),
-            $passwords,
+            new PasswordPolicy($passwords),
             $mailer,
             new FixedConfirmationLink(),
             $clock,

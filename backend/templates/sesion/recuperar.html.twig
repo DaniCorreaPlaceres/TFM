@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recuperar contraseña — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Recuperar contraseña</h1>
+    <p>Escribe el correo de la cuenta.</p>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{{ path('account_recover') }}" novalidate>
+        <input type="hidden" name="_token" value="{{ csrf_token('recuperar') }}">
+
+        <label for="email">Correo electrónico (obligatorio)</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+
+        <button type="submit">Enviar enlace</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,16 @@
+2026-10-25, feature/e1-sesion, dentro del contenedor PHP 8.4.26.
+
+PHPStan: No errors.
+PHPUnit: OK (33 tests, 216 assertions).
+
+Navegador en http://127.0.0.1:8080:
+- Una cuenta sin confirmar no entra y ve el aviso de confirmar el correo.
+- Tras confirmar, /sesion muestra la sesión y dice que la información fiscal no está disponible.
+- La respuesta de acceso incluye Set-Cookie aselto_sesion; Max-Age=7200; httponly; samesite=lax. En HTTP local no lleva Secure.
+- Redis tiene claves de sesión con TTL por debajo de 7200 segundos.
+- Un correo desconocido y uno confirmado reciben la misma página /recuperar/enviado.
+- Mailpit mostró el enlace de recuperación solo para la cuenta confirmada.
+- El enlace usado responde «Enlace no válido».
+- Después de cambiar la contraseña, /sesion vuelve a /entrar. La contraseña nueva entra.
+
+Pull request #17, commit 0e3dfb2. Resultado de GitHub no anotado: las comprobaciones estaban en curso.
