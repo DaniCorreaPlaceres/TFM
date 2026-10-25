@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enlace no válido — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Enlace no válido</h1>
+    <p>Este enlace ya no sirve. Puedes pedir otro.</p>
+    <p><a href="{{ path('account_recover') }}">Pedir otro enlace</a></p>
+{% endblock %}

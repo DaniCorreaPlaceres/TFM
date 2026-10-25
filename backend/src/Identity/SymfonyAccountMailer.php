@@ -27,4 +27,15 @@ final class SymfonyAccountMailer implements AccountMailer
 
         $this->mailer->send($message);
     }
+
+    public function sendPasswordReset(string $to, string $url): void
+    {
+        $message = (new Email())
+            ->from($this->from)
+            ->to($to)
+            ->subject('Recupera tu contraseña en Aselto')
+            ->text("Para elegir una contraseña nueva, abre este enlace en los próximos 30 minutos:\n\n".$url."\n\nSi no has pedido este cambio, ignora este mensaje.\n");
+
+        $this->mailer->send($message);
+    }
 }

@@ -16,7 +16,7 @@ final class RegisterAccount
         private readonly EmailConfirmationRepository $confirmations,
         private readonly RegistrationStore $store,
         private readonly PasswordHasherInterface $passwords,
-        private readonly PwnedPasswordList $pwnedPasswords,
+        private readonly PasswordPolicy $policy,
         private readonly AccountMailer $mailer,
         private readonly ConfirmationLinkFactory $links,
         private readonly ClockInterface $clock,
@@ -30,17 +30,7 @@ final class RegisterAccount
             throw new InvalidRegistration(InvalidRegistration::EMAIL);
         }
 
-        if (mb_strlen($password) < 12) {
-            throw new InvalidRegistration(InvalidRegistration::SHORT);
-        }
-
-        try {
-            if ($this->pwnedPasswords->contains($password)) {
-                throw new InvalidRegistration(InvalidRegistration::PWNED);
-            }
-        } catch (PwnedPasswordLookupFailed) {
-            throw new InvalidRegistration(InvalidRegistration::UNAVAILABLE);
-        }
+        $this->policy->assertAcceptable($password);
 
         if (null !== $this->accounts->findByEmail($email)) {
             throw new InvalidRegistration(InvalidRegistration::DUPLICATE);

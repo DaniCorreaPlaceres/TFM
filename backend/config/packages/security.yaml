@@ -1,0 +1,38 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        accounts:
+            entity:
+                class: App\Entity\Account
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+        main:
+            lazy: true
+            provider: accounts
+            entry_point: App\Security\LoginEntryPoint
+            custom_authenticators:
+                - App\Security\LoginAuthenticator
+            logout:
+                path: account_logout
+                target: /entrar
+                enable_csrf: true
+                csrf_token_id: salir
+                csrf_parameter: _csrf_token
+
+    access_control:
+        - { path: ^/sesion, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

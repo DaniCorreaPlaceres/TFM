@@ -22,12 +22,31 @@ services:
         exclude:
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Identity/SymfonyAttemptLimiter.php'
 
     Symfony\Component\Clock\ClockInterface:
         class: Symfony\Component\Clock\Clock
 
     Symfony\Component\PasswordHasher\PasswordHasherInterface:
         class: Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher
+
+    Predis\Client:
+        arguments:
+            - '%env(REDIS_URL)%'
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@Predis\Client'
+
+    App\Identity\LoginAttemptLimiter:
+        class: App\Identity\SymfonyAttemptLimiter
+        arguments:
+            $factory: '@limiter.login_attempt'
+
+    App\Identity\ResetAttemptLimiter:
+        class: App\Identity\SymfonyAttemptLimiter
+        arguments:
+            $factory: '@limiter.password_reset'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -5,7 +5,8 @@
 {% block body %}
     {% if confirmed %}
         <h1>Correo confirmado</h1>
-        <p>El correo ya está verificado. El acceso a la cuenta todavía no está disponible.</p>
+        <p>El correo ya está verificado. Ya puedes entrar. La información fiscal todavía no está disponible.</p>
+        <p><a href="{{ path('account_login') }}">Entrar</a></p>
     {% else %}
         <h1>Enlace no válido</h1>
         <p class="error" role="alert">Error: el enlace no es válido, ya se ha usado o han pasado más de 30 minutos.</p>
