@@ -10,15 +10,15 @@
 | Contexto aportado | La especificación E1, DOC-04 IDN-001 e IDN-007, y DOC-05 apartado 5.1. Sin datos fiscales. |
 | Prompt(s) | No archivados. Ver [prompt-redacted.md](prompt-redacted.md). |
 | Respuesta utilizada | El formulario `/registro`, Mailpit v1.32.0 y la consulta a Have I Been Pwned por rango de huella. |
-| Decisión del desarrollador | Pendiente de integrar la rama `feature/e1-registro`. No hay inicio de sesión ni correo de producción. |
+| Decisión del desarrollador | Integrada en `develop` con la pull request #15. No hay inicio de sesión ni correo de producción. |
 | Archivos | `backend/src/Identity/`, `backend/src/Controller/RegistrationController.php`, `backend/templates/registro/` e `infrastructure/compose.yaml`. |
 | Pruebas ejecutadas | Ver [test-results.txt](test-results.txt). |
-| Intervención humana | La revisión de esta ficha sigue pendiente. |
+| Intervención humana | El responsable integró la pull request #15 y aceptó esta ficha el 25 de octubre de 2026. |
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
 | Defectos | Ninguno pendiente en la comprobación local. |
-| Commit / PR / CI | Pull request #15, commit `0007981`. GitHub Actions todavía no ha ejecutado este cambio. |
-| Conclusión | En local, el alta conserva el correo si la contraseña es corta, Mailpit recibe el enlace, la confirmación verifica la cuenta y el segundo uso del enlace se rechaza. Una cuenta sin confirmar no permite acceso fiscal. |
-| Responsable de aprobación | Pendiente. |
+| Commit / PR / CI | Pull request #15, commit `0007981`, merge `b85068a`. Backend run 40216005170: PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI en verde. PHPUnit: 19 pruebas y 97 aserciones. Flutter run 40216005164 en verde. |
+| Conclusión | En local y en el job PHPUnit de la pull request #15, el alta conserva el correo si la contraseña es corta, el enlace confirma la cuenta y el segundo uso se rechaza. Una cuenta sin confirmar no permite acceso fiscal. |
+| Responsable de aprobación | Responsable del TFM, 2026-10-25. |
 
 Enlaces: [links.md](links.md).

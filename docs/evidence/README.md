@@ -11,13 +11,13 @@ E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió E
 - [EVI-0003](EVI-0003/record.md): contrato mínimo de API. La app no llama a la API.
 - [EVI-0004](EVI-0004/record.md): workflows. La primera ejecución de backend falló; la siguiente quedó en verde.
 - [EVI-0005](EVI-0005/record.md): MinIO local. El bucket `documents` rechaza la descarga anónima. En la pull request #14, PHPUnit compiló la imagen y pasó.
-- [EVI-0006](EVI-0006/record.md): alta web y confirmación de correo. Comprobado en local. La revisión humana está pendiente.
+- [EVI-0006](EVI-0006/record.md): alta web y confirmación de correo. En la pull request #15, PHPUnit pasó.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó EVI-0001 a EVI-0005 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. EVI-0006 espera revisión. Esa aceptación no promociona `develop` a `main` ni cierra E0.
+El responsable del TFM aceptó las seis fichas el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. Esa aceptación no promociona `develop` a `main` ni cierra E1.
 
 ## Qué no se rellena
 
