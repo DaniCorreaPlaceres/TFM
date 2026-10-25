@@ -64,7 +64,7 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - E0.3: entorno Symfony reproducible. El arranque está en Entorno local.
 - E0.4: esqueleto Flutter. El arranque Android está en Aplicación Android. El dispositivo físico, iOS y el escritorio Windows siguen sin ejecutarse.
 - E0.5: contrato mínimo `GET /api/v1/health`. La app Flutter no llama a la API.
-- E0.6: workflows de comprobación escritos. Las mismas comprobaciones pasaron en local el 25 de octubre de 2026. GitHub Actions y las comprobaciones obligatorias de main siguen sin ejecutarse.
+- E0.6: workflows de comprobación. Pasaron en local y en la pull request #10 el 25 de octubre de 2026. `main` exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter.
 - E0.7 y E0.8: pendientes de autorización explícita.
 
 ## Flujo Git
@@ -75,7 +75,7 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - No guardar secretos, credenciales, firmas Android ni datos fiscales personales reales.
 - Conservar los archivos de bloqueo de dependencias cuando se inicialicen los proyectos.
 
-Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlaceres/TFM). Las ramas main y develop están publicadas. main tiene protección activa: exige PR con una aprobación de otra persona, descarta aprobaciones tras nuevos cambios y requiere resolver las conversaciones. Las reglas se aplican también a administradores; no se permiten pushes directos, pushes forzados ni borrados. Los workflows de comprobación están en `.github/workflows/` y todavía no se han ejecutado en GitHub. Las comprobaciones obligatorias de CI en main siguen sin configurarse. No hay despliegue de producción configurado.
+Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlaceres/TFM). Las ramas main y develop están publicadas. main tiene protección activa: exige PR con una aprobación de otra persona, descarta aprobaciones tras nuevos cambios y requiere resolver las conversaciones. Las reglas se aplican también a administradores; no se permiten pushes directos, pushes forzados ni borrados. Los workflows de comprobación están en `.github/workflows/` y se ejecutaron en la pull request #10. `main` exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. No hay despliegue de producción configurado.
 
 ## Arranque del trabajo
 

@@ -30,7 +30,7 @@ El nombre de la aplicación es Aselto y el eslogan es «Tus finanzas bajo contro
 - Registrar decisiones, criterios y evidencias de uso de IA de forma trazable, sin inventar resultados. El índice de evidencias vive en docs/evidence/. Una prueba no ejecutada permanece como no ejecutada.
 - La entrega en curso es E0, cimientos técnicos, según la planificación de DOC-07 (PLT-001 a PLT-006).
 - E0.1 deja alineadas estas instrucciones con esa estructura. E0.3 deja el esqueleto Symfony y Compose. E0.4 deja el esqueleto Flutter Android, con los runners de iOS y Windows preparados y sin validar. E0.5 deja `GET /api/v1/health`, los errores problem+json y el OpenAPI mínimo. E0.6 deja los workflows de comprobación en `.github/workflows/`. El cierre de pruebas y evidencias llega en E0.7 y MinIO en E0.8.
-- Cada tarea posterior exige autorización explícita del responsable. La app no llama a la API, no hay despliegue y no se selecciona proveedor de IA. Las comprobaciones obligatorias de `main` se configuran cuando los workflows hayan tenido una ejecución publicada en GitHub.
+- Cada tarea posterior exige autorización explícita del responsable. La app no llama a la API, no hay despliegue y no se selecciona proveedor de IA. `main` exige las comprobaciones PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. No se cambian sin autorización.
 - El runtime PHP del proyecto es 8.4, dentro de PHP-FPM. El esquema fiscal completo de DOC-06 y la elección de proveedor de IA del producto quedan fuera de E0.
 
 ## Seguimiento de E0
