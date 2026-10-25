@@ -54,7 +54,7 @@ Pull request #4, el 18 de octubre de 2026. La pull request #3 apuntaba a `main` 
 
 Compose levanta Nginx, PHP 8.4 en PHP-FPM, MySQL 8.4 y Redis. El PHP del ordenador no es el runtime del proyecto. El 18 de octubre quedaron healthy PHP 8.4.26, Symfony 7.4.21, MySQL 8.4.9, Redis 7.4.11 y Nginx 1.28.3. La migración de ejemplo `Version20261018030000` subió, bajó y volvió a subir. `GET /nginx-health` respondió 200. `GET /` muestra la bienvenida de Symfony y responde 404 porque no hay página de inicio. MySQL solo se ve desde dentro de Compose. La base local se llama `app`, con usuario y contraseña `app`. Son datos de desarrollo, no de producción.
 
-El esquema fiscal de DOC-06 no está creado. MinIO tampoco.
+El esquema fiscal de DOC-06 no está creado. MinIO llegó después, en E0.8.
 
 Arranque, desde la raíz:
 
@@ -115,7 +115,7 @@ PHP-CS-Fixer mira que el PHP esté escrito con el mismo estilo. No decide si la 
 
 PHPStan lee el PHP sin ejecutarlo y señala fallos de tipos, funciones que no existen y usos incoherentes.
 
-PHPUnit ejecuta el backend. Hoy cubre la ruta de salud, el formato de error `problem+json` y que el contrato mencione esa ruta, la cabecera y el esquema de error.
+PHPUnit ejecuta el backend. Cubre la ruta de salud, el formato de error `problem+json`, que el contrato mencione esa ruta y, si MinIO está levantado, que un objeto privado no se descargue sin credenciales.
 
 OpenAPI comprueba que `openapi.yaml` sea un contrato válido.
 
@@ -123,11 +123,10 @@ Flutter analiza la app y ejecuta dos pruebas: el cliente HTTP queda preparado y 
 
 ## Qué no está hecho
 
-- E0.8: MinIO, buckets privados y el cierre de secretos.
 - Promocionar `develop` a `main`.
 - Ejecutar la app en un Android físico, en iOS y en el escritorio Windows.
 - Conectar la app con `GET /api/v1/health`.
-- Autenticación real, documentos, entidades fiscales y los modelos 130, 303 y 420.
+- Autenticación real, documentos de negocio, entidades fiscales y los modelos 130, 303 y 420. MinIO ya guarda archivos de prueba, no documentos de la aplicación.
 - Elegir proveedor de IA.
 - Desplegar. aselto.com no está publicado.
 - Registrar el dominio.
@@ -138,6 +137,5 @@ Flutter analiza la app y ejecuta dos pruebas: el cliente HTTP queda preparado y 
 2. Escribir antes `docs/sdd/<tarea>.md` con objetivo, fuera de alcance, criterios y traza.
 3. Implementar y comprobar. Lo no ejecutado se deja escrito como no ejecutado.
 4. Abrir la pull request hacia `develop`.
-5. E0.8 no empieza sola: hace falta pedirla.
 
-El siguiente paso del plan, cuando se autorice, es E0.8.
+El 25 de octubre de 2026, E0.8 dejó MinIO en el entorno local. El bucket `documents` responde 403 a una descarga sin credenciales. El responsable aceptó EVI-0005 ese mismo día. La rama `feature/e0-minio` todavía no está integrada y GitHub Actions no ha construido la imagen. E0 no queda cerrado: faltan el dispositivo físico, iOS, el escritorio, la llamada de la app a la API y la promoción a `main`.

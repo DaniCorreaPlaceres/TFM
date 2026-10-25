@@ -8,7 +8,7 @@ Monorepositorio del TFM. Aselto es la aplicación fiscal y documental. El domini
 
 - backend/: esqueleto Symfony 7.4 con Doctrine. El runtime es PHP 8.4 en PHP-FPM.
 - mobile/: esqueleto Flutter con Riverpod, GoRouter y Dio. Android está comprobado; iOS y el escritorio Windows están preparados. Ver [mobile/README.md](mobile/README.md).
-- infrastructure/: Compose local con Nginx, PHP-FPM, MySQL 8.4 y Redis. MinIO llega en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
+- infrastructure/: Compose local con Nginx, PHP-FPM, MySQL 8.4, Redis y MinIO. Ver [infrastructure/README.md](infrastructure/README.md).
 - docs/: documentos Word de referencia, especificaciones por tarea en docs/sdd/ y registro de evidencias. Ver [docs/README.md](docs/README.md).
 - .github/: workflows de comprobación de E0.6. Ver [.github/README.md](.github/README.md).
 
@@ -66,7 +66,7 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - E0.5: contrato mínimo `GET /api/v1/health`. La app Flutter no llama a la API.
 - E0.6: workflows de comprobación. Pasaron en local y en la pull request #10 el 25 de octubre de 2026. `main` exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter.
 - E0.7: fichas EVI-0001 a EVI-0004, aceptadas por el responsable el 25 de octubre de 2026.
-- E0.8: pendiente de autorización explícita.
+- E0.8: MinIO local con el bucket `documents` privado. Comprobado el 25 de octubre de 2026 y aceptado en EVI-0005. La rama todavía no está integrada.
 
 ## Flujo Git
 

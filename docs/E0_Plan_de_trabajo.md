@@ -86,12 +86,12 @@ Estado: fichas EVI-0001 a EVI-0004 registradas y aceptadas por el responsable el
 
 Traza: PLT-006.
 
-- [ ] Añadir MinIO como almacenamiento local compatible con S3.
-- [ ] Mantener buckets privados y comprobar que no existe descarga pública directa.
-- [ ] Versionar .env.example sin secretos y mantener credenciales fuera de Git.
-- [ ] Añadir las pruebas y evidencias correspondientes y revisar el cierre global de E0.
+- [x] Añadir MinIO como almacenamiento local compatible con S3.
+- [x] Mantener buckets privados y comprobar que no existe descarga pública directa.
+- [x] Versionar .env.example sin secretos y mantener credenciales fuera de Git.
+- [x] Añadir las pruebas y evidencias correspondientes y revisar el cierre global de E0.
 
-Estado: pendiente.
+Estado: comprobado el 25 de octubre de 2026. MinIO `RELEASE.2025-10-15T17-29-55Z` escucha solo en localhost y el bucket `documents` responde 403 a una descarga anónima. PHPUnit pasó 6 pruebas. El responsable aceptó EVI-0005 ese mismo día. E0 no se cierra: faltan el dispositivo físico, iOS, el escritorio Windows, la llamada de la app a la API, la promoción a `main` y el despliegue. La rama `feature/e0-minio` todavía no está integrada y GitHub Actions no ha construido esta imagen.
 
 ## Puerta de salida de E0
 

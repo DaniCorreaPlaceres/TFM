@@ -51,6 +51,11 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    env:
+      MINIO_ENDPOINT: http://127.0.0.1:9000
+      MINIO_BUCKET: documents
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio-dev-only
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -58,6 +63,20 @@ jobs:
           php-version: '8.4'
           extensions: ctype, iconv, intl, pdo_mysql, zip
           coverage: none
+      - name: Arrancar MinIO
+        working-directory: ${{ github.workspace }}
+        run: |
+          docker build -t tfm-minio infrastructure/docker/minio
+          docker run -d --name tfm-minio -p 127.0.0.1:9000:9000 \
+            -e MINIO_ROOT_USER=minio \
+            -e MINIO_ROOT_PASSWORD=minio-dev-only \
+            tfm-minio
+          for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+            curl -fsS http://127.0.0.1:9000/minio/health/live && exit 0
+            sleep 2
+          done
+          docker logs tfm-minio
+          exit 1
       - run: cp .env.example .env
       - run: composer install --no-interaction --prefer-dist
       - run: vendor/bin/phpunit

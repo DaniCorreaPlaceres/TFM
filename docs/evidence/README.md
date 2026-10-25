@@ -4,18 +4,19 @@
 
 ## Estado
 
-El 25 de octubre de 2026, E0.7 registró cuatro fichas con los resultados ya observados. No se reejecutaron las pruebas para fabricar logs, y no se reconstruyeron prompts ni tiempos que no se habían anotado.
+E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió EVI-0005 el mismo día, después de ejecutar la prueba del bucket. No se reconstruyen prompts ni tiempos que no se habían anotado.
 
 - [EVI-0001](EVI-0001/record.md): entorno Symfony. Comprobado el 18 de octubre de 2026.
 - [EVI-0002](EVI-0002/record.md): Flutter en el emulador. El dispositivo físico, iOS y el escritorio Windows no se ejecutaron.
 - [EVI-0003](EVI-0003/record.md): contrato mínimo de API. La app no llama a la API.
 - [EVI-0004](EVI-0004/record.md): workflows. La primera ejecución de backend falló; la siguiente quedó en verde.
+- [EVI-0005](EVI-0005/record.md): MinIO local. El bucket `documents` rechaza la descarga anónima. GitHub Actions todavía no ha construido la imagen.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó las cuatro fichas el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. Esa aceptación no promociona `develop` a `main` ni da por hecho E0.8.
+El responsable del TFM aceptó las cinco fichas el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. Esa aceptación no promociona `develop` a `main` ni cierra E0.
 
 ## Qué no se rellena
 
