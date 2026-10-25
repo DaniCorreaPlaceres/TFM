@@ -11,8 +11,9 @@ Docker Compose del entorno local. MinIO entra en E0.8.
 | mysql | MySQL 8.4.9 | solo red de Compose |
 | redis | Redis 7.4.11 | solo red de Compose |
 | minio | RELEASE.2025-10-15T17-29-55Z, compilado desde el código fuente | http://127.0.0.1:9000 |
+| mailpit | v1.32.0, buzón local del alta | http://127.0.0.1:8025 |
 
-Las credenciales de MySQL son locales y solo valen dentro de Compose: base `app`, usuario `app`, contraseña `app`, root `root`. `APP_SECRET` del contenedor es `dev-only-not-for-production`. MinIO usa el usuario `minio` y la contraseña `minio-dev-only`, y el bucket `documents` es privado. No reutilizar estos valores fuera del entorno de desarrollo. La consola de MinIO no se publica. El puerto 9000 solo escucha en localhost.
+Las credenciales de MySQL son locales y solo valen dentro de Compose: base `app`, usuario `app`, contraseña `app`, root `root`. `APP_SECRET` del contenedor es `dev-only-not-for-production`. MinIO usa el usuario `minio` y la contraseña `minio-dev-only`, y el bucket `documents` es privado. Mailpit recibe el correo de confirmación del alta y no tiene contraseña. No reutilizar estos valores fuera del entorno de desarrollo. La consola de MinIO no se publica. El puerto 9000 y la bandeja de Mailpit solo escuchan en localhost. El SMTP de Mailpit no se publica.
 
 ## Arranque
 
@@ -49,4 +50,4 @@ MinIO se comprobó el 25 de octubre de 2026. `minio --version` informó `RELEASE
 docker compose stop
 ```
 
-`docker compose down` elimina los contenedores y conserva los volúmenes `mysql_data` y `minio_data`. `docker compose down -v` borra también esos volúmenes.
+`docker compose down` elimina los contenedores y conserva los volúmenes `mysql_data` y `minio_data`. `docker compose down -v` borra también esos volúmenes. Mailpit no guarda el correo en un volumen.

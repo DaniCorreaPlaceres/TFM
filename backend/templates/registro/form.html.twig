@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear cuenta — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Crear cuenta</h1>
+    <p>Usa un correo al que puedas acceder. Hasta confirmarlo, la cuenta no puede ver información fiscal.</p>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{{ path('account_register') }}" novalidate>
+        <input type="hidden" name="_token" value="{{ csrf_token('registro') }}">
+
+        <label for="email">Correo electrónico (obligatorio)</label>
+        <input id="email" name="email" type="email" autocomplete="email" required value="{{ email }}">
+
+        <label for="password">Contraseña (obligatorio)</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required>
+        <p class="ayuda">Mínimo 12 caracteres. No uses una contraseña que ya haya aparecido en una filtración.</p>
+
+        <button type="submit">Crear cuenta</button>
+    </form>
+{% endblock %}

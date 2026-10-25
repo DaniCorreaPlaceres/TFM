@@ -1,0 +1,14 @@
+services:
+    App\Tests\Identity\ConfigurablePwnedPasswordList:
+        public: true
+
+    App\Identity\PwnedPasswordList:
+        alias: App\Tests\Identity\ConfigurablePwnedPasswordList
+        public: true
+
+    App\Tests\Identity\RecordingAccountMailer:
+        public: true
+
+    App\Identity\AccountMailer:
+        alias: App\Tests\Identity\RecordingAccountMailer
+        public: true

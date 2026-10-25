@@ -27,4 +27,6 @@ Añadir MinIO al entorno local, compatible con S3, con un bucket privado. Compro
 
 Comprobado el 25 de octubre de 2026 en `feature/e0-minio`. MinIO informa `RELEASE.2025-10-15T17-29-55Z`, commit `9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a`. PHPUnit, dentro del contenedor PHP 8.4.26, pasó 6 pruebas y 42 aserciones. La prueba del bucket privado subió un objeto, lo leyó con credenciales y recibió 403 sin ellas. Desde el equipo, `GET http://127.0.0.1:9000/documents/e0-private.txt` respondió 403. El puerto 9000 solo escucha en localhost. La consola no está publicada.
 
-El responsable del TFM aceptó EVI-0005 el 25 de octubre de 2026. La entrega E0 no queda cerrada. Siguen sin ejecutarse el dispositivo Android físico, iOS, el escritorio Windows, la llamada de la app a la API y la promoción de `develop` a `main`. No hay despliegue. GitHub Actions todavía no ha construido esta imagen.
+El responsable del TFM aceptó EVI-0005 e integró la pull request #14 el 25 de octubre de 2026, merge `7ea57d3`. En GitHub, el run 40212630147 dejó PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI en verde. PHPUnit informó 6 pruebas y 42 aserciones. Flutter pasó en el run 40212630177.
+
+La entrega E0 no queda cerrada. Siguen sin ejecutarse el dispositivo Android físico, iOS, el escritorio Windows, la llamada de la app a la API y la promoción de `develop` a `main`. No hay despliegue.
