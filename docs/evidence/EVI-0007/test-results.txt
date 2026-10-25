@@ -13,4 +13,4 @@ Navegador en http://127.0.0.1:8080:
 - El enlace usado responde «Enlace no válido».
 - Después de cambiar la contraseña, /sesion vuelve a /entrar. La contraseña nueva entra.
 
-Sin pull request. Sin resultado de GitHub.
+Pull request #17, commit 0e3dfb2. Resultado de GitHub no anotado: las comprobaciones estaban en curso.

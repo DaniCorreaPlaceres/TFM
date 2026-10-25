@@ -5,4 +5,6 @@
 - Mailpit v1.32.0, buzón local: http://127.0.0.1:8025
 - Redis local, solo red de Compose. La sesión web se guarda ahí.
 
-No hay pull request ni ejecución en GitHub.
+- Pull request #17: https://github.com/DaniCorreaPlaceres/TFM/pull/17
+
+El resultado de GitHub no se anota: las comprobaciones seguían en curso.

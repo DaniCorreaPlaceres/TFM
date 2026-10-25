@@ -17,7 +17,7 @@
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
 | Defectos | Ninguno pendiente en la comprobación local. |
-| Commit / PR / CI | Sin pull request y sin resultado de GitHub. |
+| Commit / PR / CI | Pull request #17, commit `0e3dfb2`. Las comprobaciones de GitHub estaban en curso y su resultado no se anota todavía. |
 | Conclusión | En local, una cuenta confirmada entra, la cookie dura 7200 segundos y es HttpOnly, Redis guarda la sesión, el enlace de recuperación no distingue si el correo existe y la sesión anterior deja de servir al cambiar la contraseña. |
 | Responsable de aprobación | Responsable del TFM, 2026-10-25. |
 

@@ -12,13 +12,13 @@ E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió E
 - [EVI-0004](EVI-0004/record.md): workflows. La primera ejecución de backend falló; la siguiente quedó en verde.
 - [EVI-0005](EVI-0005/record.md): MinIO local. El bucket `documents` rechaza la descarga anónima. En la pull request #14, PHPUnit compiló la imagen y pasó.
 - [EVI-0006](EVI-0006/record.md): alta web y confirmación de correo. En la pull request #15, PHPUnit pasó.
-- [EVI-0007](EVI-0007/record.md): inicio de sesión web y recuperación de contraseña. Comprobado en local y aceptado el 25 de octubre de 2026. Sigue sin pull request.
+- [EVI-0007](EVI-0007/record.md): inicio de sesión web y recuperación de contraseña. Comprobado en local, aceptado el 25 de octubre de 2026 y abierto en la pull request #17.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. Esa aceptación no promociona `develop` a `main` ni cierra E1. EVI-0007 sigue sin pull request.
+El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. Esa aceptación no promociona `develop` a `main` ni cierra E1. EVI-0007 está en la pull request #17, todavía sin integrar.
 
 ## Qué no se rellena
 
