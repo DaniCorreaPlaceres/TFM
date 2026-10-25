@@ -6,6 +6,12 @@ on:
   push:
     branches: [develop, main]
 
+env:
+  APP_ENV: test
+  APP_DEBUG: '0'
+  APP_SECRET: ci-only-not-for-production
+  DATABASE_URL: mysql://app:app@127.0.0.1:3306/app?serverVersion=8.4&charset=utf8mb4
+
 jobs:
   php-cs-fixer:
     name: PHP-CS-Fixer
@@ -19,6 +25,7 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
+      - run: cp .env.example .env
       - run: composer install --no-interaction --prefer-dist
       - run: vendor/bin/php-cs-fixer fix --dry-run --diff
 
@@ -34,6 +41,7 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
+      - run: cp .env.example .env
       - run: composer install --no-interaction --prefer-dist
       - run: vendor/bin/phpstan analyse --no-progress
 
@@ -43,11 +51,6 @@ jobs:
     defaults:
       run:
         working-directory: backend
-    env:
-      APP_ENV: test
-      APP_DEBUG: '0'
-      APP_SECRET: ci-only-not-for-production
-      DATABASE_URL: mysql://app:app@127.0.0.1:3306/app?serverVersion=8.4&charset=utf8mb4
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -55,6 +58,7 @@ jobs:
           php-version: '8.4'
           extensions: ctype, iconv, intl, pdo_mysql, zip
           coverage: none
+      - run: cp .env.example .env
       - run: composer install --no-interaction --prefer-dist
       - run: vendor/bin/phpunit
 
@@ -70,5 +74,6 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
+      - run: cp .env.example .env
       - run: composer install --no-interaction --prefer-dist
       - run: php bin/validate-openapi.php

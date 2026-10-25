@@ -27,6 +27,7 @@ Dejar pipelines de GitHub Actions que comprueben el backend y Flutter en las pul
 - `.gitattributes` guarda `*.php`, `*.yml`, `*.yaml`, `*.xml`, `*.neon` y `*.md` con fin de línea LF. Así el dry-run de PHP-CS-Fixer ve el mismo texto en Windows y en Ubuntu.
 - La regla `line_ending` de PHP-CS-Fixer queda desactivada. El fin de línea lo fija Git, no el formateador.
 - `bin/validate-openapi.php` oculta los avisos deprecados de `cebe/php-openapi` 1.8 en PHP 8.4. El proceso sigue fallando si el contrato no es válido.
+- `.env` no se versiona. En GitHub Actions el workflow copia `.env.example` a `.env` antes de `composer install`, porque el script de Symfony lee ese fichero al vaciar la caché. `APP_SECRET` de esa ejecución es un valor solo de CI.
 
 ## Resultado
 
@@ -39,4 +40,4 @@ Comprobado en local el 25 de octubre de 2026, en `feature/e0-ci`. El backend se 
 
 Flutter 3.47.7 en el host: `flutter analyze` sin incidencias y `flutter test` con 2 pruebas OK.
 
-GitHub Actions no se ha ejecutado. Las comprobaciones obligatorias de `main` no están configuradas. Publicar `.github/workflows/` exige una credencial con ámbito `workflow`.
+La primera ejecución publicada, en la pull request #10, terminó el 25 de octubre de 2026: Flutter en verde y los cuatro jobs del backend en rojo. `composer install` falló al vaciar la caché porque `backend/.env` no está en el repositorio. Las comprobaciones obligatorias de `main` no están configuradas.

@@ -70,7 +70,7 @@ Traza: parte restante de PLT-004 y validación CI de PLT-005.
 - [ ] Asegurar que las comprobaciones requeridas también se ejecuten en PR hacia main antes de exigirlas en su protección.
 - [ ] Configurar las comprobaciones obligatorias de main utilizando sus nombres reales, una vez publicadas y ejecutadas.
 
-Estado: los YAML están en la rama `feature/e0-ci` y también se disparan hacia `main`. El 25 de octubre de 2026 las mismas comprobaciones pasaron en local: PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI dentro de PHP 8.4.26, y `flutter analyze` más `flutter test` en Flutter 3.47.7. GitHub Actions no se ha ejecutado y las comprobaciones obligatorias de `main` siguen sin configurarse. No hay `deploy.yml`.
+Estado: los YAML están en la rama `feature/e0-ci` y también se disparan hacia `main`. El 25 de octubre de 2026 las mismas comprobaciones pasaron en local. En la pull request #10, Flutter quedó en verde y los cuatro jobs del backend fallaron porque `composer install` no encontró `backend/.env`. Las comprobaciones obligatorias de `main` siguen sin configurarse. No hay `deploy.yml`.
 
 ## E0.7 — Revisión de pruebas y evidencias
 
