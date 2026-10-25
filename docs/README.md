@@ -32,7 +32,7 @@ Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com.
 - [Especificaciones por tarea](sdd/README.md)
 - [Evidencias de IA](evidence/README.md)
 - [Infraestructura](../infrastructure/README.md)
-- [Workflows previstos](../.github/README.md)
+- [Workflows](../.github/README.md)
 
 ## Acuerdos de referencia
 
@@ -43,7 +43,7 @@ Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com.
 - Monolito modular con hexagonal selectiva, SDD/TDD y separación estricta por entidad fiscal.
 - IA documental siempre sujeta a validación humana; reglas fiscales deterministas y soporte limitado a los modelos 130, 303 y 420 en el ámbito documentado.
 
-Los Word se conservan sin cambios. E0.3 inicializa el esqueleto Symfony, E0.4 el esqueleto Flutter y E0.5 el contrato mínimo `GET /api/v1/health`. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). El índice de evidencias está creado y todavía no tiene filas.
+Los Word se conservan sin cambios. E0.3 inicializa el esqueleto Symfony, E0.4 el esqueleto Flutter, E0.5 el contrato mínimo `GET /api/v1/health` y E0.6 los workflows de comprobación. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). Las comprobaciones obligatorias de esa protección siguen pendientes de una ejecución publicada. El índice de evidencias está creado y todavía no tiene filas.
 
 ## Seguimiento de E0
 

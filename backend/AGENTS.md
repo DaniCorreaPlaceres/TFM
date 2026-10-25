@@ -11,4 +11,5 @@ Aplicar también [las instrucciones raíz](../AGENTS.md). Ámbito: backend/.
 - Consultar DOC-04, DOC-05, DOC-06 y DOC-08 en [el índice](../docs/README.md) para funcionalidad, arquitectura, datos, contratos y pruebas.
 - E0.3 deja el esqueleto Symfony 7.4, Doctrine y la migración reversible `e0_example`. El arranque está en [infrastructure/README.md](../infrastructure/README.md). El runtime es el contenedor PHP 8.4.
 - E0.5 deja `GET /api/v1/health`, errores `application/problem+json` con `requestId` y el contrato en `openapi/openapi.yaml`. La especificación está en [docs/sdd/e0-5-contrato-api.md](../docs/sdd/e0-5-contrato-api.md).
+- E0.6 comprueba este directorio con PHP-CS-Fixer, PHPStan, PHPUnit y `php bin/validate-openapi.php`. La especificación está en [docs/sdd/e0-6-integracion-continua.md](../docs/sdd/e0-6-integracion-continua.md).
 - El catálogo físico de DOC-06 sigue siendo propuesta. No añadir tablas fiscales en E0.
