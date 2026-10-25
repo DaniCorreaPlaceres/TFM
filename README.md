@@ -67,7 +67,7 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - E0.6: workflows de comprobación. Pasaron en local y en la pull request #10 el 25 de octubre de 2026. `main` exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter.
 - E0.7: fichas EVI-0001 a EVI-0004, aceptadas por el responsable el 25 de octubre de 2026.
 - E0.8: MinIO local con el bucket `documents` privado. Comprobado el 25 de octubre de 2026, aceptado en EVI-0005 e integrado con la pull request #14.
-- E1: alta web con confirmación de correo. Comprobado en local el 25 de octubre de 2026. La rama todavía no está integrada y no hay inicio de sesión.
+- E1: alta web con confirmación de correo. Comprobado el 25 de octubre de 2026 e integrado con la pull request #15. No hay inicio de sesión.
 
 ## Flujo Git
 

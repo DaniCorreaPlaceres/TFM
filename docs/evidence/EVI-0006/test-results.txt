@@ -10,8 +10,13 @@ Navegador, http://127.0.0.1:8080/registro:
 - El enlace respondió «Correo confirmado».
 - El mismo enlace, abierto otra vez, respondió «Enlace no válido».
 
+GitHub Actions, pull request #15, commit 0007981:
+- Run 40216005170, Backend: éxito. PHP-CS-Fixer, PHPStan, OpenAPI y PHPUnit en verde.
+- PHPUnit en ese run: OK (19 tests, 97 assertions).
+- Run 40216005164, Flutter: éxito.
+- Merge b85068a, el 25 de octubre de 2026.
+
 No ejecutado:
-- GitHub Actions no ha ejecutado esta rama.
 - No hay inicio de sesión.
 - La app Flutter no llama a la API.
 - No se eligió correo de producción.
