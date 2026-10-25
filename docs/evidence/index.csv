@@ -3,4 +3,4 @@ EVI-0001,PLT-002,Cursor Pro,Comprobado; revisión humana 2026-10-25,#4 d38bf7c
 EVI-0002,PLT-003,Cursor Pro,Comprobado en emulador; dispositivo físico no ejecutado; revisión humana 2026-10-25,#5 e08e612
 EVI-0003,PLT-005,Cursor Pro,Comprobado; revisión humana 2026-10-25,#9 e078b6c
 EVI-0004,PLT-004 y PLT-005,Cursor Pro,Comprobado tras corregir .env en CI; revisión humana 2026-10-25,#10 4904366
-EVI-0005,PLT-006,Cursor Pro,Comprobado; revisión humana 2026-10-25,feature/e0-minio
+EVI-0005,PLT-006,Cursor Pro,Comprobado; revisión humana 2026-10-25,#14 339d100

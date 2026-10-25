@@ -17,7 +17,7 @@
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
 | Defectos | Docker Hub y Quay ya no entregan la imagen comunitaria `minio/minio`. El binario se compiló con `go install` de la etiqueta `RELEASE.2025-10-15T17-29-55Z`. |
-| Commit / PR / CI | Rama `feature/e0-minio`, todavía sin pull request. El job PHPUnit de GitHub Actions construye la misma imagen; esa ejecución todavía no existe. |
+| Commit / PR / CI | Pull request #14, commit `339d100`. El job PHPUnit de GitHub Actions construye la misma imagen; esa ejecución todavía no existe. |
 | Conclusión | En local, el objeto de prueba se lee con credenciales y devuelve 403 sin ellas. El puerto 9000 solo escucha en localhost. E0 no queda cerrado. |
 | Responsable de aprobación | Responsable del TFM, 2026-10-25. |
 
