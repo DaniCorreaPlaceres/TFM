@@ -17,7 +17,7 @@
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
 | Defectos | Ninguno pendiente en la comprobación local. |
-| Commit / PR / CI | Rama `feature/e1-registro`, todavía sin pull request. GitHub Actions no ha ejecutado este cambio. |
+| Commit / PR / CI | Pull request #15, commit `0007981`. GitHub Actions todavía no ha ejecutado este cambio. |
 | Conclusión | En local, el alta conserva el correo si la contraseña es corta, Mailpit recibe el enlace, la confirmación verifica la cuenta y el segundo uso del enlace se rechaza. Una cuenta sin confirmar no permite acceso fiscal. |
 | Responsable de aprobación | Pendiente. |
 
