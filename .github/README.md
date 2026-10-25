@@ -1,12 +1,12 @@
 # Workflows
 
-Los pipelines de GitHub Actions vivirán en `.github/workflows/`, según DOC-05 y DOC-07 (PLT-004).
+Los pipelines de GitHub Actions están en `.github/workflows/`, según DOC-05 y DOC-07 (PLT-004). La especificación es [E0.6](../docs/sdd/e0-6-integracion-continua.md).
 
-E0.1 no añade pipelines. Esta nota está fuera de esa carpeta: el remoto rechaza cualquier archivo bajo `.github/workflows/` si la credencial no tiene el ámbito `workflow`. Los archivos YAML se publicarán en E0.6, cuando esa tarea esté autorizada y la credencial permita subirlos.
+Se disparan en pull requests y en pushes hacia `develop` y `main`:
 
-En E0.6 se incorporarán las comprobaciones de pull request hacia `develop`:
+- `backend.yml`: jobs PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI, con PHP 8.4.
+- `flutter.yml`: job Flutter, con `flutter analyze` y `flutter test` en Flutter 3.47.7.
 
-- `backend.yml`: PHP-CS-Fixer, PHPStan, PHPUnit y validación OpenAPI.
-- `flutter.yml`: análisis y pruebas Flutter.
+No hay `deploy.yml`. Las comprobaciones obligatorias de la protección de `main` siguen sin configurarse: hace falta una ejecución publicada para usar los nombres reales de los jobs.
 
-`deploy.yml` queda fuera de la puerta mínima de E0. Las comprobaciones obligatorias de CI en la protección de `main` siguen pendientes hasta que existan estos pipelines.
+Publicar esta carpeta exige una credencial con ámbito `workflow`. En E0.1 el remoto la rechazó porque la credencial no lo tenía. Hasta que haya una ejecución en GitHub, el resultado de CI en el remoto permanece sin ejecutar.

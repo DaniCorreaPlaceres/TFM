@@ -10,7 +10,7 @@ Monorepositorio del TFM. Aselto es la aplicación fiscal y documental. El domini
 - mobile/: esqueleto Flutter con Riverpod, GoRouter y Dio. Android está comprobado; iOS y el escritorio Windows están preparados. Ver [mobile/README.md](mobile/README.md).
 - infrastructure/: Compose local con Nginx, PHP-FPM, MySQL 8.4 y Redis. MinIO llega en E0.8. Ver [infrastructure/README.md](infrastructure/README.md).
 - docs/: documentos Word de referencia, especificaciones por tarea en docs/sdd/ y registro de evidencias. Ver [docs/README.md](docs/README.md).
-- .github/: nota de los pipelines previstos en E0.6. Todavía no hay workflows. Ver [.github/README.md](.github/README.md).
+- .github/: workflows de comprobación de E0.6. Ver [.github/README.md](.github/README.md).
 
 El detalle de versiones, healthchecks y la migración de ejemplo está en [infrastructure/README.md](infrastructure/README.md). El arranque de Flutter está en [mobile/README.md](mobile/README.md).
 
@@ -63,7 +63,9 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - E0.2: rama de trabajo y estado de la protección. El estado conocido de main está en Flujo Git.
 - E0.3: entorno Symfony reproducible. El arranque está en Entorno local.
 - E0.4: esqueleto Flutter. El arranque Android está en Aplicación Android. El dispositivo físico, iOS y el escritorio Windows siguen sin ejecutarse.
-- E0.5 a E0.8: pendientes de autorización explícita.
+- E0.5: contrato mínimo `GET /api/v1/health`. La app Flutter no llama a la API.
+- E0.6: workflows de comprobación escritos. Las mismas comprobaciones pasaron en local el 25 de octubre de 2026. GitHub Actions y las comprobaciones obligatorias de main siguen sin ejecutarse.
+- E0.7 y E0.8: pendientes de autorización explícita.
 
 ## Flujo Git
 
@@ -73,7 +75,7 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - No guardar secretos, credenciales, firmas Android ni datos fiscales personales reales.
 - Conservar los archivos de bloqueo de dependencias cuando se inicialicen los proyectos.
 
-Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlaceres/TFM). Las ramas main y develop están publicadas. main tiene protección activa: exige PR con una aprobación de otra persona, descarta aprobaciones tras nuevos cambios y requiere resolver las conversaciones. Las reglas se aplican también a administradores; no se permiten pushes directos, pushes forzados ni borrados. Las comprobaciones obligatorias de CI quedan pendientes de crear los pipelines. No hay despliegue de producción configurado.
+Repositorio público: [DaniCorreaPlaceres/TFM](https://github.com/DaniCorreaPlaceres/TFM). Las ramas main y develop están publicadas. main tiene protección activa: exige PR con una aprobación de otra persona, descarta aprobaciones tras nuevos cambios y requiere resolver las conversaciones. Las reglas se aplican también a administradores; no se permiten pushes directos, pushes forzados ni borrados. Los workflows de comprobación están en `.github/workflows/` y todavía no se han ejecutado en GitHub. Las comprobaciones obligatorias de CI en main siguen sin configurarse. No hay despliegue de producción configurado.
 
 ## Arranque del trabajo
 
