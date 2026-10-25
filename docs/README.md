@@ -44,7 +44,7 @@ Aselto. Eslogan: «Tus finanzas bajo control». Dominio web: aselto.com.
 - Monolito modular con hexagonal selectiva, SDD/TDD y separación estricta por entidad fiscal.
 - IA documental siempre sujeta a validación humana; reglas fiscales deterministas y soporte limitado a los modelos 130, 303 y 420 en el ámbito documentado.
 
-Los Word se conservan sin cambios. E0.3 inicializa el esqueleto Symfony, E0.4 el esqueleto Flutter, E0.5 el contrato mínimo `GET /api/v1/health` y E0.6 los workflows de comprobación. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). Desde el 25 de octubre de 2026 esa protección exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. El índice de evidencias tiene las fichas EVI-0001 a EVI-0004. El responsable las aceptó el 25 de octubre de 2026.
+Los Word se conservan sin cambios. E0.3 inicializa el esqueleto Symfony, E0.4 el esqueleto Flutter, E0.5 el contrato mínimo `GET /api/v1/health` y E0.6 los workflows de comprobación. DOC-04 y DOC-05 forman la línea base aprobada; DOC-06, DOC-07 y DOC-08 conservan el estado indicado en cada documento. La protección de main ya está configurada en GitHub; su estado se describe en el [README general](../README.md). Desde el 25 de octubre de 2026 esa protección exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter. El índice de evidencias tiene las fichas EVI-0001 a EVI-0005. El responsable las aceptó el 25 de octubre de 2026. EVI-0005 corresponde a MinIO y su rama todavía no está integrada.
 
 ## Seguimiento de E0
 

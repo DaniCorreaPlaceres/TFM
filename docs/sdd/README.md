@@ -26,5 +26,4 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E0.5 Contrato mínimo de API](e0-5-contrato-api.md)
 - [E0.6 Integración continua](e0-6-integracion-continua.md)
 - [E0.7 Evidencias](e0-7-evidencias.md)
-
-E0.8 sigue pendiente. Su Markdown se escribe cuando el responsable autorice la tarea, antes de implementarla.
+- [E0.8 Almacenamiento local](e0-8-minio.md)

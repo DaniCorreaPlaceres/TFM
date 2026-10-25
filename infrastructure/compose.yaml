@@ -29,10 +29,16 @@ services:
       APP_SECRET: dev-only-not-for-production
       DATABASE_URL: "mysql://app:app@mysql:3306/app?serverVersion=8.4&charset=utf8mb4"
       REDIS_URL: redis://redis:6379
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_BUCKET: documents
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio-dev-only
     depends_on:
       mysql:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      minio:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000 | grep -q pong"]
@@ -66,5 +72,23 @@ services:
       retries: 10
       start_period: 5s
 
+  minio:
+    build:
+      context: ./docker/minio
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio-dev-only
+    ports:
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
 volumes:
   mysql_data:
+  minio_data:

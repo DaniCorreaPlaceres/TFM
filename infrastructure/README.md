@@ -1,6 +1,6 @@
 # Infraestructura
 
-Docker Compose del entorno local de E0.3. MinIO queda para E0.8.
+Docker Compose del entorno local. MinIO entra en E0.8.
 
 ## Servicios
 
@@ -10,8 +10,9 @@ Docker Compose del entorno local de E0.3. MinIO queda para E0.8.
 | php | PHP 8.4.26 FPM, Symfony 7.4.21 | interno 9000 |
 | mysql | MySQL 8.4.9 | solo red de Compose |
 | redis | Redis 7.4.11 | solo red de Compose |
+| minio | RELEASE.2025-10-15T17-29-55Z, compilado desde el código fuente | http://127.0.0.1:9000 |
 
-Las credenciales de MySQL son locales y solo valen dentro de Compose: base `app`, usuario `app`, contraseña `app`, root `root`. `APP_SECRET` del contenedor es `dev-only-not-for-production`. No reutilizar estos valores fuera del entorno de desarrollo.
+Las credenciales de MySQL son locales y solo valen dentro de Compose: base `app`, usuario `app`, contraseña `app`, root `root`. `APP_SECRET` del contenedor es `dev-only-not-for-production`. MinIO usa el usuario `minio` y la contraseña `minio-dev-only`, y el bucket `documents` es privado. No reutilizar estos valores fuera del entorno de desarrollo. La consola de MinIO no se publica. El puerto 9000 solo escucha en localhost.
 
 ## Arranque
 
@@ -38,7 +39,9 @@ docker compose exec php php bin/console doctrine:migrations:migrate --no-interac
 - `GET /` muestra la página de bienvenida de Symfony 7.4. El esqueleto no tiene ruta de inicio, así que el código HTTP de esa página es `404`.
 - La migración `Version20261018030000` crea `e0_example`. Para revertirla: `docker compose exec php php bin/console doctrine:migrations:migrate prev --no-interaction`. Vuelve a aplicarse con el comando `migrate` anterior.
 
-Comprobado el 18 de octubre de 2026: los cuatro healthchecks pasaron, la migración subió, bajó y volvió a subir, y el navegador mostró la bienvenida de Symfony 7.4.
+Comprobado el 18 de octubre de 2026: los cuatro healthchecks de Nginx, PHP, MySQL y Redis pasaron, la migración subió, bajó y volvió a subir, y el navegador mostró la bienvenida de Symfony 7.4.
+
+MinIO se comprobó el 25 de octubre de 2026. `minio --version` informó `RELEASE.2025-10-15T17-29-55Z`. Una descarga sin credenciales de `http://127.0.0.1:9000/documents/e0-private.txt` respondió 403.
 
 ## Parada
 
@@ -46,4 +49,4 @@ Comprobado el 18 de octubre de 2026: los cuatro healthchecks pasaron, la migraci
 docker compose stop
 ```
 
-`docker compose down` elimina los contenedores y conserva el volumen `mysql_data`. `docker compose down -v` borra también ese volumen.
+`docker compose down` elimina los contenedores y conserva los volúmenes `mysql_data` y `minio_data`. `docker compose down -v` borra también esos volúmenes.
