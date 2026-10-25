@@ -65,7 +65,8 @@ E0 — cimientos técnicos, según DOC-07 (PLT-001 a PLT-006). El detalle operat
 - E0.4: esqueleto Flutter. El arranque Android está en Aplicación Android. El dispositivo físico, iOS y el escritorio Windows siguen sin ejecutarse.
 - E0.5: contrato mínimo `GET /api/v1/health`. La app Flutter no llama a la API.
 - E0.6: workflows de comprobación. Pasaron en local y en la pull request #10 el 25 de octubre de 2026. `main` exige PHP-CS-Fixer, PHPStan, PHPUnit, OpenAPI y Flutter.
-- E0.7 y E0.8: pendientes de autorización explícita.
+- E0.7: fichas EVI-0001 a EVI-0004, aceptadas por el responsable el 25 de octubre de 2026.
+- E0.8: pendiente de autorización explícita.
 
 ## Flujo Git
 

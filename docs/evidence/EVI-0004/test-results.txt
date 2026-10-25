@@ -1,0 +1,23 @@
+Resumen anotado el 25 de octubre de 2026 a partir de las salidas observadas ese día.
+Los logs íntegros de GitHub no se copian aquí. Las ejecuciones se citan por su número de run.
+
+Comprobación local, contenedor PHP 8.4.26:
+- PHP-CS-Fixer 3.95.27, dry-run: 0 de 14 archivos por corregir.
+- PHPStan 2.3.2, nivel 6: sin errores.
+- php bin/validate-openapi.php: OpenAPI válido, código 0.
+- PHPUnit 13.4.3: 5 pruebas, 30 aserciones, OK.
+
+Comprobación local en el equipo, Flutter 3.47.7:
+- flutter analyze: sin incidencias.
+- flutter test: 2 pruebas, OK.
+
+GitHub Actions, pull request #10:
+- Run 40205496772, Backend: fallo. composer install no pudo leer backend/.env. Jobs OpenAPI, PHP-CS-Fixer, PHPStan y PHPUnit en rojo.
+- Run 40205496799, Flutter: éxito.
+- Run 40205915132, Backend, commit 4904366: éxito. PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI en verde.
+- Run 40205915073, Flutter, mismo ciclo: éxito.
+
+No ejecutado:
+- No hay deploy.yml ni despliegue.
+- Ninguna pull request hacia main ha lanzado estos workflows.
+- Las fichas no incluyen el valor de APP_SECRET usado en CI.

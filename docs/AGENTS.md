@@ -11,5 +11,5 @@ Aplicar también [las instrucciones raíz](../AGENTS.md). Ámbito: docs/.
 - No presentar propuestas como decisiones aprobadas ni pruebas no ejecutadas como superadas; señalar discrepancias para su resolución.
 - Mantener el stack, las ramas main/develop, Android primero y el alcance fiscal acordado de los modelos 130, 303 y 420.
 - Documentar el aislamiento estricto de entidad fiscal y la validación humana obligatoria de resultados de IA documental.
-- [evidence/README.md](evidence/README.md) y [evidence/index.csv](evidence/index.csv) preparan el registro de DOC-09. E0.1 deja el índice sin filas: las fichas se añaden cuando exista una tarea ejecutada.
+- [evidence/README.md](evidence/README.md) y [evidence/index.csv](evidence/index.csv) siguen el registro de DOC-09. E0.7 añade las fichas EVI-0001 a EVI-0004. Una prueba no ejecutada permanece como no ejecutada.
 - E0.1 no modifica los Word ni inicia código Symfony o Flutter.

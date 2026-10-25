@@ -76,11 +76,11 @@ Estado: los workflows se disparan hacia `develop` y hacia `main`. El 25 de octub
 
 Traza: transversal a E0, DOC-08 y DOC-09.
 
-- [ ] Revisar los resultados reales de entorno, API, móvil y CI disponibles hasta este punto.
-- [ ] Registrar versiones, comandos, incidencias, resultados y referencias a commits/PR en fichas de evidencia sanitizadas.
-- [ ] Identificar pruebas no ejecutadas y solicitar revisión humana del incremento.
+- [x] Revisar los resultados reales de entorno, API, móvil y CI disponibles hasta este punto.
+- [x] Registrar versiones, comandos, incidencias, resultados y referencias a commits/PR en fichas de evidencia sanitizadas.
+- [x] Identificar pruebas no ejecutadas y solicitar revisión humana del incremento.
 
-Estado: pendiente. Esta revisión precede a E0.8; el cierre completo de E0 requiere también comprobar almacenamiento y secretos.
+Estado: fichas EVI-0001 a EVI-0004 registradas y aceptadas por el responsable el 25 de octubre de 2026. Esta revisión precede a E0.8; el cierre completo de E0 requiere también comprobar almacenamiento y secretos.
 
 ## E0.8 — Almacenamiento local privado y secretos
 
