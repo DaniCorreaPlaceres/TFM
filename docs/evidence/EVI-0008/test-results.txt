@@ -15,4 +15,9 @@ Navegador en http://127.0.0.1:8080:
 - Un código de recuperación abre /sesion. El mismo código, en el acceso siguiente, no sirve.
 - En la base, el secreto cifrado no contiene el secreto mostrado y el resumen del código no contiene el código en claro. De los 8 códigos, uno quedó usado y siete sin usar.
 
-La app Flutter no se ejecutó. No hay pull request ni resultado de GitHub.
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Pull request #19, commit 8597b15, merge 7d7f29f.
+Backend run 41347891944: PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI en verde.
+PHPUnit en GitHub: OK (41 tests, 308 assertions).
+Flutter run 41347891937 en verde.

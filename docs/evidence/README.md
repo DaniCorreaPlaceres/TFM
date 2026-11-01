@@ -13,13 +13,13 @@ E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió E
 - [EVI-0005](EVI-0005/record.md): MinIO local. El bucket `documents` rechaza la descarga anónima. En la pull request #14, PHPUnit compiló la imagen y pasó.
 - [EVI-0006](EVI-0006/record.md): alta web y confirmación de correo. En la pull request #15, PHPUnit pasó.
 - [EVI-0007](EVI-0007/record.md): inicio de sesión web y recuperación de contraseña. Comprobado en local y en la pull request #17. Aceptado el 25 de octubre de 2026.
-- [EVI-0008](EVI-0008/record.md): segundo factor TOTP opcional en la web. Comprobado en local el 1 de noviembre de 2026. Revisión humana pendiente.
+- [EVI-0008](EVI-0008/record.md): segundo factor TOTP opcional en la web. Comprobado en local y en la pull request #19. Aceptado el 1 de noviembre de 2026.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse. EVI-0008 espera revisión. Esa aceptación no promociona `develop` a `main` ni cierra E1. La pull request #17 está integrada en `develop`.
+El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008 el 1 de noviembre de 2026. Esa aceptación no promociona `develop` a `main` ni cierra E1. Las pull requests #17 y #19 están integradas en `develop`.
 
 ## Qué no se rellena
 
