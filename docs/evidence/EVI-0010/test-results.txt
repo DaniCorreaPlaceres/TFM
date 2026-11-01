@@ -1,0 +1,19 @@
+2026-11-01, feature/e1-aislamiento, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 109.
+PHPStan: No errors.
+PHPUnit: OK (46 tests, 380 assertions).
+
+La prueba FiscalEntityIsolationWebTest, contra las rutas ya existentes:
+- Una cuenta crea «Taller Ajeno».
+- Otra cuenta no ve ese nombre ni el NIF A0000001A en /sesion ni en /entidades.
+- Elegir el identificador de «Taller Ajeno» responde 404. La página no muestra ese nombre ni ese NIF.
+- El nombre y el NIF guardados siguen igual.
+- La entidad activa de la segunda cuenta sigue siendo la suya.
+- Si su sesión contiene el identificador ajeno, /sesion no muestra «Taller Ajeno» y dice que todavía no ha elegido entidad.
+
+La exportación no se ejecutó. No hay ruta de exportación.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit, sin pull request y sin ejecución en GitHub.
