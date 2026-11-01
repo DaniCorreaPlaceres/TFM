@@ -10,15 +10,15 @@
 | Contexto aportado | La especificación de sesión, DOC-04 IDN-002 y DOC-05 apartado 5.1. Sin datos fiscales. |
 | Prompt(s) | No archivados. Ver [prompt-redacted.md](prompt-redacted.md). |
 | Respuesta utilizada | El formulario `/entrar`, la cookie `aselto_sesion` en Redis, el enlace `/recuperar/clave/{token}` y Mailpit. |
-| Decisión del desarrollador | Queda en `feature/e1-sesion`. El límite de 5 intentos cada 15 minutos no está en los documentos: DOC-05 pide limitar y no fija el número. El refresh móvil no entra en esta entrega. |
+| Decisión del desarrollador | Integrada en `develop` con la pull request #17. El límite de 5 intentos cada 15 minutos no está en los documentos: DOC-05 pide limitar y no fija el número. El refresh móvil no entra en esta entrega. |
 | Archivos | `backend/src/Security/`, `backend/src/Controller/SessionController.php`, `backend/src/Controller/PasswordResetController.php`, `backend/templates/sesion/` y `docs/sdd/e1-sesion.md`. |
 | Pruebas ejecutadas | Ver [test-results.txt](test-results.txt). |
 | Intervención humana | El responsable aceptó esta ficha el 25 de octubre de 2026. |
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
 | Defectos | Ninguno pendiente en la comprobación local. |
-| Commit / PR / CI | Pull request #17, commit `0e3dfb2`. Las comprobaciones de GitHub estaban en curso y su resultado no se anota todavía. |
-| Conclusión | En local, una cuenta confirmada entra, la cookie dura 7200 segundos y es HttpOnly, Redis guarda la sesión, el enlace de recuperación no distingue si el correo existe y la sesión anterior deja de servir al cambiar la contraseña. |
+| Commit / PR / CI | Pull request #17, commit `0e3dfb2`, merge `a05698f`. Backend run 40221007957: PHP-CS-Fixer, PHPStan, PHPUnit y OpenAPI en verde. PHPUnit: 33 pruebas y 216 aserciones. Flutter run 40221007915 en verde. |
+| Conclusión | En local y en el job PHPUnit de la pull request #17, una cuenta confirmada entra, la cookie dura 7200 segundos y es HttpOnly, Redis guarda la sesión, el enlace de recuperación no distingue si el correo existe y la sesión anterior deja de servir al cambiar la contraseña. |
 | Responsable de aprobación | Responsable del TFM, 2026-10-25. |
 
 Enlaces: [links.md](links.md).
