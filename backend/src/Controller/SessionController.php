@@ -32,6 +32,7 @@ final class SessionController extends AbstractController
 
         return $this->render('sesion/dentro.html.twig', [
             'email' => $account->email(),
+            'secondFactor' => $account->requiresSecondFactor(),
         ]);
     }
 

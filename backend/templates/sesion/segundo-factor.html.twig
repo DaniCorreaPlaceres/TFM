@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Segundo factor — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Segundo factor</h1>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    {% if enabled %}
+        <p>El segundo factor está activo. Para entrar hará falta un código de la aplicación o un código de recuperación.</p>
+        <form method="post" action="{{ path('account_second_factor') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('segundo-factor') }}">
+            <input type="hidden" name="accion" value="desactivar">
+            <label for="code">Código para desactivar (obligatorio)</label>
+            <input id="code" name="code" type="text" inputmode="text" autocomplete="one-time-code" required>
+            <p class="ayuda">Escribe un código de la aplicación o uno de recuperación que todavía no hayas usado.</p>
+            <button type="submit">Desactivar segundo factor</button>
+        </form>
+    {% else %}
+        <p>El segundo factor es opcional. Si lo activas, al entrar se pedirá un código de tu aplicación.</p>
+        <form method="post" action="{{ path('account_second_factor') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('segundo-factor') }}">
+            <input type="hidden" name="accion" value="activar">
+            <button type="submit">Activar segundo factor</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}

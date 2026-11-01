@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activar segundo factor — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Activar segundo factor</h1>
+    <p>Escanea el código QR con tu aplicación de códigos, o copia el secreto. Después escribe un código de 6 cifras para dejarlo activo.</p>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    <img class="qr" alt="Código QR para la aplicación de códigos" src="{{ qr }}">
+
+    <label for="secreto">Secreto</label>
+    <input id="secreto" readonly value="{{ provisioning.secret }}">
+
+    <label for="enlace">Enlace para la aplicación</label>
+    <input id="enlace" readonly value="{{ provisioning.uri }}">
+
+    <form method="post" action="{{ path('account_second_factor') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('segundo-factor') }}">
+        <input type="hidden" name="accion" value="confirmar">
+        <label for="code">Código de 6 cifras (obligatorio)</label>
+        <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" required>
+        <button type="submit">Confirmar segundo factor</button>
+    </form>
+{% endblock %}

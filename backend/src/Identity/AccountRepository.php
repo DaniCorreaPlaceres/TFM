@@ -10,5 +10,7 @@ interface AccountRepository
 {
     public function findByEmail(string $email): ?Account;
 
+    public function findById(string $id): ?Account;
+
     public function save(Account $account): void;
 }

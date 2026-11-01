@@ -28,6 +28,8 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
         private ?\DateTimeImmutable $verifiedAt = null,
         #[ORM\Column]
         private int $sessionVersion = 0,
+        #[ORM\Column(length: 255, nullable: true)]
+        private ?string $totpSecret = null,
     ) {
     }
 
@@ -75,6 +77,26 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     public function sessionMarker(): string
     {
         return (string) $this->sessionVersion;
+    }
+
+    public function requiresSecondFactor(): bool
+    {
+        return null !== $this->totpSecret;
+    }
+
+    public function totpSecret(): ?string
+    {
+        return $this->totpSecret;
+    }
+
+    public function enableTotp(string $encryptedSecret): void
+    {
+        $this->totpSecret = $encryptedSecret;
+    }
+
+    public function disableTotp(): void
+    {
+        $this->totpSecret = null;
     }
 
     public function getUserIdentifier(): string

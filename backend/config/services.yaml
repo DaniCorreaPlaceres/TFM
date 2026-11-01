@@ -43,6 +43,8 @@ services:
         arguments:
             $factory: '@limiter.login_attempt'
 
+    App\Identity\SecretCipher: '@App\Identity\SodiumSecretCipher'
+
     App\Identity\ResetAttemptLimiter:
         class: App\Identity\SymfonyAttemptLimiter
         arguments:
