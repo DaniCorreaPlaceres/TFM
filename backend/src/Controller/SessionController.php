@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Account;
 use App\Identity\ActiveFiscalEntity;
+use App\Identity\CloseOtherWebSessions;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +14,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class SessionController extends AbstractController
 {
-    public function __construct(private readonly ActiveFiscalEntity $active)
-    {
+    public function __construct(
+        private readonly ActiveFiscalEntity $active,
+        private readonly CloseOtherWebSessions $closeOthers,
+    ) {
     }
 
     #[Route('/entrar', name: 'account_login', methods: ['GET', 'POST'])]
@@ -41,7 +44,26 @@ final class SessionController extends AbstractController
             'email' => $account->email(),
             'secondFactor' => $account->requiresSecondFactor(),
             'entityName' => $fiscalEntity?->legalName(),
+            'othersClosed' => $request->query->getBoolean('cerradas'),
         ]);
+    }
+
+    #[Route('/sesion/cerrar-demas', name: 'account_close_other_sessions', methods: ['POST'])]
+    public function closeOtherSessions(Request $request): Response
+    {
+        $account = $this->getUser();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+
+        if (!$this->isCsrfTokenValid('cerrar-sesiones', $request->request->getString('_token'))) {
+            return $this->redirectToRoute('account_session');
+        }
+
+        ($this->closeOthers)($account);
+        $request->getSession()->set('credentials_changed_at', $account->sessionMarker());
+
+        return $this->redirectToRoute('account_session', ['cerradas' => '1']);
     }
 
     #[Route('/salir', name: 'account_logout', methods: ['POST'])]
