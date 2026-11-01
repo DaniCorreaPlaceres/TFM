@@ -1,0 +1,21 @@
+2026-11-01, feature/e1-entidad, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 108.
+PHPStan: No errors.
+PHPUnit: OK (45 tests, 348 assertions).
+
+La migración Version20261101210000 se aplicó a la base local app.
+
+Navegador en http://127.0.0.1:8080:
+- Una cuenta confirmada entra en /sesion. Ve que todavía no ha elegido una entidad fiscal y que la información fiscal no está disponible.
+- En /entidades, un nombre en blanco responde que el nombre es obligatorio y no crea la entidad.
+- Crear «Taller Norte» con el NIF 12345678z deja esa entidad activa. El listado muestra 12345678Z.
+- Crear «Taller Sur» con el NIF b-12 345678 deja esa entidad activa. El listado muestra B12345678.
+- Elegir «Taller Norte» vuelve a dejarla activa en /sesion.
+- Tras salir, /entidades vuelve a /entrar.
+
+PHPUnit, no repetido en el navegador: otra cuenta no puede elegir la entidad y un identificador desconocido responde 404.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit, sin pull request y sin ejecución en GitHub.

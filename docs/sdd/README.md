@@ -30,3 +30,4 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E1 Alta y verificación de correo](e1-registro.md)
 - [E1 Inicio de sesión y recuperación](e1-sesion.md)
 - [E1 Segundo factor opcional](e1-segundo-factor.md)
+- [E1 Entidad fiscal](e1-entidad.md)

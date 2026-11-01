@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entidades — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Entidades fiscales</h1>
+    <p>Una entidad es el titular de la información fiscal. Puedes tener varias y elegir cuál está activa.</p>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    {% if memberships is empty %}
+        <p>Todavía no tienes ninguna entidad.</p>
+    {% else %}
+        <ul>
+            {% for membership in memberships %}
+                <li>
+                    {{ membership.fiscalEntity.legalName }} ({{ membership.fiscalEntity.taxId }})
+                    {% if membership.fiscalEntity.id == activeId %}
+                        Activa
+                    {% else %}
+                        <form method="post" action="{{ path('fiscal_entity_select', {id: membership.fiscalEntity.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('elegir-entidad') }}">
+                            <button type="submit">Elegir</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Nueva entidad</h2>
+    <form method="post" action="{{ path('fiscal_entities') }}" novalidate>
+        <input type="hidden" name="_token" value="{{ csrf_token('entidad') }}">
+
+        <label for="legal_name">Nombre (obligatorio)</label>
+        <input id="legal_name" name="legal_name" type="text" required value="{{ legalName }}" maxlength="180">
+
+        <label for="tax_id">NIF (obligatorio)</label>
+        <input id="tax_id" name="tax_id" type="text" required value="{{ taxId }}" maxlength="20" autocapitalize="characters">
+        <p class="ayuda">Letras y números, hasta 20 caracteres.</p>
+
+        <button type="submit">Crear entidad</button>
+    </form>
+
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}
