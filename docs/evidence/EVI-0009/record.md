@@ -16,8 +16,8 @@
 | Intervención humana | El responsable aceptó esta ficha el 1 de noviembre de 2026. |
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
-| Defectos | Ninguno pendiente en la comprobación local. No hay perfil fiscal, libros ni exportación. La rama no está integrada. |
-| Commit / PR / CI | Sin commit ni pull request. GitHub no se ha ejecutado para esta ficha. |
+| Defectos | Ninguno pendiente en la comprobación local. No hay perfil fiscal, libros ni exportación. |
+| Commit / PR / CI | Pull request #20, commit `71af2c2`, merge `a6409cd`. Las comprobaciones de GitHub concluyeron en verde. El registro de PHPUnit de ese job no se copió en esta ficha. |
 | Conclusión | En local, una cuenta confirmada crea varias entidades y elige la activa. Un nombre en blanco no crea nada. El NIF queda en mayúsculas, sin espacios ni guiones. Sin sesión, `/entidades` vuelve a `/entrar`. Otra cuenta no puede elegir la entidad. Un identificador desconocido responde 404 en PHPUnit. |
 | Responsable de aprobación | Responsable del TFM, 2026-11-01. |
 

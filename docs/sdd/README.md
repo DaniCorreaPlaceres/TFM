@@ -31,3 +31,4 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E1 Inicio de sesión y recuperación](e1-sesion.md)
 - [E1 Segundo factor opcional](e1-segundo-factor.md)
 - [E1 Entidad fiscal](e1-entidad.md)
+- [E1 Aislamiento de la entidad fiscal](e1-aislamiento.md)
