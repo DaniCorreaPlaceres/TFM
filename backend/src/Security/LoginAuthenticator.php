@@ -49,6 +49,11 @@ final class LoginAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException(self::message($exception->reason));
         }
 
+        if ($account->requiresSecondFactor()) {
+            $request->getSession()->set('second_factor_account', $account->id());
+            throw new SecondFactorRequired();
+        }
+
         return new SelfValidatingPassport(
             new UserBadge($account->getUserIdentifier(), static fn (): Account => $account),
             [new CsrfTokenBadge('entrar', $request->request->getString('_token'))],
@@ -67,6 +72,10 @@ final class LoginAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
+        if ($exception instanceof SecondFactorRequired) {
+            return new RedirectResponse('/entrar/codigo');
+        }
+
         $message = $exception instanceof InvalidCsrfTokenException
             ? 'El formulario ha caducado. Vuelve a enviarlo.'
             : $exception->getMessage();

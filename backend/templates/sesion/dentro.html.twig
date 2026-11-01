@@ -5,6 +5,10 @@
 {% block body %}
     <h1>Has entrado</h1>
     <p>Sesión de {{ email }}. La información fiscal todavía no está disponible.</p>
+    {% if secondFactor %}
+        <p>El segundo factor está activo.</p>
+    {% endif %}
+    <p><a href="{{ path('account_second_factor') }}">Segundo factor</a></p>
 
     <form method="post" action="{{ path('account_logout') }}">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('salir') }}">

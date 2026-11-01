@@ -78,3 +78,13 @@ a:focus-visible {
 a {
     color: #006B70;
 }
+
+.qr {
+    display: block;
+    width: 240px;
+    height: 240px;
+    margin: 16px 0;
+    background: #FFFFFF;
+    border: 2px solid #64748B;
+    border-radius: 8px;
+}

@@ -17,6 +17,17 @@ final class InMemoryAccountRepository implements AccountRepository
         return $this->accounts[$email] ?? null;
     }
 
+    public function findById(string $id): ?Account
+    {
+        foreach ($this->accounts as $account) {
+            if ($account->id() === $id) {
+                return $account;
+            }
+        }
+
+        return null;
+    }
+
     public function save(Account $account): void
     {
         $this->accounts[$account->email()] = $account;

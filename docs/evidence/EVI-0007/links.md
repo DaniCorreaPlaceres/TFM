@@ -6,5 +6,5 @@
 - Redis local, solo red de Compose. La sesión web se guarda ahí.
 
 - Pull request #17: https://github.com/DaniCorreaPlaceres/TFM/pull/17
-
-El resultado de GitHub no se anota: las comprobaciones seguían en curso.
+- Backend run 40221007957: https://github.com/DaniCorreaPlaceres/TFM/actions/runs/40221007957
+- Flutter run 40221007915: https://github.com/DaniCorreaPlaceres/TFM/actions/runs/40221007915

@@ -1,0 +1,18 @@
+2026-11-01, feature/e1-segundo-factor, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir.
+PHPStan: No errors.
+PHPUnit: OK (41 tests, 308 assertions).
+
+La migración Version20261101193000 se aplicó a la base local app.
+
+Navegador en http://127.0.0.1:8080:
+- Una cuenta confirmada, sin segundo factor, entra en /sesion.
+- Activar muestra un código QR negro sobre blanco, el secreto y un enlace otpauth. El QR es el de ese enlace. Un código TOTP válido deja el segundo factor activo.
+- La página muestra 8 códigos de recuperación. Al recargarla, ya no aparecen.
+- Con el segundo factor activo, la contraseña correcta lleva a /entrar/codigo.
+- Un código incorrecto permanece en esa página y dice que el código no es válido.
+- Un código de recuperación abre /sesion. El mismo código, en el acceso siguiente, no sirve.
+- En la base, el secreto cifrado no contiene el secreto mostrado y el resumen del código no contiene el código en claro. De los 8 códigos, uno quedó usado y siete sin usar.
+
+La app Flutter no se ejecutó. No hay pull request ni resultado de GitHub.

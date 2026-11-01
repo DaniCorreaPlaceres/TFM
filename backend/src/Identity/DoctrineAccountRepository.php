@@ -23,6 +23,13 @@ final class DoctrineAccountRepository extends ServiceEntityRepository implements
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function findById(string $id): ?Account
+    {
+        $account = $this->find($id);
+
+        return $account instanceof Account ? $account : null;
+    }
+
     public function save(Account $account): void
     {
         $this->getEntityManager()->persist($account);

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Códigos de recuperación — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Códigos de recuperación</h1>
+    {% if codes is empty %}
+        <p>Los códigos ya se mostraron. Cada uno sirve una sola vez.</p>
+    {% else %}
+        <p>Guarda estos 8 códigos. Cada uno sirve una sola vez y no volverán a mostrarse.</p>
+        <ul class="codigos">
+            {% for code in codes %}
+                <li>{{ code }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}
