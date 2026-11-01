@@ -71,6 +71,11 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     public function changePassword(string $passwordHash): void
     {
         $this->passwordHash = $passwordHash;
+        $this->closeOtherSessions();
+    }
+
+    public function closeOtherSessions(): void
+    {
         ++$this->sessionVersion;
     }
 

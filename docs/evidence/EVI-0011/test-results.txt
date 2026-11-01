@@ -1,0 +1,22 @@
+2026-11-01, feature/e1-revocacion, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 112.
+PHPStan: No errors.
+PHPUnit: OK (48 tests, 402 assertions).
+
+La prueba web, con dos cookies de la misma cuenta:
+- Sin sesión, /sesion/cerrar-demas vuelve a /entrar.
+- Cerrar las demás deja la sesión actual en /sesion.
+- La otra cookie, al pedir /sesion, vuelve a /entrar.
+- Un formulario con el testigo caducado no cierra la otra sesión.
+
+Navegador en http://127.0.0.1:8080:
+- La sesión abierta muestra el botón «Cerrar las demás sesiones» y el texto «La sesión actual sigue abierta».
+- Al usarlo, la página dice «Las demás sesiones se han cerrado» y sigue en /sesion.
+- Al recargar /sesion, la sesión sigue abierta.
+
+La invalidación del refresh, su reutilización y el cambio de permisos no se ejecutaron.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit, sin pull request y sin ejecución en GitHub.
