@@ -20,6 +20,13 @@ final class ExpenseMessages
             InvalidExpense::EXISTS => 'Esa categoría ya existe en la entidad.',
             InvalidExpense::PART => 'Indica si la decisión es de la base o de la cuota, y si es deducible.',
             InvalidExpense::REASON => 'Escribe el motivo de la deducibilidad.',
+            InvalidExpense::AMOUNT => 'El importe del pago no es válido.',
+            InvalidExpense::EXCEEDS => 'El pago supera el saldo pendiente.',
+            InvalidExpense::TOKEN => 'El identificador del pago no es válido.',
+            InvalidExpense::REFERENCE => 'La referencia del pago no es válida.',
+            InvalidExpense::STATE => 'Esa transición de revisión no es válida.',
+            InvalidExpense::REVIEW_REASON => 'Escribe el motivo de la revisión.',
+            InvalidExpense::FROZEN => 'Este gasto ya no admite cambios.',
             default => 'No se ha podido guardar el gasto.',
         };
     }

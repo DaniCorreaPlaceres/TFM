@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Expense\ExpenseKind;
+use App\Expense\InvalidExpense;
 use App\Expense\PaymentMethod;
+use App\Expense\ReviewReason;
 use App\Income\Amount;
 use App\Income\DraftLine;
+use App\Income\InvalidIncome;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +24,11 @@ class Expense
     #[ORM\OneToMany(targetEntity: ExpenseLine::class, mappedBy: 'expense', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $lines;
+
+    /** @var Collection<int, ExpensePayment> */
+    #[ORM\OneToMany(targetEntity: ExpensePayment::class, mappedBy: 'expense', cascade: ['persist'])]
+    #[ORM\OrderBy(['id' => 'ASC'])]
+    private Collection $payments;
 
     /**
      * @param list<DraftLine> $lines
@@ -65,8 +73,13 @@ class Expense
         private ?bool $taxDeductible = null,
         #[ORM\Column(length: 240, nullable: true)]
         private ?string $taxReason = null,
+        #[ORM\Column(length: 16, options: ['default' => 'borrador'])]
+        private string $reviewState = 'borrador',
+        #[ORM\Column(length: 240, nullable: true)]
+        private ?string $reviewReason = null,
     ) {
         $this->lines = new ArrayCollection();
+        $this->payments = new ArrayCollection();
         $this->replaceLines($lines);
     }
 
@@ -245,14 +258,186 @@ class Expense
 
     public function decideBase(bool $deductible, string $reason): void
     {
+        $this->assertCurrent();
         $this->baseDeductible = $deductible;
         $this->baseReason = $reason;
     }
 
     public function decideTax(bool $deductible, string $reason): void
     {
+        $this->assertCurrent();
         $this->taxDeductible = $deductible;
         $this->taxReason = $reason;
+    }
+
+    public function reviewState(): string
+    {
+        return $this->reviewState;
+    }
+
+    public function reviewReason(): ?string
+    {
+        return $this->reviewReason;
+    }
+
+    public function reviewLabel(): string
+    {
+        return match ($this->reviewState) {
+            'revisado' => 'Revisado',
+            'rechazado' => 'Rechazado',
+            'anulado' => 'Anulado',
+            default => 'Borrador',
+        };
+    }
+
+    public function standingLabel(): string
+    {
+        return match ($this->reviewState) {
+            'revisado' => 'Definitivo',
+            'rechazado', 'anulado' => 'No vigente',
+            default => 'No definitivo',
+        };
+    }
+
+    public function isDefinitive(): bool
+    {
+        return 'revisado' === $this->reviewState;
+    }
+
+    public function isCurrent(): bool
+    {
+        return 'borrador' === $this->reviewState || 'revisado' === $this->reviewState;
+    }
+
+    /**
+     * @return list<ExpensePayment>
+     */
+    public function payments(): array
+    {
+        return $this->payments->getValues();
+    }
+
+    public function findPayment(string $token): ?ExpensePayment
+    {
+        foreach ($this->payments() as $payment) {
+            if ($payment->clientToken() === $token) {
+                return $payment;
+            }
+        }
+
+        return null;
+    }
+
+    public function paid(): string
+    {
+        $sum = '0.00';
+        foreach ($this->payments() as $payment) {
+            $sum = Amount::add($sum, $payment->amount());
+        }
+
+        return $sum;
+    }
+
+    public function balance(): string
+    {
+        return Amount::subtract($this->total(), $this->paid());
+    }
+
+    public function paymentStatus(): string
+    {
+        if (0 === Amount::compare($this->paid(), '0.00') && Amount::compare($this->total(), '0.00') > 0) {
+            return 'pendiente';
+        }
+        if (0 === Amount::compare($this->balance(), '0.00')) {
+            return 'pagado';
+        }
+
+        return 'parcial';
+    }
+
+    public function paymentStatusLabel(): string
+    {
+        return match ($this->paymentStatus()) {
+            'parcial' => 'Parcial',
+            'pagado' => 'Pagado',
+            default => 'Pendiente',
+        };
+    }
+
+    public function acceptsPayment(): bool
+    {
+        return $this->isCurrent() && Amount::compare($this->balance(), '0.00') > 0;
+    }
+
+    public function pay(
+        string $amount,
+        \DateTimeImmutable $paidOn,
+        string $method,
+        string $reference,
+        string $token,
+    ): ExpensePayment {
+        $this->assertCurrent();
+        if (1 !== preg_match('/^[0-9a-fA-F-]{36}$/', $token)) {
+            throw new InvalidExpense(InvalidExpense::TOKEN);
+        }
+        $known = $this->findPayment($token);
+        if (null !== $known) {
+            return $known;
+        }
+        $method = PaymentMethod::canonical($method);
+        $reference = trim($reference);
+        if (mb_strlen($reference) > 80) {
+            throw new InvalidExpense(InvalidExpense::REFERENCE);
+        }
+        try {
+            $amount = Amount::parseMoney($amount);
+        } catch (InvalidIncome) {
+            throw new InvalidExpense(InvalidExpense::AMOUNT);
+        }
+        if (Amount::compare($amount, '0.00') <= 0) {
+            throw new InvalidExpense(InvalidExpense::AMOUNT);
+        }
+        if (Amount::compare($amount, $this->balance()) > 0) {
+            throw new InvalidExpense(InvalidExpense::EXCEEDS);
+        }
+        $payment = ExpensePayment::record($this, $amount, $paidOn, $method, $reference, $token);
+        $this->payments->add($payment);
+
+        return $payment;
+    }
+
+    public function review(string $next, string $reason): void
+    {
+        if (!$this->isCurrent()) {
+            throw new InvalidExpense(InvalidExpense::STATE);
+        }
+        if ('revisado' === $next && 'borrador' === $this->reviewState) {
+            $this->reviewState = 'revisado';
+            $this->reviewReason = null;
+
+            return;
+        }
+        if ('rechazado' === $next && 'borrador' === $this->reviewState) {
+            $this->reviewReason = ReviewReason::canonical($reason);
+            $this->reviewState = 'rechazado';
+
+            return;
+        }
+        if ('anulado' === $next && ('borrador' === $this->reviewState || 'revisado' === $this->reviewState)) {
+            $this->reviewReason = ReviewReason::canonical($reason);
+            $this->reviewState = 'anulado';
+
+            return;
+        }
+
+        throw new InvalidExpense(InvalidExpense::STATE);
+    }
+
+    private function assertCurrent(): void
+    {
+        if (!$this->isCurrent()) {
+            throw new InvalidExpense(InvalidExpense::FROZEN);
+        }
     }
 
     private static function decisionLabel(?bool $deductible): string

@@ -221,6 +221,161 @@ final class ExpenseWebTest extends WebTestCase
         self::assertStringNotContainsString('G-9', (string) $client->getResponse()->getContent());
     }
 
+    public function testElTitularAnotaElPagoYRevisaElGasto(): void
+    {
+        $client = $this->client();
+        $this->register($client, 'revision@example.com');
+        $this->confirm($client);
+        $this->login($client, 'revision@example.com');
+        $client->followRedirect();
+        $client->clickLink('Entidades');
+        $client->submit($client->getCrawler()->selectButton('Crear entidad')->form([
+            'legal_name' => 'Taller Revision',
+            'tax_id' => 'B12345674',
+        ]));
+        $client->followRedirect();
+        $client->clickLink('Contactos');
+        $client->request('POST', '/contactos', [
+            '_token' => $this->token($client),
+            'nombre' => 'Papelería Norte',
+            'nif' => 'B12345674',
+            'proveedor' => '1',
+        ]);
+        $client->followRedirect();
+        $client->request('GET', '/gastos');
+        $supplier = $client->getCrawler()->filter('#contacto option')->attr('value');
+        $material = null;
+        $options = $client->getCrawler()->filter('#categoria option');
+        for ($index = 0; $index < $options->count(); ++$index) {
+            $option = $options->eq($index);
+            if ('Material' === trim($option->text())) {
+                $material = $option->attr('value');
+            }
+        }
+        self::assertIsString($supplier);
+        self::assertIsString($material);
+        $client->request('POST', '/gastos', [
+            '_token' => $this->token($client, 'form[action$="/gastos"] input[name="_token"]'),
+            'tipo' => 'factura',
+            'contacto' => $supplier,
+            'categoria' => $material,
+            'metodo' => 'tarjeta',
+            'numero' => 'G-8',
+            'fecha' => '2026-11-02',
+            'descripcion' => ['Folios'],
+            'cantidad' => ['2'],
+            'precio' => ['100,00'],
+            'iva' => ['21'],
+            'retencion' => ['0'],
+        ]);
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Revisión: Borrador. No definitivo');
+        self::assertSelectorTextContains('main', 'Pago: Pendiente. Anotado: 0,00 €. Saldo: 242,00 €');
+        self::assertSelectorTextContains('main', '200,00 €');
+        self::assertSelectorTextContains('main', '42,00 €');
+
+        $form = $client->getCrawler()->selectButton('Anotar pago')->form();
+        $payPath = parse_url($form->getUri(), PHP_URL_PATH);
+        self::assertIsString($payPath);
+        $client->request('POST', $payPath, [
+            '_token' => 'caducado',
+            'payment_token' => '00000000-0000-7000-8000-000000000001',
+            'importe' => '999,00',
+            'fecha' => '2026-11-02',
+            'metodo' => 'transferencia',
+            'referencia' => 'No debe guardarse',
+        ]);
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('main', 'Pago: Pendiente');
+        self::assertStringNotContainsString('No debe guardarse', (string) $client->getResponse()->getContent());
+
+        $form = $client->getCrawler()->selectButton('Anotar pago')->form([
+            'importe' => '100,00',
+            'fecha' => '2026-11-02',
+            'metodo' => 'transferencia',
+            'referencia' => 'P-1',
+        ]);
+        $repeated = $form->getPhpValues();
+        $client->submit($form);
+        self::assertResponseRedirects('/gastos?pago=1');
+        $client->followRedirect();
+        $client->request('POST', $payPath, $repeated);
+        self::assertResponseRedirects('/gastos?pago=1');
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Pago: Parcial. Anotado: 100,00 €. Saldo: 142,00 €');
+        self::assertSelectorTextContains('main', 'base 200,00 €');
+        self::assertSelectorTextContains('main', 'cuota 42,00 €');
+        self::assertSelectorTextContains('main', 'total 242,00 €');
+
+        $client->submit($client->getCrawler()->selectButton('Anotar pago')->form([
+            'importe' => '200,00',
+            'fecha' => '2026-11-02',
+            'metodo' => 'tarjeta',
+        ]));
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('.error', 'supera el saldo');
+        self::assertSelectorTextContains('main', 'Saldo: 142,00 €');
+
+        $client->submit($client->getCrawler()->selectButton('Anotar pago')->form([
+            'importe' => '142,00',
+            'fecha' => '2026-11-02',
+            'metodo' => 'tarjeta',
+        ]));
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Pago: Pagado. Anotado: 242,00 €. Saldo: 0,00 €');
+        self::assertCount(0, $client->getCrawler()->filter('button:contains("Anotar pago")'));
+
+        $client->submit($client->getCrawler()->selectButton('Guardar revisión')->form([
+            'estado' => 'revisado',
+            'motivo' => '',
+        ]));
+        self::assertResponseRedirects('/gastos?revision=1');
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Revisión: Revisado. Definitivo');
+        self::assertStringNotContainsString('No definitivo', (string) $client->getResponse()->getContent());
+        self::assertSelectorTextContains('main', 'total 242,00 €');
+
+        $review = $client->getCrawler()->filter('form[action$="/revision"]');
+        $reviewPath = parse_url($review->attr('action'), PHP_URL_PATH);
+        $reviewToken = $review->filter('input[name="_token"]')->attr('value');
+        self::assertIsString($reviewPath);
+        self::assertIsString($reviewToken);
+        $client->request('POST', $reviewPath, [
+            '_token' => $reviewToken,
+            'estado' => 'rechazado',
+            'motivo' => 'No procede',
+        ]);
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('.error', 'transición de revisión');
+        self::assertSelectorTextContains('main', 'Definitivo');
+
+        $client->submit($client->getCrawler()->selectButton('Guardar revisión')->form([
+            'estado' => 'anulado',
+            'motivo' => '   ',
+        ]));
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('.error', 'Escribe el motivo de la revisión');
+
+        $client->submit($client->getCrawler()->selectButton('Guardar revisión')->form([
+            'estado' => 'anulado',
+            'motivo' => 'Factura duplicada',
+        ]));
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Revisión: Anulado. No vigente — Factura duplicada');
+        self::assertSelectorTextContains('main', 'Pago: Pagado. Anotado: 242,00 €. Saldo: 0,00 €');
+        self::assertCount(0, $client->getCrawler()->filter('button:contains("Guardar base")'));
+        self::assertCount(0, $client->getCrawler()->filter('button:contains("Anotar pago")'));
+
+        $this->logout($client);
+        $this->register($client, 'otra.revision@example.com');
+        $this->confirm($client);
+        $this->login($client, 'otra.revision@example.com');
+        $client->request('POST', $payPath, ['_token' => 'caducado', 'importe' => '1,00']);
+        self::assertResponseStatusCodeSame(404);
+        self::assertStringNotContainsString('Factura duplicada', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString('G-8', (string) $client->getResponse()->getContent());
+    }
+
     private function client(): KernelBrowser
     {
         ConfigurablePwnedPasswordList::reset();

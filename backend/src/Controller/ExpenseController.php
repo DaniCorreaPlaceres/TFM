@@ -14,8 +14,10 @@ use App\Expense\ExpenseKind;
 use App\Expense\ExpenseMessages;
 use App\Expense\ExpenseRepository;
 use App\Expense\InvalidExpense;
+use App\Expense\PayExpense;
 use App\Expense\PaymentMethod;
 use App\Expense\RegisterExpense;
+use App\Expense\ReviewExpense;
 use App\Expense\SaveExpenseCategory;
 use App\Identity\ActiveFiscalEntity;
 use App\Income\CivilDate;
@@ -25,6 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Uid\Uuid;
 
 final class ExpenseController extends AbstractController
 {
@@ -38,6 +41,8 @@ final class ExpenseController extends AbstractController
         private readonly ExpenseCategoryRepository $categories,
         private readonly ExpenseRepository $expenses,
         private readonly ContactRepository $contacts,
+        private readonly PayExpense $pay,
+        private readonly ReviewExpense $review,
     ) {
     }
 
@@ -172,6 +177,75 @@ final class ExpenseController extends AbstractController
         return $this->redirectToRoute('expenses', ['deduccion' => '1']);
     }
 
+    #[Route('/gastos/{id}/pagos', name: 'expense_pay', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
+    public function payment(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+        $fiscalEntity = $this->active->resolve($account, $request);
+        if (null === $fiscalEntity || null === $this->expenses->findForEntity($fiscalEntity, $id)) {
+            throw $this->createNotFoundException('Gasto no encontrado.');
+        }
+        if (!$this->isCsrfTokenValid('pago', $request->request->getString('_token'))) {
+            return $this->page($request, $fiscalEntity, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+        try {
+            ($this->pay)(
+                $account,
+                $fiscalEntity,
+                $id,
+                $request->request->getString('importe'),
+                $this->date($request->request->getString('fecha')),
+                $request->request->getString('metodo'),
+                $request->request->getString('referencia'),
+                $request->request->getString('payment_token'),
+            );
+        } catch (InvalidExpense $exception) {
+            if (InvalidExpense::FORBIDDEN === $exception->reason) {
+                throw $this->createNotFoundException('Gasto no encontrado.');
+            }
+
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of($exception->reason));
+        }
+
+        return $this->redirectToRoute('expenses', ['pago' => '1']);
+    }
+
+    #[Route('/gastos/{id}/revision', name: 'expense_review', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
+    public function revision(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+        $fiscalEntity = $this->active->resolve($account, $request);
+        if (null === $fiscalEntity || null === $this->expenses->findForEntity($fiscalEntity, $id)) {
+            throw $this->createNotFoundException('Gasto no encontrado.');
+        }
+        if (!$this->isCsrfTokenValid('revision', $request->request->getString('_token'))) {
+            return $this->page($request, $fiscalEntity, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+        try {
+            ($this->review)(
+                $account,
+                $fiscalEntity,
+                $id,
+                $request->request->getString('estado'),
+                $request->request->getString('motivo'),
+            );
+        } catch (InvalidExpense $exception) {
+            if (InvalidExpense::FORBIDDEN === $exception->reason) {
+                throw $this->createNotFoundException('Gasto no encontrado.');
+            }
+
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of($exception->reason));
+        }
+
+        return $this->redirectToRoute('expenses', ['revision' => '1']);
+    }
+
     private function page(Request $request, FiscalEntity $fiscalEntity, ?string $error = null): Response
     {
         $all = $this->categories->allForEntity($fiscalEntity);
@@ -200,6 +274,9 @@ final class ExpenseController extends AbstractController
             'savedExpense' => '1' === $request->query->getString('gasto'),
             'savedCategory' => '1' === $request->query->getString('categoria'),
             'savedDeduction' => '1' === $request->query->getString('deduccion'),
+            'savedPayment' => '1' === $request->query->getString('pago'),
+            'savedReview' => '1' === $request->query->getString('revision'),
+            'paymentToken' => Uuid::v7()->toRfc4122(),
         ], new Response(status: null === $error ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 
