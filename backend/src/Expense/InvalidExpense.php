@@ -16,6 +16,8 @@ final class InvalidExpense extends \DomainException
     public const string LINE = 'line';
     public const string NAME = 'name';
     public const string EXISTS = 'exists';
+    public const string PART = 'part';
+    public const string REASON = 'reason';
 
     public function __construct(public readonly string $reason)
     {

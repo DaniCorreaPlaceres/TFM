@@ -120,6 +120,107 @@ final class ExpenseWebTest extends WebTestCase
         self::assertStringNotContainsString('Papelería Norte', (string) $client->getResponse()->getContent());
     }
 
+    public function testElTitularDecideLaDeducibilidadSinCambiarElImporte(): void
+    {
+        $client = $this->client();
+        $this->register($client, 'deducible@example.com');
+        $this->confirm($client);
+        $this->login($client, 'deducible@example.com');
+        $client->followRedirect();
+        $client->clickLink('Entidades');
+        $client->submit($client->getCrawler()->selectButton('Crear entidad')->form([
+            'legal_name' => 'Taller Deducible',
+            'tax_id' => 'B12345674',
+        ]));
+        $client->followRedirect();
+        $client->clickLink('Contactos');
+        $client->request('POST', '/contactos', [
+            '_token' => $this->token($client),
+            'nombre' => 'Papelería Norte',
+            'nif' => 'B12345674',
+            'proveedor' => '1',
+        ]);
+        $client->followRedirect();
+        $client->request('GET', '/gastos');
+        $supplier = $client->getCrawler()->filter('#contacto option')->attr('value');
+        $material = null;
+        $options = $client->getCrawler()->filter('#categoria option');
+        for ($index = 0; $index < $options->count(); ++$index) {
+            $option = $options->eq($index);
+            if ('Material' === trim($option->text())) {
+                $material = $option->attr('value');
+            }
+        }
+        self::assertIsString($supplier);
+        self::assertIsString($material);
+        $client->request('POST', '/gastos', [
+            '_token' => $this->token($client, 'form[action$="/gastos"] input[name="_token"]'),
+            'tipo' => 'factura',
+            'contacto' => $supplier,
+            'categoria' => $material,
+            'metodo' => 'tarjeta',
+            'numero' => 'G-9',
+            'fecha' => '2026-11-02',
+            'descripcion' => ['Folios'],
+            'cantidad' => ['2'],
+            'precio' => ['100,00'],
+            'iva' => ['21'],
+            'retencion' => ['0'],
+        ]);
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Sin decidir');
+        self::assertSelectorTextContains('main', '242,00 €');
+
+        $form = $client->getCrawler()->selectButton('Guardar base')->form();
+        $path = parse_url($form->getUri(), PHP_URL_PATH);
+        self::assertIsString($path);
+        $client->request('POST', $path, [
+            '_token' => 'caducado',
+            'parte' => 'base',
+            'deducible' => '1',
+            'motivo' => 'No debe guardarse',
+        ]);
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('main', 'Sin decidir');
+        self::assertStringNotContainsString('No debe guardarse', (string) $client->getResponse()->getContent());
+
+        $client->submit($client->getCrawler()->selectButton('Guardar base')->form([
+            'deducible' => '1',
+            'motivo' => '   ',
+        ]));
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('.error', 'Escribe el motivo');
+
+        $client->submit($client->getCrawler()->selectButton('Guardar base')->form([
+            'deducible' => '1',
+            'motivo' => 'Papel del mostrador',
+        ]));
+        self::assertResponseRedirects('/gastos?deduccion=1');
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Base: Deducible — Papel del mostrador');
+        self::assertSelectorTextContains('main', 'Cuota: Sin decidir');
+        self::assertSelectorTextContains('main', '242,00 €');
+
+        $client->submit($client->getCrawler()->selectButton('Guardar cuota')->form([
+            'deducible' => '0',
+            'motivo' => 'La cuota no es deducible',
+        ]));
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Cuota: No deducible — La cuota no es deducible');
+        self::assertSelectorTextContains('main', 'Base: Deducible — Papel del mostrador');
+        self::assertSelectorTextContains('main', '200,00 €');
+        self::assertSelectorTextContains('main', '42,00 €');
+
+        $this->logout($client);
+        $this->register($client, 'otra.deducible@example.com');
+        $this->confirm($client);
+        $this->login($client, 'otra.deducible@example.com');
+        $client->request('POST', $path, ['_token' => 'caducado', 'parte' => 'base', 'deducible' => '0', 'motivo' => 'Ajena']);
+        self::assertResponseStatusCodeSame(404);
+        self::assertStringNotContainsString('Papel del mostrador', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString('G-9', (string) $client->getResponse()->getContent());
+    }
+
     private function client(): KernelBrowser
     {
         ConfigurablePwnedPasswordList::reset();

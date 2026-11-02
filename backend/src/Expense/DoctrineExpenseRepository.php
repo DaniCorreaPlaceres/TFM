@@ -24,6 +24,13 @@ final class DoctrineExpenseRepository extends ServiceEntityRepository implements
         $this->getEntityManager()->persist($expense);
     }
 
+    public function findForEntity(FiscalEntity $fiscalEntity, string $id): ?Expense
+    {
+        $expense = $this->find($id);
+
+        return $expense instanceof Expense && $expense->belongsTo($fiscalEntity) ? $expense : null;
+    }
+
     public function forEntity(FiscalEntity $fiscalEntity): array
     {
         return $this->onlyExpenses($this->createQueryBuilder('expense')

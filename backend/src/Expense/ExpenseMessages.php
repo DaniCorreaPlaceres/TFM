@@ -18,6 +18,8 @@ final class ExpenseMessages
             InvalidExpense::LINE => 'Revisa las líneas. Hace falta al menos una, con descripción e importes válidos.',
             InvalidExpense::NAME => 'El nombre de la categoría no es válido.',
             InvalidExpense::EXISTS => 'Esa categoría ya existe en la entidad.',
+            InvalidExpense::PART => 'Indica si la decisión es de la base o de la cuota, y si es deducible.',
+            InvalidExpense::REASON => 'Escribe el motivo de la deducibilidad.',
             default => 'No se ha podido guardar el gasto.',
         };
     }

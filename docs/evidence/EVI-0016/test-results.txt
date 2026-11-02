@@ -1,0 +1,32 @@
+2026-11-02, feature/e4-deducibilidad, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 252.
+PHPStan: No errors.
+PHPUnit: OK (69 tests, 1055 assertions).
+
+La prueba de dominio:
+- Al registrar el gasto, la base y la cuota quedan sin decidir.
+- Marcar la base no marca la cuota y no cambia el total.
+- Un motivo vacío no guarda la cuota.
+- Marcar la cuota no cambia la decisión de la base ni los importes.
+- Otra cuenta no cambia la decisión.
+
+La prueba web:
+- El gasto G-9 muestra base 200,00 €, cuota 42,00 € y total 242,00 €, y las dos decisiones en «Sin decidir».
+- Un formulario caducado no guarda el motivo.
+- Un motivo vacío responde 422.
+- La base queda deducible y la cuota sigue sin decidir.
+- La cuota queda no deducible y la base no cambia.
+- Otra cuenta recibe 404 y la respuesta no contiene el motivo ni el número del gasto.
+
+Navegador en http://127.0.0.1:8080:
+- El gasto G-1 seguía en base 200,00 €, cuota 42,00 € y total 242,00 €.
+- La base quedó deducible con el motivo «Papel del mostrador» y la cuota seguía sin decidir.
+- Después la cuota quedó no deducible con su motivo y la base no cambió.
+- La otra cuenta no se recorrió en el navegador.
+
+La migración Version20261102220000 está aplicada en la base local. Al aplicarla fueron 1 migración y 1 consulta.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit. La rama feature/e4-deducibilidad no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.
