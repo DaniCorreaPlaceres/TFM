@@ -33,4 +33,4 @@ Que la web ya hecha se reconozca como Aselto: misma paleta, una acción principa
 
 Comprobado el 2 de noviembre de 2026 en local. En el navegador, entrar y crear cuenta muestran la marca y el eslogan. Dentro, el menú es Inicio, Ingresos y gastos, Documentos, Mi asesoría y Ayuda. Sin entidad, el paso siguiente es crearla. En 390 px de ancho el menú se desplaza en horizontal y conserva los nombres. PHPUnit pasó `SessionWebTest`, `CloseOtherSessionsWebTest`, `FiscalEntityWebTest` y `SecondFactorWebTest`: 10 pruebas y 211 aserciones.
 
-Al apoyarlo en `develop`, el enlace Ingresos y gastos abre la lista de ingresos que ya existe. Documentos y Ayuda siguen explicando lo que falta. Los gastos siguen fuera. Esta rama es `feature/portada-menu` y no está integrada.
+Al apoyarlo en `develop`, el enlace Ingresos y gastos abre la lista de ingresos que ya existe. Documentos y Ayuda siguen explicando lo que falta. En `feature/e4-gastos` la tarjeta de gastos abre `/gastos` y la portada ya cuenta el registro del gasto. Esa rama no está integrada.

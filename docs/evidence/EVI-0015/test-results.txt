@@ -1,0 +1,37 @@
+2026-11-02, feature/e4-gastos, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 249.
+PHPStan: No errors.
+PHPUnit: OK (67 tests, 991 assertions).
+
+Después de añadir los accesores que pedía PHPStan, se repitió la prueba web del gasto: OK (1 test, 60 assertions).
+
+La prueba de dominio:
+- Las categorías de serie se crean una sola vez.
+- El nombre no se puede repetir.
+- El gasto de dos líneas queda en base 250,00, cuota 47,00 y total 297,00.
+- Una categoría desactivada no sirve para un gasto nuevo y el gasto ya guardado conserva el nombre.
+- Un contacto que no es proveedor no vale.
+- Otra cuenta no desactiva la categoría.
+
+La prueba web:
+- Sin sesión, /gastos redirige a /entrar.
+- Sin proveedor, la página lo dice.
+- Un formulario caducado no guarda el gasto.
+- Se añade la categoría Software.
+- El gasto G-1 queda en base 200,00 €, cuota 42,00 € y total 242,00 €.
+- Al desactivar Material, el gasto sigue mostrándola y el selector ya no la ofrece.
+- Otra cuenta no ve el número ni el proveedor, y desactivar la categoría ajena responde 404.
+
+Navegador en http://127.0.0.1:8080:
+- Sin entidad, /gastos pide elegir una.
+- Con la entidad activa aparecen las categorías de serie. Se añadió Software.
+- El gasto G-1 quedó en base 200,00 €, cuota 42,00 € y total 242,00 €.
+- Material quedó desactivada. El gasto siguió mostrando ese nombre y el selector de un gasto nuevo ya no la ofrece.
+- La otra cuenta no se recorrió en el navegador.
+
+La migración Version20261102191000 está aplicada en la base local. Al aplicarla fueron 1 migración y 8 consultas.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit. La rama feature/e4-gastos no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.

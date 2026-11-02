@@ -30,6 +30,7 @@ security:
         - { path: ^/entidades, roles: ROLE_USER }
         - { path: ^/asesorias, roles: ROLE_USER }
         - { path: ^/ingresos, roles: ROLE_USER }
+        - { path: ^/gastos, roles: ROLE_USER }
         - { path: ^/documentos, roles: ROLE_USER }
         - { path: ^/ayuda, roles: ROLE_USER }
 
