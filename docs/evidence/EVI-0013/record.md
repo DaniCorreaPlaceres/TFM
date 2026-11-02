@@ -16,8 +16,8 @@
 | Intervención humana | El responsable aceptó esta ficha el 2 de noviembre de 2026. |
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
-| Defectos | Los permisos por empleado, la desvinculación y la bandeja no se ejecutaron. La rama no está integrada. |
-| Commit / PR / CI | Sin commit. `feature/e2-vinculo` no está integrada. GitHub no se ha ejecutado para esta ficha. |
+| Defectos | Los permisos por empleado, la desvinculación y la bandeja no formaban parte de esta ficha. |
+| Commit / PR / CI | Commit `0bdce35` en `feature/e2-vinculo`. La ficha se aceptó antes de la pull request. Después quedó integrada en `develop` con la pull request #24, merge `ed36910`. Los registros de GitHub de esa pull request no se copiaron aquí. |
 | Conclusión | En local, las dos invitaciones vinculan la entidad y la asesoría. Una segunda asesoría no sustituye a la activa. Una empleada no ve la entidad y otra cuenta no ve el nombre. Un formulario caducado no invita ni acepta. |
 | Responsable de aprobación | Responsable del TFM, 2026-11-02. |
 

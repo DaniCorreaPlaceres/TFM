@@ -16,11 +16,40 @@
     <h2>Personas</h2>
     <ul>
         {% for member in members %}
-            <li>{{ member.account.email }} ({{ member.role }})</li>
+            <li>
+                {{ member.account.email }} ({{ member.role }})
+                {% if isAdmin and member.id in grantedIds %}
+                    · ve las entidades
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
-
+    {% if permissionSaved %}
+        <p>El permiso ha quedado guardado.</p>
+    {% endif %}
+    {% if permissionError %}
+        <p class="error" role="alert">Error: {{ permissionError }}</p>
+    {% endif %}
     {% if isAdmin %}
+        {% for member in members %}
+            {% if member.role == 'empleado' %}
+                <form method="post" action="{{ path('advisory_employee_permission', {id: firm.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('permiso-entidades') }}">
+                    <input type="hidden" name="membership_id" value="{{ member.id }}">
+                    {% if member.id in grantedIds %}
+                        <input type="hidden" name="granted" value="0">
+                        <button type="submit">Retirar ver entidades</button>
+                    {% else %}
+                        <input type="hidden" name="granted" value="1">
+                        <button type="submit">Conceder ver entidades</button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        {% endfor %}
+        <p class="ayuda">Sin esta concesión, el empleado no ve los nombres de las entidades vinculadas. Invitar entidades sigue reservado a quien administra. El segundo factor sigue siendo opcional.</p>
+    {% endif %}
+
+    {% if canViewClients %}
         <h2>Entidades vinculadas</h2>
         {% if clients is empty %}
             <p>Todavía no hay entidades vinculadas.</p>
@@ -31,6 +60,8 @@
                 {% endfor %}
             </ul>
         {% endif %}
+    {% endif %}
+    {% if isAdmin %}
         {% if entityInvited %}
             <p>Hemos enviado la invitación a la entidad. Caduca a los 7 días.</p>
         {% endif %}
