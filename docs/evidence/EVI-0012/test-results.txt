@@ -38,4 +38,4 @@ La migración Version20261101223000 se aplicó a la base local: 1 migración y 7
 
 La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
 
-Sin commit, sin pull request y sin ejecución en GitHub.
+El commit dd63f66 está en feature/e2-asesoria. Sin pull request y sin ejecución en GitHub. La rama no está integrada. El responsable aceptó la ficha el 2 de noviembre de 2026.

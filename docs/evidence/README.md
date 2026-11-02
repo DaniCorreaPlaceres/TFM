@@ -17,13 +17,13 @@ E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió E
 - [EVI-0009](EVI-0009/record.md): crear y elegir la entidad fiscal en la web. Comprobado en local, aceptado el 1 de noviembre de 2026 e integrado con la pull request #20.
 - [EVI-0010](EVI-0010/record.md): aislamiento de la entidad fiscal en la web. Comprobado en local, aceptado el 1 de noviembre de 2026 e integrado con la pull request #21. La exportación no se ejecutó.
 - [EVI-0011](EVI-0011/record.md): cerrar las demás sesiones web. Comprobado en local y aceptado el 1 de noviembre de 2026. El refresh no se ejecutó. Quedó integrada con la pull request #22.
-- [EVI-0012](EVI-0012/record.md): alta de una asesoría e invitación de un empleado. Comprobado en local el 1 de noviembre de 2026. El segundo factor sigue siendo opcional para todos. Pendiente de revisión. La rama no está integrada.
+- [EVI-0012](EVI-0012/record.md): alta de una asesoría e invitación de un empleado. Comprobado en local el 1 de noviembre de 2026 y aceptado el 2 de noviembre de 2026. El segundo factor sigue siendo opcional para todos. La rama no está integrada.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008, EVI-0009, EVI-0010 y EVI-0011 el 1 de noviembre de 2026. EVI-0012 está pendiente de revisión. Esa aceptación no promociona `develop` a `main` ni cierra E1 ni E2. Las pull requests #17, #19, #20, #21 y #22 están integradas en `develop`. `feature/e2-asesoria` no está integrada.
+El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008, EVI-0009, EVI-0010 y EVI-0011 el 1 de noviembre de 2026. EVI-0012 quedó aceptada el 2 de noviembre de 2026. Esa aceptación no promociona `develop` a `main` ni cierra E1 ni E2. Las pull requests #17, #19, #20, #21 y #22 están integradas en `develop`. `feature/e2-asesoria` no está integrada.
 
 ## Qué no se rellena
 
