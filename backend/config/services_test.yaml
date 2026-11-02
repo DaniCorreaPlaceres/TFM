@@ -12,3 +12,10 @@ services:
     App\Identity\AccountMailer:
         alias: App\Tests\Identity\RecordingAccountMailer
         public: true
+
+    App\Tests\Income\MemoryObjectStore:
+        public: true
+
+    App\Income\ObjectStore:
+        alias: App\Tests\Income\MemoryObjectStore
+        public: true

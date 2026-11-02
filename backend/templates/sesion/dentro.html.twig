@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Has entrado</h1>
-    <p>Sesión de {{ email }}. La información fiscal todavía no está disponible.</p>
+    <p>Sesión de {{ email }}.</p>
     {% if entityName %}
         <p>Entidad activa: {{ entityName }}.</p>
     {% else %}
@@ -14,6 +14,10 @@
         <p>Asesoría activa: {{ advisoryName }}.</p>
     {% endif %}
     <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
+    {% if entityName %}
+        <p><a href="{{ path('contacts') }}">Contactos</a></p>
+        <p><a href="{{ path('incomes') }}">Ingresos y gastos</a></p>
+    {% endif %}
     <p><a href="{{ path('advisories') }}">Asesorías</a></p>
     {% if secondFactor %}
         <p>El segundo factor está activo.</p>

@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingreso — Aselto{% endblock %}
+
+{% block body %}
+    <h1>{{ income.invoiceNo ?: 'Sin número' }}</h1>
+    <p>{{ income.paymentStatusLabel }}. Saldo {{ income.balance|euros }}.</p>
+    <p>Contacto en el ingreso: {{ income.snapshotName }} ({{ income.snapshotTaxId }}).</p>
+    <p>Base {{ income.base|euros }}. Cuota {{ income.tax|euros }}. Retención {{ income.withholding|euros }}. Total {{ income.total|euros }}.</p>
+    {% if collectedNotice %}
+        <p>Cobro registrado.</p>
+    {% endif %}
+    {% if annulledNotice %}
+        <p>Ingreso anulado.</p>
+    {% endif %}
+    {% if attachedNotice %}
+        <p>Archivo adjuntado.</p>
+    {% endif %}
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+    {% if closed %}
+        <p>Este trimestre está cerrado.</p>
+    {% endif %}
+
+    <h2>Líneas</h2>
+    <ul>
+        {% for line in income.lines %}
+            <li>{{ line.description }}: base {{ line.baseAmount|euros }}, cuota {{ line.taxAmount|euros }}, retención {{ line.withholdingAmount|euros }}, total {{ line.total|euros }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Cobros</h2>
+    {% if income.payments is empty %}
+        <p>Todavía no hay cobros.</p>
+    {% else %}
+        <ul>
+            {% for payment in income.payments %}
+                <li>{{ payment.paidOn|date('d/m/Y') }} · {{ payment.amount|euros }} · {{ payment.methodLabel }}{% if payment.reference %} · {{ payment.reference }}{% endif %}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Archivos</h2>
+    {% if attachments is empty %}
+        <p>Todavía no hay archivos.</p>
+    {% else %}
+        <ul>
+            {% for attachment in attachments %}
+                <li><a href="{{ path('income_attachment', {id: income.id, attachmentId: attachment.id}) }}">{{ attachment.fileName }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Historial</h2>
+    <ul>
+        {% for action in actions %}
+            <li>{{ action.actedAt|date('d/m/Y H:i') }} · {{ action.summary }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if not closed and not income.annulled %}
+        <h2>Corregir</h2>
+        <form method="post" action="{{ path('income_update', {id: income.id}) }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('corregir-ingreso') }}">
+            <input type="hidden" name="version" value="{{ income.version }}">
+            <label for="contacto">Cliente (obligatorio)</label>
+            <select id="contacto" name="contacto">
+                {% for client in clients %}
+                    <option value="{{ client.id }}" {{ contacto == client.id ? 'selected' : '' }}>{{ client.displayName }} ({{ client.taxId }})</option>
+                {% endfor %}
+            </select>
+            <label for="numero">Número</label>
+            <input id="numero" name="numero" type="text" maxlength="40" value="{{ numero }}">
+            <label for="fecha">Fecha (obligatoria)</label>
+            <input id="fecha" name="fecha" type="date" required value="{{ fecha }}">
+            <label for="vencimiento">Vencimiento</label>
+            <input id="vencimiento" name="vencimiento" type="date" value="{{ vencimiento }}">
+            {% for draft in drafts %}
+                <fieldset>
+                    <label>Descripción <input name="descripcion[]" type="text" maxlength="180" value="{{ draft.description }}"></label>
+                    <label>Cantidad <input name="cantidad[]" type="text" inputmode="decimal" value="{{ draft.quantity }}"></label>
+                    <label>Precio <input name="precio[]" type="text" inputmode="decimal" value="{{ draft.unitPrice }}"></label>
+                    <label>Impuesto (%) <input name="iva[]" type="text" inputmode="decimal" value="{{ draft.taxRate }}"></label>
+                    <label>Retención (%) <input name="retencion[]" type="text" inputmode="decimal" value="{{ draft.withholdingRate }}"></label>
+                </fieldset>
+            {% endfor %}
+            <button type="submit">Guardar ingreso</button>
+        </form>
+
+        {% if income.paymentStatus != 'cobrado' %}
+            <h2>Registrar cobro</h2>
+            <form method="post" action="{{ path('income_collect', {id: income.id}) }}" novalidate>
+                <input type="hidden" name="_token" value="{{ csrf_token('cobro') }}">
+                <input type="hidden" name="version" value="{{ income.version }}">
+                <input type="hidden" name="payment_token" value="{{ paymentToken }}">
+                <label for="importe">Importe (obligatorio)</label>
+                <input id="importe" name="importe" type="text" inputmode="decimal" required>
+                <label for="fecha_cobro">Fecha (obligatoria)</label>
+                <input id="fecha_cobro" name="fecha_cobro" type="date" required>
+                <label for="metodo">Método</label>
+                <select id="metodo" name="metodo">
+                    {% for code, label in methods %}
+                        <option value="{{ code }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <label for="referencia">Referencia</label>
+                <input id="referencia" name="referencia" type="text" maxlength="80">
+                <button type="submit">Registrar cobro</button>
+            </form>
+        {% endif %}
+
+        <h2>Adjuntar</h2>
+        <form method="post" action="{{ path('income_attach', {id: income.id}) }}" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('adjunto') }}">
+            <input type="hidden" name="version" value="{{ income.version }}">
+            <label for="archivo">Archivo PDF o imagen (obligatorio)</label>
+            <input id="archivo" name="archivo" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" required>
+            <button type="submit">Adjuntar</button>
+        </form>
+
+        <h2>Anular</h2>
+        <form method="post" action="{{ path('income_annul', {id: income.id}) }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('anular-ingreso') }}">
+            <input type="hidden" name="version" value="{{ income.version }}">
+            <label for="motivo">Motivo (obligatorio)</label>
+            <input id="motivo" name="motivo" type="text" maxlength="500" required>
+            <p class="ayuda">Anular conserva las líneas, los cobros y el historial.</p>
+            <button type="submit">Anular ingreso</button>
+        </form>
+    {% elseif income.annulled %}
+        <p>Motivo: {{ income.annulReason }}</p>
+    {% endif %}
+
+    <p><a href="{{ path('incomes') }}">Volver a ingresos</a> · <a href="{{ path('contacts') }}">Contactos</a></p>
+{% endblock %}

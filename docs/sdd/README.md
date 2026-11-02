@@ -36,3 +36,4 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E2 Alta de asesoría e invitación de empleados](e2-asesoria.md)
 - [E2 Vínculo entre entidad fiscal y asesoría](e2-vinculo.md)
 - [E2 Permiso del empleado para ver entidades](e2-permisos.md)
+- [E3 Ingresos y contactos](e3-ingresos.md)

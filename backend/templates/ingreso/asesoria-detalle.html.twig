@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingreso — Aselto{% endblock %}
+
+{% block body %}
+    <h1>{{ income.invoiceNo ?: 'Sin número' }}</h1>
+    <p>{{ income.paymentStatusLabel }}. Saldo {{ income.balance|euros }}.</p>
+    <p>Contacto en el ingreso: {{ income.snapshotName }} ({{ income.snapshotTaxId }}).</p>
+    <p>Total {{ income.total|euros }}.</p>
+    <h2>Líneas</h2>
+    <ul>
+        {% for line in income.lines %}
+            <li>{{ line.description }}: {{ line.total|euros }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Cobros</h2>
+    {% if income.payments is empty %}
+        <p>Todavía no hay cobros.</p>
+    {% else %}
+        <ul>
+            {% for payment in income.payments %}
+                <li>{{ payment.amount|euros }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>Archivos</h2>
+    {% if attachments is empty %}
+        <p>Todavía no hay archivos.</p>
+    {% else %}
+        <ul>
+            {% for attachment in attachments %}
+                <li><a href="{{ path('advisory_income_attachment', {id: firm.id, entityId: fiscalEntity.id, incomeId: income.id, attachmentId: attachment.id}) }}">{{ attachment.fileName }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>Historial</h2>
+    <ul>
+        {% for action in actions %}
+            <li>{{ action.summary }}</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{{ path('advisory_incomes', {id: firm.id, entityId: fiscalEntity.id}) }}">Volver a los ingresos</a></p>
+{% endblock %}

@@ -56,7 +56,7 @@
         {% else %}
             <ul>
                 {% for link in clients %}
-                    <li>{{ link.fiscalEntity.legalName }}</li>
+                    <li>{{ link.fiscalEntity.legalName }} · <a href="{{ path('advisory_incomes', {id: firm.id, entityId: link.fiscalEntity.id}) }}">Ver ingresos</a></li>
                 {% endfor %}
             </ul>
         {% endif %}

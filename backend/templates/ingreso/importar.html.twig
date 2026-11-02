@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Importar ingresos — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Importar ingresos</h1>
+    {% if not entityReady %}
+        <p>Elige antes una entidad fiscal.</p>
+        <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
+    {% else %}
+        <p>La plantilla usa las columnas fecha, numero, contacto, nif, descripcion, cantidad, precio, iva y retencion.</p>
+        <p><a href="{{ path('income_template') }}">Descargar plantilla</a></p>
+        {% if error %}
+            <p class="error" role="alert">Error: {{ error }}</p>
+        {% endif %}
+        {% if report %}
+            <p>Se han registrado {{ report.imported }} ingresos.</p>
+            {% if report.errors is not empty %}
+                <ul>
+                    {% for failure in report.errors %}
+                        <li>Fila {{ failure.row }}: {{ failure.message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+        <form method="post" action="{{ path('income_import') }}" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('importar-ingresos') }}">
+            <label for="archivo">Archivo CSV (obligatorio)</label>
+            <input id="archivo" name="archivo" type="file" accept="text/csv,.csv" required>
+            <button type="submit">Importar</button>
+        </form>
+        <p><a href="{{ path('incomes') }}">Volver a ingresos</a></p>
+    {% endif %}
+{% endblock %}
