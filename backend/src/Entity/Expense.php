@@ -57,6 +57,14 @@ class Expense
         #[ORM\Column]
         private \DateTimeImmutable $createdAt,
         array $lines,
+        #[ORM\Column(nullable: true)]
+        private ?bool $baseDeductible = null,
+        #[ORM\Column(length: 240, nullable: true)]
+        private ?string $baseReason = null,
+        #[ORM\Column(nullable: true)]
+        private ?bool $taxDeductible = null,
+        #[ORM\Column(length: 240, nullable: true)]
+        private ?string $taxReason = null,
     ) {
         $this->lines = new ArrayCollection();
         $this->replaceLines($lines);
@@ -203,6 +211,57 @@ class Expense
     public function total(): string
     {
         return $this->sum(static fn (ExpenseLine $line): string => $line->total());
+    }
+
+    public function baseDeductible(): ?bool
+    {
+        return $this->baseDeductible;
+    }
+
+    public function baseReason(): ?string
+    {
+        return $this->baseReason;
+    }
+
+    public function taxDeductible(): ?bool
+    {
+        return $this->taxDeductible;
+    }
+
+    public function taxReason(): ?string
+    {
+        return $this->taxReason;
+    }
+
+    public function baseDecisionLabel(): string
+    {
+        return self::decisionLabel($this->baseDeductible);
+    }
+
+    public function taxDecisionLabel(): string
+    {
+        return self::decisionLabel($this->taxDeductible);
+    }
+
+    public function decideBase(bool $deductible, string $reason): void
+    {
+        $this->baseDeductible = $deductible;
+        $this->baseReason = $reason;
+    }
+
+    public function decideTax(bool $deductible, string $reason): void
+    {
+        $this->taxDeductible = $deductible;
+        $this->taxReason = $reason;
+    }
+
+    private static function decisionLabel(?bool $deductible): string
+    {
+        return match ($deductible) {
+            true => 'Deducible',
+            false => 'No deducible',
+            default => 'Sin decidir',
+        };
     }
 
     /**

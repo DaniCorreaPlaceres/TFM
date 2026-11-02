@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Entity\FiscalEntity;
 use App\Expense\DeactivateExpenseCategory;
+use App\Expense\DecideExpenseDeduction;
 use App\Expense\EnsureExpenseCategories;
 use App\Expense\ExpenseCategoryRepository;
 use App\Expense\ExpenseKind;
@@ -32,6 +33,7 @@ final class ExpenseController extends AbstractController
         private readonly EnsureExpenseCategories $ensure,
         private readonly SaveExpenseCategory $saveCategory,
         private readonly DeactivateExpenseCategory $deactivate,
+        private readonly DecideExpenseDeduction $decide,
         private readonly RegisterExpense $register,
         private readonly ExpenseCategoryRepository $categories,
         private readonly ExpenseRepository $expenses,
@@ -132,6 +134,44 @@ final class ExpenseController extends AbstractController
         return $this->redirectToRoute('expenses', ['categoria' => '1']);
     }
 
+    #[Route('/gastos/{id}/deducibilidad', name: 'expense_deduction', methods: ['POST'])]
+    public function deduction(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+        $fiscalEntity = $this->active->resolve($account, $request);
+        if (null === $fiscalEntity || null === $this->expenses->findForEntity($fiscalEntity, $id)) {
+            throw $this->createNotFoundException('Gasto no encontrado.');
+        }
+        if (!$this->isCsrfTokenValid('deducibilidad', $request->request->getString('_token'))) {
+            return $this->page($request, $fiscalEntity, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+        $choice = $request->request->getString('deducible');
+        if ('1' !== $choice && '0' !== $choice) {
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of(InvalidExpense::PART));
+        }
+        try {
+            ($this->decide)(
+                $account,
+                $fiscalEntity,
+                $id,
+                $request->request->getString('parte'),
+                '1' === $choice,
+                $request->request->getString('motivo'),
+            );
+        } catch (InvalidExpense $exception) {
+            if (InvalidExpense::FORBIDDEN === $exception->reason) {
+                throw $this->createNotFoundException('Gasto no encontrado.');
+            }
+
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of($exception->reason));
+        }
+
+        return $this->redirectToRoute('expenses', ['deduccion' => '1']);
+    }
+
     private function page(Request $request, FiscalEntity $fiscalEntity, ?string $error = null): Response
     {
         $all = $this->categories->allForEntity($fiscalEntity);
@@ -159,6 +199,7 @@ final class ExpenseController extends AbstractController
             'error' => $error,
             'savedExpense' => '1' === $request->query->getString('gasto'),
             'savedCategory' => '1' === $request->query->getString('categoria'),
+            'savedDeduction' => '1' === $request->query->getString('deduccion'),
         ], new Response(status: null === $error ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 

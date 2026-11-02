@@ -18,6 +18,9 @@
         {% if savedCategory %}
             <p class="ok">La categoría ha quedado guardada.</p>
         {% endif %}
+        {% if savedDeduction %}
+            <p class="ok">La deducibilidad ha quedado guardada.</p>
+        {% endif %}
 
         <h2>Categorías</h2>
         <ul>
@@ -59,6 +62,32 @@
                         · base {{ expense.base|euros }}
                         · cuota {{ expense.tax|euros }}
                         · total {{ expense.total|euros }}
+                        <p>Base: {{ expense.baseDecisionLabel }}{% if expense.baseReason %} — {{ expense.baseReason }}{% endif %}</p>
+                        <form method="post" action="{{ path('expense_deduction', {id: expense.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('deducibilidad') }}">
+                            <input type="hidden" name="parte" value="base">
+                            <label for="deducible-base-{{ expense.id }}">La base es deducible</label>
+                            <select id="deducible-base-{{ expense.id }}" name="deducible" required>
+                                <option value="1">Sí</option>
+                                <option value="0">No</option>
+                            </select>
+                            <label for="motivo-base-{{ expense.id }}">Motivo de la base</label>
+                            <input id="motivo-base-{{ expense.id }}" name="motivo" type="text" maxlength="240" required>
+                            <button type="submit">Guardar base</button>
+                        </form>
+                        <p>Cuota: {{ expense.taxDecisionLabel }}{% if expense.taxReason %} — {{ expense.taxReason }}{% endif %}</p>
+                        <form method="post" action="{{ path('expense_deduction', {id: expense.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('deducibilidad') }}">
+                            <input type="hidden" name="parte" value="cuota">
+                            <label for="deducible-cuota-{{ expense.id }}">La cuota es deducible</label>
+                            <select id="deducible-cuota-{{ expense.id }}" name="deducible" required>
+                                <option value="1">Sí</option>
+                                <option value="0">No</option>
+                            </select>
+                            <label for="motivo-cuota-{{ expense.id }}">Motivo de la cuota</label>
+                            <input id="motivo-cuota-{{ expense.id }}" name="motivo" type="text" maxlength="240" required>
+                            <button type="submit">Guardar cuota</button>
+                        </form>
                     </li>
                 {% endfor %}
             </ul>

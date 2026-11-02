@@ -38,5 +38,6 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E2 Permiso del empleado para ver entidades](e2-permisos.md)
 - [E3 Ingresos y contactos](e3-ingresos.md)
 - [E4 Categorías y registro del gasto](e4-gastos.md)
+- [E4 Deducibilidad del gasto](e4-deducibilidad.md)
 - [Front web de Aselto](front-aselto.md)
 - [Portada pública](landing.md)

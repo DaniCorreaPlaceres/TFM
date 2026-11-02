@@ -10,6 +10,7 @@ use App\Entity\ExpenseCategory;
 use App\Entity\FiscalEntity;
 use App\Entity\FiscalEntityMembership;
 use App\Expense\DeactivateExpenseCategory;
+use App\Expense\DecideExpenseDeduction;
 use App\Expense\DefaultExpenseCategories;
 use App\Expense\EnsureExpenseCategories;
 use App\Expense\ExpenseAccess;
@@ -100,6 +101,54 @@ final class ExpenseBehaviorTest extends TestCase
         self::assertSame('G-1', $expense->documentNo());
     }
 
+    public function testLaBaseYLaCuotaSeDecidenPorSeparado(): void
+    {
+        [$account, $entity, $ensure, $register, $decide, $categories, $contacts] = $this->deduction();
+        ($ensure)($entity);
+        $supplier = Contact::open($entity, 'Papelería Norte', 'B12345674', false, true, new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $contacts->save($supplier);
+        $material = $this->named($categories->allForEntity($entity), 'Material');
+        $expense = $register($account, $entity, $supplier->id(), $material->id(), 'factura', 'tarjeta', 'G-1', new \DateTimeImmutable('2026-11-02'), [
+            $this->row('Folios', '2', '100,00', '21', '0'),
+        ]);
+        self::assertNull($expense->baseDeductible());
+        self::assertNull($expense->taxDeductible());
+        self::assertSame('200.00', $expense->base());
+        self::assertSame('42.00', $expense->tax());
+        self::assertSame('242.00', $expense->total());
+
+        $decide($account, $entity, $expense->id(), 'base', true, '  Papel del mostrador  ');
+        self::assertTrue($expense->baseDeductible());
+        self::assertSame('Papel del mostrador', $expense->baseReason());
+        self::assertNull($expense->taxDeductible());
+        self::assertSame('242.00', $expense->total());
+
+        try {
+            $decide($account, $entity, $expense->id(), 'cuota', false, '   ');
+            self::fail('El motivo vacío no se guarda.');
+        } catch (InvalidExpense $exception) {
+            self::assertSame(InvalidExpense::REASON, $exception->reason);
+        }
+        self::assertNull($expense->taxDeductible());
+
+        $decide($account, $entity, $expense->id(), 'cuota', false, 'La cuota no es deducible');
+        self::assertFalse($expense->taxDeductible());
+        self::assertSame('La cuota no es deducible', $expense->taxReason());
+        self::assertTrue($expense->baseDeductible());
+        self::assertSame('200.00', $expense->base());
+        self::assertSame('42.00', $expense->tax());
+
+        $other = Account::register('otra@example.com', 'hash', new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        try {
+            $decide($other, $entity, $expense->id(), 'base', false, 'No es su gasto');
+            self::fail('Otra cuenta no decide la deducibilidad.');
+        } catch (InvalidExpense $exception) {
+            self::assertSame(InvalidExpense::FORBIDDEN, $exception->reason);
+        }
+        self::assertTrue($expense->baseDeductible());
+        self::assertSame('Papel del mostrador', $expense->baseReason());
+    }
+
     /**
      * @return array{0: Account, 1: FiscalEntity, 2: EnsureExpenseCategories, 3: SaveExpenseCategory, 4: DeactivateExpenseCategory, 5: RegisterExpense, 6: InMemoryExpenseCategoryRepository, 7: InMemoryContactRepository}
      */
@@ -139,6 +188,33 @@ final class ExpenseBehaviorTest extends TestCase
             }
         }
         self::fail('Falta la categoría '.$name);
+    }
+
+    /**
+     * @return array{0: Account, 1: FiscalEntity, 2: EnsureExpenseCategories, 3: RegisterExpense, 4: DecideExpenseDeduction, 5: InMemoryExpenseCategoryRepository, 6: InMemoryContactRepository}
+     */
+    private function deduction(): array
+    {
+        $categories = new InMemoryExpenseCategoryRepository();
+        $expenses = new InMemoryExpenseRepository();
+        $contacts = new InMemoryContactRepository();
+        $memberships = new InMemoryFiscalEntityMembershipRepository();
+        $store = new InMemoryRegistrationStore();
+        $clock = new MockClock('2026-11-02T10:00:00Z');
+        $access = new ExpenseAccess($memberships);
+        $account = Account::register('titular@example.com', 'hash', new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $entity = FiscalEntity::open('Taller Norte', 'B12345674', new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $memberships->save(FiscalEntityMembership::hold($entity, $account));
+
+        return [
+            $account,
+            $entity,
+            new EnsureExpenseCategories($categories, $store, $clock),
+            new RegisterExpense($access, $contacts, $categories, $expenses, $store, $clock),
+            new DecideExpenseDeduction($access, $expenses, $store),
+            $categories,
+            $contacts,
+        ];
     }
 
     /**
