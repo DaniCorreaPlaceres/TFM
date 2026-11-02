@@ -21,13 +21,14 @@ E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió E
 - [EVI-0013](EVI-0013/record.md): vínculo entre una entidad fiscal y una asesoría. Comprobado en local y aceptado el 2 de noviembre de 2026. Quedó integrado en `develop` con la pull request #24. Los registros de GitHub de esa pull request no se copiaron.
 - [EVI-0014](EVI-0014/record.md): permiso del empleado para ver las entidades vinculadas. Comprobado en local y aceptado el 2 de noviembre de 2026. Quedó integrado en `develop` con la pull request #25. Los registros de GitHub de esa pull request no se copiaron.
 - [EVI-0015](EVI-0015/record.md): categorías de un nivel y registro manual del gasto. Comprobado en local y aceptado el 2 de noviembre de 2026. Quedó integrado en `develop` con la pull request #27, merge `f13e0f9`. Los registros de GitHub de esa pull request no se copiaron.
-- [EVI-0016](EVI-0016/record.md): deducibilidad independiente de la base y de la cuota. Comprobado en local y aceptado el 2 de noviembre de 2026. `feature/e4-deducibilidad` no está integrada.
+- [EVI-0016](EVI-0016/record.md): deducibilidad independiente de la base y de la cuota. Comprobado en local y aceptado el 2 de noviembre de 2026. Quedó integrado en `develop` con la pull request #28, merge `d7cbbc7`. Los registros de GitHub de esa pull request no se copiaron.
+- [EVI-0017](EVI-0017/record.md): pagos y estados de revisión del gasto. Comprobado en local y aceptado el 2 de noviembre de 2026. `feature/e4-revision` no está integrada.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008, EVI-0009, EVI-0010 y EVI-0011 el 1 de noviembre de 2026. EVI-0012, EVI-0013, EVI-0014, EVI-0015 y EVI-0016 quedaron aceptadas el 2 de noviembre de 2026. Esa aceptación no promociona `develop` a `main` ni cierra E1, E2, E3 ni E4. Las pull requests #17, #19, #20, #21, #22, #23, #24, #25, #26 y #27 están integradas en `develop`. Los registros de GitHub de #25, #26 y #27 no se copiaron. `feature/e4-deducibilidad` no está integrada.
+El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008, EVI-0009, EVI-0010 y EVI-0011 el 1 de noviembre de 2026. EVI-0012, EVI-0013, EVI-0014, EVI-0015, EVI-0016 y EVI-0017 quedaron aceptadas el 2 de noviembre de 2026. Esa aceptación no promociona `develop` a `main` ni cierra E1, E2, E3 ni E4. Las pull requests #17, #19, #20, #21, #22, #23, #24, #25, #26, #27 y #28 están integradas en `develop`. Los registros de GitHub de #25, #26, #27 y #28 no se copiaron. `feature/e4-revision` no está integrada.
 
 ## Qué no se rellena
 

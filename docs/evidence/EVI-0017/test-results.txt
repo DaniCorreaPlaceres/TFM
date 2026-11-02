@@ -1,0 +1,38 @@
+2026-11-02, feature/e4-revision, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 257.
+PHPStan: No errors.
+PHPUnit: OK (71 tests, 1160 assertions).
+
+La prueba de dominio:
+- Al registrar el gasto, la revisión queda en borrador y el pago en pendiente.
+- Anotar 100,00 € deja el estado en parcial y el saldo en 142,00 €. Repetir el mismo envío no duplica el pago.
+- Un pago que supera el saldo no se guarda.
+- Pasar a revisado no cambia el total ni la deducibilidad.
+- Desde revisado no se puede rechazar. Anular sin motivo no guarda. Anular con motivo conserva el pago y deja el gasto fuera de uso.
+- Un gasto anulado no admite otro pago ni un cambio de deducibilidad.
+- Otra cuenta no anota el pago.
+- Un gasto rechazado desde borrador conserva el pago parcial y no pasa a revisado.
+
+La prueba web:
+- El gasto G-8 muestra revisión borrador, no definitivo, pago pendiente y saldo 242,00 €.
+- Un formulario caducado no anota el pago.
+- Un pago de 100,00 €, repetido con el mismo envío, deja el saldo en 142,00 €. La base, la cuota y el total no cambian.
+- Un pago de 200,00 € responde 422.
+- El pago restante deja el gasto pagado y oculta el formulario de pago.
+- La revisión pasa a revisado y definitivo. Rechazarlo responde 422. Anular sin motivo responde 422.
+- Anular con motivo deja el gasto no vigente, conserva el pago y oculta los formularios de cambio.
+- Otra cuenta recibe 404 y la respuesta no contiene el motivo ni el número del gasto.
+
+Navegador en http://127.0.0.1:8080:
+- El gasto G-1 seguía en base 200,00 €, cuota 42,00 € y total 242,00 €, en borrador y pendiente.
+- Un pago de 100,00 € lo dejó en parcial, con 100,00 € anotados y 142,00 € de saldo.
+- La revisión pasó a revisado y definitivo, y el pago no cambió.
+- La base seguía deducible con «Papel del mostrador» y la cuota no deducible.
+- La otra cuenta no se recorrió en el navegador.
+
+La migración Version20261102230000 está aplicada en la base local. Al aplicarla fueron 1 migración y 4 consultas.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit. La rama feature/e4-revision no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.

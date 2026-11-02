@@ -8,7 +8,7 @@
         <p>Elige antes una entidad fiscal.</p>
         <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
     {% else %}
-        <p>Registra facturas recibidas, tickets y otros gastos. La base y la cuota salen de las líneas.</p>
+        <p>Registra facturas recibidas, tickets y otros gastos. La base y la cuota salen de las líneas. El estado de pago sale de los pagos anotados. Solo un gasto revisado es definitivo.</p>
         {% if error %}
             <p class="error" role="alert">Error: {{ error }}</p>
         {% endif %}
@@ -20,6 +20,12 @@
         {% endif %}
         {% if savedDeduction %}
             <p class="ok">La deducibilidad ha quedado guardada.</p>
+        {% endif %}
+        {% if savedPayment %}
+            <p class="ok">El pago ha quedado anotado.</p>
+        {% endif %}
+        {% if savedReview %}
+            <p class="ok">La revisión ha quedado guardada.</p>
         {% endif %}
 
         <h2>Categorías</h2>
@@ -62,7 +68,45 @@
                         · base {{ expense.base|euros }}
                         · cuota {{ expense.tax|euros }}
                         · total {{ expense.total|euros }}
+                        <p>Revisión: {{ expense.reviewLabel }}. {{ expense.standingLabel }}{% if expense.reviewReason %} — {{ expense.reviewReason }}{% endif %}</p>
+                        <p>Pago: {{ expense.paymentStatusLabel }}. Anotado: {{ expense.paid|euros }}. Saldo: {{ expense.balance|euros }}</p>
+                        {% if expense.acceptsPayment %}
+                            <form method="post" action="{{ path('expense_pay', {id: expense.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('pago') }}">
+                                <input type="hidden" name="payment_token" value="{{ paymentToken }}">
+                                <label for="importe-pago-{{ expense.id }}">Importe del pago</label>
+                                <input id="importe-pago-{{ expense.id }}" name="importe" type="text" inputmode="decimal" required>
+                                <label for="fecha-pago-{{ expense.id }}">Fecha del pago</label>
+                                <input id="fecha-pago-{{ expense.id }}" name="fecha" type="date" required>
+                                <label for="metodo-pago-{{ expense.id }}">Método del pago</label>
+                                <select id="metodo-pago-{{ expense.id }}" name="metodo" required>
+                                    {% for code, label in methods %}
+                                        <option value="{{ code }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="referencia-pago-{{ expense.id }}">Referencia</label>
+                                <input id="referencia-pago-{{ expense.id }}" name="referencia" type="text" maxlength="80">
+                                <button type="submit">Anotar pago</button>
+                            </form>
+                        {% endif %}
+                        {% if expense.current %}
+                            <form method="post" action="{{ path('expense_review', {id: expense.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('revision') }}">
+                                <label for="estado-{{ expense.id }}">Revisión</label>
+                                <select id="estado-{{ expense.id }}" name="estado" required>
+                                    {% if expense.reviewState == 'borrador' %}
+                                        <option value="revisado">Revisado</option>
+                                        <option value="rechazado">Rechazado</option>
+                                    {% endif %}
+                                    <option value="anulado">Anulado</option>
+                                </select>
+                                <label for="motivo-revision-{{ expense.id }}">Motivo, si rechazas o anulas</label>
+                                <input id="motivo-revision-{{ expense.id }}" name="motivo" type="text" maxlength="240">
+                                <button type="submit">Guardar revisión</button>
+                            </form>
+                        {% endif %}
                         <p>Base: {{ expense.baseDecisionLabel }}{% if expense.baseReason %} — {{ expense.baseReason }}{% endif %}</p>
+                        {% if expense.current %}
                         <form method="post" action="{{ path('expense_deduction', {id: expense.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('deducibilidad') }}">
                             <input type="hidden" name="parte" value="base">
@@ -75,7 +119,9 @@
                             <input id="motivo-base-{{ expense.id }}" name="motivo" type="text" maxlength="240" required>
                             <button type="submit">Guardar base</button>
                         </form>
+                        {% endif %}
                         <p>Cuota: {{ expense.taxDecisionLabel }}{% if expense.taxReason %} — {{ expense.taxReason }}{% endif %}</p>
+                        {% if expense.current %}
                         <form method="post" action="{{ path('expense_deduction', {id: expense.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('deducibilidad') }}">
                             <input type="hidden" name="parte" value="cuota">
@@ -88,6 +134,7 @@
                             <input id="motivo-cuota-{{ expense.id }}" name="motivo" type="text" maxlength="240" required>
                             <button type="submit">Guardar cuota</button>
                         </form>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
