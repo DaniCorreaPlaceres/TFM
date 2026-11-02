@@ -7,6 +7,7 @@ namespace App\Tests\Identity;
 use App\Identity\ConfirmEmail;
 use App\Identity\InvalidConfirmation;
 use App\Identity\InvalidRegistration;
+use App\Identity\JoinPendingAdvisoryInvitations;
 use App\Identity\PasswordPolicy;
 use App\Identity\RegisterAccount;
 use PHPUnit\Framework\TestCase;
@@ -160,7 +161,18 @@ final class RegisterAccountTest extends TestCase
             new FixedConfirmationLink(),
             $clock,
         );
-        $confirm = new ConfirmEmail($accounts, $confirmations, new InMemoryRegistrationStore(), $clock);
+        $confirm = new ConfirmEmail(
+            $accounts,
+            $confirmations,
+            new InMemoryRegistrationStore(),
+            $clock,
+            new JoinPendingAdvisoryInvitations(
+                new InMemoryAdvisoryInvitationRepository(),
+                new InMemoryAdvisoryMembershipRepository(),
+                new InMemoryRegistrationStore(),
+                $clock,
+            ),
+        );
 
         return new RegistrationFixture($accounts, $passwords, $mailer, $clock, $register, $confirm);
     }

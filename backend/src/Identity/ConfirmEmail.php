@@ -14,6 +14,7 @@ final class ConfirmEmail
         private readonly EmailConfirmationRepository $confirmations,
         private readonly RegistrationStore $store,
         private readonly ClockInterface $clock,
+        private readonly JoinPendingAdvisoryInvitations $joinPending,
     ) {
     }
 
@@ -31,6 +32,7 @@ final class ConfirmEmail
         $this->store->commit(function () use ($account, $confirmation): void {
             $this->accounts->save($account);
             $this->confirmations->save($confirmation);
+            ($this->joinPending)($account);
         });
 
         return $account;

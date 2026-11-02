@@ -16,8 +16,8 @@
 | Intervención humana | El responsable aceptó esta ficha el 1 de noviembre de 2026. |
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
-| Defectos | El refresh, su reutilización y el cambio de permisos no se ejecutaron. La rama no está integrada. |
-| Commit / PR / CI | Sin commit ni pull request. GitHub no se ha ejecutado para esta ficha. |
+| Defectos | El refresh, su reutilización y el cambio de permisos no se ejecutaron. |
+| Commit / PR / CI | Aceptada antes del commit. Después quedó integrada en `develop` con la pull request #22, commit `1a62c08`, merge `f37a227`. Los registros de GitHub de esa pull request no se copiaron a esta ficha. |
 | Conclusión | En local, la sesión desde la que se cierra sigue abierta. Otra cookie de la misma cuenta vuelve a `/entrar`. Un formulario caducado no cierra la otra sesión. |
 | Responsable de aprobación | Responsable del TFM, 2026-11-01. |
 

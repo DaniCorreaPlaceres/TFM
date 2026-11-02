@@ -6,6 +6,9 @@
     {% if confirmed %}
         <h1>Correo confirmado</h1>
         <p>El correo ya está verificado. Ya puedes entrar. La información fiscal todavía no está disponible.</p>
+        {% if joined %}
+            <p>Has quedado en la asesoría que te invitó.</p>
+        {% endif %}
         <p><a href="{{ path('account_login') }}">Entrar</a></p>
     {% else %}
         <h1>Enlace no válido</h1>

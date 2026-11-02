@@ -38,4 +38,15 @@ final class SymfonyAccountMailer implements AccountMailer
 
         $this->mailer->send($message);
     }
+
+    public function sendAdvisoryInvitation(string $to, string $firmName, string $url): void
+    {
+        $message = (new Email())
+            ->from($this->from)
+            ->to($to)
+            ->subject('Invitación a una asesoría en Aselto')
+            ->text('Te han invitado a la asesoría '.$firmName.".\n\nSi creas la cuenta con este correo, al confirmarla quedas en la asesoría. Si ya la tienes, entra con ese correo. El enlace caduca a los 7 días:\n\n".$url."\n\nEl segundo factor no es obligatorio. Si no esperabas esta invitación, ignora este mensaje.\n");
+
+        $this->mailer->send($message);
+    }
 }

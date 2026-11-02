@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invitación — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Invitación</h1>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    {% if firmName %}
+        <p>Puedes unirte a {{ firmName }} como empleado. El segundo factor no es obligatorio.</p>
+        <form method="post" action="{{ path('advisory_invitation', {token: token}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('aceptar-asesoria') }}">
+            <button type="submit">Aceptar invitación</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}

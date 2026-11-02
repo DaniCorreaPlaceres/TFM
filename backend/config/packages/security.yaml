@@ -28,6 +28,7 @@ security:
     access_control:
         - { path: ^/sesion, roles: ROLE_USER }
         - { path: ^/entidades, roles: ROLE_USER }
+        - { path: ^/asesorias, roles: ROLE_USER }
 
 when@test:
     security:

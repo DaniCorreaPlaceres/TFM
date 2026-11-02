@@ -19,4 +19,4 @@ La invalidación del refresh, su reutilización y el cambio de permisos no se ej
 
 La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
 
-Sin commit, sin pull request y sin ejecución en GitHub.
+La ficha se aceptó antes del commit. Después quedó integrada en develop con la pull request #22, commit 1a62c08, merge f37a227. Los registros de GitHub de esa pull request no se copiaron aquí.

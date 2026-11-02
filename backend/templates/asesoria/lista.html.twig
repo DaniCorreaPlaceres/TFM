@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Asesorías — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Asesorías</h1>
+    <p>Una asesoría agrupa a quien la administra y a sus empleados.</p>
+
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+
+    {% if memberships is empty %}
+        <p>Todavía no perteneces a ninguna asesoría.</p>
+    {% else %}
+        <ul>
+            {% for membership in memberships %}
+                <li>
+                    <a href="{{ path('advisory', {id: membership.advisoryFirm.id}) }}">{{ membership.advisoryFirm.name }}</a>
+                    ({{ membership.role }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if canOpenFirm %}
+        <h2>Nueva asesoría</h2>
+        <form method="post" action="{{ path('advisories') }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('asesoria') }}">
+
+            <label for="name">Nombre (obligatorio)</label>
+            <input id="name" name="name" type="text" required value="{{ name }}" maxlength="180">
+
+            <label for="tax_id">NIF (obligatorio)</label>
+            <input id="tax_id" name="tax_id" type="text" required value="{{ taxId }}" maxlength="20" autocapitalize="characters">
+            <p class="ayuda">Letras y números, hasta 20 caracteres.</p>
+
+            <button type="submit">Crear asesoría</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}

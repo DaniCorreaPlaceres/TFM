@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Identity\AdvisoryMembershipRepository;
 use App\Identity\ConfirmEmail;
 use App\Identity\InvalidConfirmation;
 use App\Identity\InvalidRegistration;
@@ -50,18 +51,20 @@ final class RegistrationController extends AbstractController
     }
 
     #[Route('/registro/confirmar/{token}', name: 'account_confirm', requirements: ['token' => '[A-Za-z0-9]+'], methods: ['GET'])]
-    public function confirm(string $token, ConfirmEmail $confirm): Response
+    public function confirm(string $token, ConfirmEmail $confirm, AdvisoryMembershipRepository $memberships): Response
     {
         try {
-            $confirm($token);
+            $account = $confirm($token);
         } catch (InvalidConfirmation) {
             return $this->render('registro/confirmacion.html.twig', [
                 'confirmed' => false,
+                'joined' => false,
             ], new Response(status: Response::HTTP_BAD_REQUEST));
         }
 
         return $this->render('registro/confirmacion.html.twig', [
             'confirmed' => true,
+            'joined' => [] !== $memberships->findForAccount($account),
         ]);
     }
 
