@@ -8,7 +8,7 @@ Permitir que la cuenta web que ya entra en `/entrar` active un segundo factor TO
 
 ## Fuera de alcance
 
-- No crear los roles de asesoría ni de superadministración. Sin esos roles no se puede demostrar el segundo factor obligatorio. Queda pendiente de la historia de roles.
+- No crear los roles de asesoría ni de superadministración.
 - No implementar la app Flutter, el refresh móvil, las entidades fiscales ni la revocación remota.
 - No elegir proveedor de correo de producción ni de hosting.
 - No promocionar `develop` a `main` ni desplegar.
@@ -23,7 +23,7 @@ Permitir que la cuenta web que ya entra en `/entrar` active un segundo factor TO
 
 ## Decisiones
 
-- La cuenta actual no tiene rol. Se trata como el caso opcional del autónomo. El segundo factor obligatorio de asesoría y superadministración se implementará cuando esos roles existan.
+- La cuenta actual no tiene rol. Se trata como el caso opcional del autónomo. El 1 de noviembre de 2026 el responsable decidió que el segundo factor es opcional para todos los papeles, también para la asesoría y para la superadministración si llega a existir. DOC-04 y DOC-05 apartado 5.1 piden que sea obligatorio en esos papeles; esa obligación no se aplica. DOC-04 y DOC-05 siguen siendo la línea base aprobada, con esta excepción.
 - DOC-04, DOC-05 y DOC-07 no fijan cuántos códigos de recuperación se entregan. Esta ficha entrega 8. Si el responsable fija otro número, se cambia aquí y en el código.
 - TOTP usa SHA-1, 6 cifras y un periodo de 30 segundos, que es lo que esperan las aplicaciones de códigos. Se acepta el intervalo actual y uno anterior y uno posterior.
 - El código QR contiene ese mismo enlace. Es negro sobre blanco, en SVG, para que la aplicación pueda leerlo. El secreto sigue escrito en la página para quien no pueda escanear.

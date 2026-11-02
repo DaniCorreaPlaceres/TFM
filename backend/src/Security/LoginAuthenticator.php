@@ -7,6 +7,7 @@ namespace App\Security;
 use App\Entity\Account;
 use App\Identity\AuthenticateAccount;
 use App\Identity\InvalidLogin;
+use App\Identity\JoinPendingAdvisoryInvitations;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,7 @@ final class LoginAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
         private readonly AuthenticateAccount $authenticate,
+        private readonly JoinPendingAdvisoryInvitations $joinPending,
         private readonly CsrfTokenManagerInterface $csrf,
         private readonly Environment $twig,
     ) {
@@ -64,6 +66,7 @@ final class LoginAuthenticator extends AbstractAuthenticator
     {
         $account = $token->getUser();
         if ($account instanceof Account) {
+            ($this->joinPending)($account);
             $request->getSession()->set('credentials_changed_at', $account->sessionMarker());
         }
 
