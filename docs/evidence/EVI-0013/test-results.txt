@@ -1,0 +1,38 @@
+2026-11-02, feature/e2-vinculo, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 152.
+PHPStan: No errors.
+PHPUnit: OK (54 tests, 582 assertions).
+
+La prueba de dominio:
+- Una invitación nueva deja inservible la anterior del mismo correo y del mismo lado.
+- Quien entra con otro correo no puede verla.
+- Aceptar vincula la entidad con la asesoría elegida.
+- Una segunda invitación no sustituye a la asesoría activa.
+- Una empleada no invita a una entidad.
+- Un correo vacío no invita.
+- A los 8 días la invitación ya no sirve.
+
+La prueba web:
+- Un formulario caducado no invita a la asesoría ni acepta el vínculo.
+- Las dos direcciones vinculan y la sesión muestra la asesoría activa.
+- Si la entidad ya tiene una asesoría activa, aceptar responde que no puede vincularse.
+- La empleada no ve el nombre de la entidad ni el formulario para invitar una entidad.
+- Otra cuenta recibe 404 y la respuesta no contiene el nombre de la entidad ni el de la asesoría.
+
+Navegador en http://127.0.0.1:8080:
+- El titular crea la entidad. El NIF introducido como b-18 000018 queda como B18000018.
+- La invitación dice que caduca a los 7 días. Mailpit recibe el enlace.
+- Otra sesión ve que la invitación es para otro correo y no muestra el nombre.
+- Quien confirma el correo invitado no queda vinculado. Crea la asesoría, vuelve a abrir el enlace, la elige y acepta.
+- La asesoría muestra la entidad. La sesión de la entidad dice cuál es la asesoría activa y ya no ofrece invitar otra.
+- Desde la asesoría se invita a otra entidad. Quien confirma ese correo no queda vinculado. Crea la entidad, vuelve a abrir el enlace y acepta. La misma asesoría muestra las dos entidades.
+- Una segunda asesoría invita a la entidad que ya está vinculada. Al aceptar, la página dice que ya tiene una asesoría activa y la sesión sigue mostrando la primera.
+- La empleada ve la asesoría como empleada y no ve el nombre de la entidad ni puede invitar una entidad.
+- Otra cuenta, al abrir la asesoría, ve «Asesoría no encontrada.». En local esa respuesta es la página de depuración de Symfony y no muestra el nombre de la asesoría ni el de la entidad.
+
+La migración Version20261102004000 se aplicó a la base local: 1 migración y 7 consultas.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit. La rama feature/e2-vinculo no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.

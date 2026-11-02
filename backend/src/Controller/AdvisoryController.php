@@ -7,11 +7,13 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Entity\AdvisoryMembership;
 use App\Identity\AcceptAdvisoryInvitation;
+use App\Identity\AdvisoryClientLinkRepository;
 use App\Identity\AdvisoryInvitationRepository;
 use App\Identity\AdvisoryMembershipRepository;
 use App\Identity\CreateAdvisoryFirm;
 use App\Identity\InvalidAdvisory;
 use App\Identity\InviteAdvisoryEmployee;
+use App\Identity\InviteEntityForAdvisory;
 use App\Identity\JoinPendingAdvisoryInvitations;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +29,8 @@ final class AdvisoryController extends AbstractController
         private readonly JoinPendingAdvisoryInvitations $joinPending,
         private readonly AdvisoryMembershipRepository $memberships,
         private readonly AdvisoryInvitationRepository $invitations,
+        private readonly InviteEntityForAdvisory $inviteEntity,
+        private readonly AdvisoryClientLinkRepository $clientLinks,
     ) {
     }
 
@@ -129,14 +133,7 @@ final class AdvisoryController extends AbstractController
             throw $this->createNotFoundException('Asesoría no encontrada.');
         }
 
-        return $this->render('asesoria/detalle.html.twig', [
-            'firm' => $membership->advisoryFirm(),
-            'members' => $this->memberships->findForFirm($membership->advisoryFirm()),
-            'isAdmin' => $membership->isAdmin(),
-            'error' => null,
-            'email' => '',
-            'invited' => $request->query->getBoolean('invitada'),
-        ]);
+        return $this->renderDetail($request, $membership, null, '', null, '');
     }
 
     #[Route('/asesorias/{id}/invitar', name: 'advisory_invite', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
@@ -168,14 +165,62 @@ final class AdvisoryController extends AbstractController
             }
         }
 
+        return $this->renderDetail($request, $membership, $error, $request->request->getString('email'), null, '', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    #[Route('/asesorias/{id}/invitar-entidad', name: 'advisory_invite_entity', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
+    public function inviteFiscalEntity(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+
+        $membership = $this->memberships->findForAccountAndFirm($account, $id);
+        if (null === $membership || !$membership->isAdmin()) {
+            throw $this->createNotFoundException('Asesoría no encontrada.');
+        }
+
+        if (!$this->isCsrfTokenValid('invitar-entidad', $request->request->getString('_token'))) {
+            return $this->renderDetail($request, $membership, null, '', 'El formulario ha caducado. Vuelve a enviarlo.', $request->request->getString('entity_email'), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            ($this->inviteEntity)($account, $id, $request->request->getString('entity_email'));
+
+            return $this->redirectToRoute('advisory', ['id' => $id, 'entidad' => '1']);
+        } catch (InvalidAdvisory $exception) {
+            $error = InvalidAdvisory::EMAIL === $exception->reason
+                ? 'El correo no es válido.'
+                : 'No se ha podido enviar la invitación.';
+
+            return $this->renderDetail($request, $membership, null, '', $error, $request->request->getString('entity_email'), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    private function renderDetail(
+        Request $request,
+        AdvisoryMembership $membership,
+        ?string $error,
+        string $email,
+        ?string $clientError,
+        string $clientEmail,
+        int $status = Response::HTTP_OK,
+    ): Response {
+        $firm = $membership->advisoryFirm();
+
         return $this->render('asesoria/detalle.html.twig', [
-            'firm' => $membership->advisoryFirm(),
-            'members' => $this->memberships->findForFirm($membership->advisoryFirm()),
+            'firm' => $firm,
+            'members' => $this->memberships->findForFirm($firm),
             'isAdmin' => $membership->isAdmin(),
             'error' => $error,
-            'email' => $request->request->getString('email'),
-            'invited' => false,
-        ], new Response(status: Response::HTTP_UNPROCESSABLE_ENTITY));
+            'email' => $email,
+            'invited' => $request->query->getBoolean('invitada'),
+            'clients' => $membership->isAdmin() ? $this->clientLinks->findByFirm($firm) : [],
+            'clientError' => $clientError,
+            'clientEmail' => $clientEmail,
+            'entityInvited' => $request->query->getBoolean('entidad'),
+        ], new Response(status: $status));
     }
 
     /**

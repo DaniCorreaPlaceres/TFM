@@ -46,7 +46,7 @@ final class AdvisoryWebTest extends WebTestCase
         self::assertSelectorTextContains('main', 'B0000001B');
         $firmId = $this->firmId('Norte Asesores');
 
-        $client->submit($client->getCrawler()->selectButton('Invitar')->form([
+        $client->submit($client->getCrawler()->filter('form[action$="/invitar"]')->form([
             'email' => 'empleada-asesoria@example.com',
         ]));
         self::assertResponseRedirects('/asesorias/'.$firmId.'?invitada=1');

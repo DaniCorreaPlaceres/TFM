@@ -20,6 +20,8 @@ final class InvalidAdvisory extends \DomainException
 
     public const string UNUSABLE = 'unusable';
 
+    public const string ALREADY_LINKED = 'already_linked';
+
     public function __construct(public readonly string $reason)
     {
         parent::__construct($reason);

@@ -8,7 +8,7 @@ use App\Identity\AccountMailer;
 
 final class RecordingAccountMailer implements AccountMailer
 {
-    /** @var list<array{kind: string, to: string, url: string, firm?: string}> */
+    /** @var list<array{kind: string, to: string, url: string, firm?: string, party?: string}> */
     public static array $messages = [];
 
     public static function reset(): void
@@ -29,5 +29,10 @@ final class RecordingAccountMailer implements AccountMailer
     public function sendAdvisoryInvitation(string $to, string $firmName, string $url): void
     {
         self::$messages[] = ['kind' => 'advisory-invitation', 'to' => $to, 'url' => $url, 'firm' => $firmName];
+    }
+
+    public function sendAdvisoryClientInvitation(string $to, string $partyName, string $url): void
+    {
+        self::$messages[] = ['kind' => 'advisory-client-invitation', 'to' => $to, 'url' => $url, 'party' => $partyName];
     }
 }

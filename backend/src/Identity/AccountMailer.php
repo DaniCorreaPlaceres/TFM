@@ -11,4 +11,6 @@ interface AccountMailer
     public function sendPasswordReset(string $to, string $url): void;
 
     public function sendAdvisoryInvitation(string $to, string $firmName, string $url): void;
+
+    public function sendAdvisoryClientInvitation(string $to, string $partyName, string $url): void;
 }

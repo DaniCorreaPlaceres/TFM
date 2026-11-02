@@ -34,3 +34,4 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E1 Aislamiento de la entidad fiscal](e1-aislamiento.md)
 - [E1 Cerrar las demás sesiones web](e1-revocacion.md)
 - [E2 Alta de asesoría e invitación de empleados](e2-asesoria.md)
+- [E2 Vínculo entre entidad fiscal y asesoría](e2-vinculo.md)

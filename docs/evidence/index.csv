@@ -10,4 +10,5 @@ EVI-0008,IDN-003,Cursor Pro,Comprobado en local y en CI; revisión humana 2026-1
 EVI-0009,ORG-001,Cursor Pro,Comprobado en local; revisión humana 2026-11-01,#20 71af2c2
 EVI-0010,SEC-001,Cursor Pro,Comprobado en local; exportación no ejecutada; revisión humana 2026-11-01,#21 0f10edb
 EVI-0011,IDN-004,Cursor Pro,Comprobado en local; refresh no ejecutado; revisión humana 2026-11-01,#22 1a62c08
-EVI-0012,ADV-001,Cursor Pro,Comprobado en local; segundo factor opcional para todos; revisión humana 2026-11-02,dd63f66
+EVI-0012,ADV-001,Cursor Pro,Comprobado en local; segundo factor opcional para todos; revisión humana 2026-11-02,#23 e8c8786
+EVI-0013,ADV-002,Cursor Pro,Comprobado en local; revisión humana 2026-11-02,sin commit
