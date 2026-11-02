@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Entity\Expense;
 use App\Entity\FiscalEntity;
 use App\Expense\DeactivateExpenseCategory;
 use App\Expense\DecideExpenseDeduction;
 use App\Expense\EnsureExpenseCategories;
 use App\Expense\ExpenseCategoryRepository;
+use App\Expense\ExpenseDuplicates;
 use App\Expense\ExpenseKind;
 use App\Expense\ExpenseMessages;
 use App\Expense\ExpenseRepository;
 use App\Expense\InvalidExpense;
+use App\Expense\MarkExpenseRecurrence;
 use App\Expense\PayExpense;
 use App\Expense\PaymentMethod;
+use App\Expense\ProposeExpense;
 use App\Expense\RegisterExpense;
 use App\Expense\ReviewExpense;
 use App\Expense\SaveExpenseCategory;
@@ -43,6 +47,8 @@ final class ExpenseController extends AbstractController
         private readonly ContactRepository $contacts,
         private readonly PayExpense $pay,
         private readonly ReviewExpense $review,
+        private readonly MarkExpenseRecurrence $recurrence,
+        private readonly ProposeExpense $propose,
     ) {
     }
 
@@ -246,6 +252,64 @@ final class ExpenseController extends AbstractController
         return $this->redirectToRoute('expenses', ['revision' => '1']);
     }
 
+    #[Route('/gastos/{id}/recurrencia', name: 'expense_recurrence', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
+    public function recurrence(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+        $fiscalEntity = $this->active->resolve($account, $request);
+        if (null === $fiscalEntity || null === $this->expenses->findForEntity($fiscalEntity, $id)) {
+            throw $this->createNotFoundException('Gasto no encontrado.');
+        }
+        if (!$this->isCsrfTokenValid('recurrencia', $request->request->getString('_token'))) {
+            return $this->page($request, $fiscalEntity, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+        $period = $request->request->getString('periodo');
+        if ('mensual' !== $period && 'ninguna' !== $period) {
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of(InvalidExpense::RECURRENCE));
+        }
+        try {
+            ($this->recurrence)($account, $fiscalEntity, $id, 'mensual' === $period);
+        } catch (InvalidExpense $exception) {
+            if (InvalidExpense::FORBIDDEN === $exception->reason) {
+                throw $this->createNotFoundException('Gasto no encontrado.');
+            }
+
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of($exception->reason));
+        }
+
+        return $this->redirectToRoute('expenses', ['recurrencia' => '1']);
+    }
+
+    #[Route('/gastos/{id}/propuesta', name: 'expense_proposal', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
+    public function proposal(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+        $fiscalEntity = $this->active->resolve($account, $request);
+        if (null === $fiscalEntity || null === $this->expenses->findForEntity($fiscalEntity, $id)) {
+            throw $this->createNotFoundException('Gasto no encontrado.');
+        }
+        if (!$this->isCsrfTokenValid('propuesta', $request->request->getString('_token'))) {
+            return $this->page($request, $fiscalEntity, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+        try {
+            ($this->propose)($account, $fiscalEntity, $id);
+        } catch (InvalidExpense $exception) {
+            if (InvalidExpense::FORBIDDEN === $exception->reason) {
+                throw $this->createNotFoundException('Gasto no encontrado.');
+            }
+
+            return $this->page($request, $fiscalEntity, ExpenseMessages::of($exception->reason));
+        }
+
+        return $this->redirectToRoute('expenses', ['propuesta' => '1']);
+    }
+
     private function page(Request $request, FiscalEntity $fiscalEntity, ?string $error = null): Response
     {
         $all = $this->categories->allForEntity($fiscalEntity);
@@ -262,12 +326,15 @@ final class ExpenseController extends AbstractController
             }
         }
 
+        $expenses = $this->expenses->forEntity($fiscalEntity);
+
         return $this->render('gasto/lista.html.twig', [
             'entityReady' => true,
             'categories' => $active,
             'allCategories' => $all,
             'suppliers' => $suppliers,
-            'expenses' => $this->expenses->forEntity($fiscalEntity),
+            'expenses' => $expenses,
+            'duplicateNotes' => $this->duplicateNotes($expenses),
             'kinds' => ExpenseKind::labels(),
             'methods' => PaymentMethod::labels(),
             'error' => $error,
@@ -276,8 +343,28 @@ final class ExpenseController extends AbstractController
             'savedDeduction' => '1' === $request->query->getString('deduccion'),
             'savedPayment' => '1' === $request->query->getString('pago'),
             'savedReview' => '1' === $request->query->getString('revision'),
+            'savedRecurrence' => '1' === $request->query->getString('recurrencia'),
+            'savedProposal' => '1' === $request->query->getString('propuesta'),
             'paymentToken' => Uuid::v7()->toRfc4122(),
         ], new Response(status: null === $error ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY));
+    }
+
+    /**
+     * @param list<Expense> $expenses
+     *
+     * @return array<string, list<Expense>>
+     */
+    private function duplicateNotes(array $expenses): array
+    {
+        $notes = [];
+        foreach ($expenses as $expense) {
+            $matches = ExpenseDuplicates::matching($expense, $expenses);
+            if ([] !== $matches) {
+                $notes[$expense->id()] = $matches;
+            }
+        }
+
+        return $notes;
     }
 
     private function date(string $raw): \DateTimeImmutable

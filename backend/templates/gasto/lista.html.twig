@@ -8,7 +8,7 @@
         <p>Elige antes una entidad fiscal.</p>
         <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
     {% else %}
-        <p>Registra facturas recibidas, tickets y otros gastos. La base y la cuota salen de las líneas. El estado de pago sale de los pagos anotados. Solo un gasto revisado es definitivo.</p>
+        <p>Registra facturas recibidas, tickets y otros gastos. La base y la cuota salen de las líneas. El estado de pago sale de los pagos anotados. Solo un gasto revisado es definitivo. Un posible duplicado se avisa y no se borra. Una propuesta mensual nace en borrador.</p>
         {% if error %}
             <p class="error" role="alert">Error: {{ error }}</p>
         {% endif %}
@@ -26,6 +26,12 @@
         {% endif %}
         {% if savedReview %}
             <p class="ok">La revisión ha quedado guardada.</p>
+        {% endif %}
+        {% if savedRecurrence %}
+            <p class="ok">La recurrencia ha quedado guardada.</p>
+        {% endif %}
+        {% if savedProposal %}
+            <p class="ok">La propuesta ha quedado creada. Revisa el borrador antes de darlo por definitivo.</p>
         {% endif %}
 
         <h2>Categorías</h2>
@@ -70,6 +76,33 @@
                         · total {{ expense.total|euros }}
                         <p>Revisión: {{ expense.reviewLabel }}. {{ expense.standingLabel }}{% if expense.reviewReason %} — {{ expense.reviewReason }}{% endif %}</p>
                         <p>Pago: {{ expense.paymentStatusLabel }}. Anotado: {{ expense.paid|euros }}. Saldo: {{ expense.balance|euros }}</p>
+                        {% for other in duplicateNotes[expense.id]|default([]) %}
+                            <p class="aviso">Posible duplicado: {{ other.documentNo }}, {{ other.issuedOn|date('d/m/Y') }}, {{ other.total|euros }}, {{ other.reviewLabel }}. El gasto no se ha borrado.</p>
+                        {% endfor %}
+                        {% if expense.sourceExpense %}
+                            <p>Propuesta de {{ expense.sourceExpense.documentNo }}. No es definitiva hasta revisarla.</p>
+                        {% endif %}
+                        {% if expense.monthly %}
+                            <p>Mensual.</p>
+                        {% endif %}
+                        {% if expense.current %}
+                            <form method="post" action="{{ path('expense_recurrence', {id: expense.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('recurrencia') }}">
+                                {% if expense.monthly %}
+                                    <input type="hidden" name="periodo" value="ninguna">
+                                    <button type="submit">Quitar recurrencia</button>
+                                {% else %}
+                                    <input type="hidden" name="periodo" value="mensual">
+                                    <button type="submit">Marcar como mensual</button>
+                                {% endif %}
+                            </form>
+                            {% if expense.monthly %}
+                                <form method="post" action="{{ path('expense_proposal', {id: expense.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('propuesta') }}">
+                                    <button type="submit">Crear propuesta</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
                         {% if expense.acceptsPayment %}
                             <form method="post" action="{{ path('expense_pay', {id: expense.id}) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token('pago') }}">

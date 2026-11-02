@@ -376,6 +376,110 @@ final class ExpenseWebTest extends WebTestCase
         self::assertStringNotContainsString('G-8', (string) $client->getResponse()->getContent());
     }
 
+    public function testElDuplicadoNoBloqueaYLaPropuestaQuedaEnBorrador(): void
+    {
+        $client = $this->client();
+        $this->register($client, 'duplicado@example.com');
+        $this->confirm($client);
+        $this->login($client, 'duplicado@example.com');
+        $client->followRedirect();
+        $client->clickLink('Entidades');
+        $client->submit($client->getCrawler()->selectButton('Crear entidad')->form([
+            'legal_name' => 'Taller Duplicado',
+            'tax_id' => 'B12345674',
+        ]));
+        $client->followRedirect();
+        $client->clickLink('Contactos');
+        $client->request('POST', '/contactos', [
+            '_token' => $this->token($client),
+            'nombre' => 'Papelería Norte',
+            'nif' => 'B12345674',
+            'proveedor' => '1',
+        ]);
+        $client->followRedirect();
+        $client->request('GET', '/gastos');
+        $supplier = $client->getCrawler()->filter('#contacto option')->attr('value');
+        $material = null;
+        $options = $client->getCrawler()->filter('#categoria option');
+        for ($index = 0; $index < $options->count(); ++$index) {
+            $option = $options->eq($index);
+            if ('Material' === trim($option->text())) {
+                $material = $option->attr('value');
+            }
+        }
+        self::assertIsString($supplier);
+        self::assertIsString($material);
+        $payload = [
+            'tipo' => 'factura',
+            'contacto' => $supplier,
+            'categoria' => $material,
+            'metodo' => 'tarjeta',
+            'numero' => 'G-7',
+            'fecha' => '2026-11-02',
+            'descripcion' => ['Folios'],
+            'cantidad' => ['2'],
+            'precio' => ['100,00'],
+            'iva' => ['21'],
+            'retencion' => ['0'],
+        ];
+        $client->request('POST', '/gastos', $payload + [
+            '_token' => $this->token($client, 'form[action$="/gastos"] input[name="_token"]'),
+        ]);
+        $client->followRedirect();
+        self::assertSelectorTextNotContains('main', 'Posible duplicado');
+
+        $second = $payload;
+        $second['_token'] = $this->token($client, 'form[action$="/gastos"] input[name="_token"]');
+        $second['fecha'] = '2026-11-03';
+        $second['precio'] = ['10,00'];
+        $second['cantidad'] = ['1'];
+        $second['iva'] = ['0'];
+        $client->request('POST', '/gastos', $second);
+        self::assertResponseRedirects('/gastos?gasto=1');
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Posible duplicado: G-7');
+        self::assertSelectorTextContains('main', '242,00 €');
+        self::assertSelectorTextContains('main', '10,00 €');
+
+        $form = $client->getCrawler()->selectButton('Marcar como mensual')->form();
+        $recurrencePath = parse_url($form->getUri(), PHP_URL_PATH);
+        self::assertIsString($recurrencePath);
+        $client->request('POST', $recurrencePath, ['_token' => 'caducado', 'periodo' => 'mensual']);
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextNotContains('main', 'Mensual.');
+
+        $client->submit($client->getCrawler()->selectButton('Marcar como mensual')->form());
+        self::assertResponseRedirects('/gastos?recurrencia=1');
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'Mensual.');
+
+        $client->submit($client->getCrawler()->selectButton('Crear propuesta')->form());
+        self::assertResponseRedirects('/gastos?propuesta=1');
+        $client->followRedirect();
+        self::assertSelectorTextContains('main', 'G-7-P');
+        self::assertSelectorTextContains('main', 'Propuesta de G-7');
+        self::assertSelectorTextContains('main', '03/12/2026');
+        self::assertSelectorTextContains('main', 'No es definitiva hasta revisarla');
+        self::assertSame(1, substr_count((string) $client->getResponse()->getContent(), 'G-7-P'));
+
+        $proposalForm = $client->getCrawler()->selectButton('Crear propuesta')->form();
+        $proposalPath = parse_url($proposalForm->getUri(), PHP_URL_PATH);
+        self::assertIsString($proposalPath);
+        $client->submit($proposalForm);
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('.error', 'Ya hay una propuesta');
+        self::assertSame(1, substr_count((string) $client->getResponse()->getContent(), 'G-7-P'));
+
+        $this->logout($client);
+        $this->register($client, 'otra.duplicado@example.com');
+        $this->confirm($client);
+        $this->login($client, 'otra.duplicado@example.com');
+        $client->request('POST', $proposalPath, ['_token' => 'caducado']);
+        self::assertResponseStatusCodeSame(404);
+        self::assertStringNotContainsString('G-7-P', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString('Papelería Norte', (string) $client->getResponse()->getContent());
+    }
+
     private function client(): KernelBrowser
     {
         ConfigurablePwnedPasswordList::reset();

@@ -25,6 +25,9 @@ final class InvalidExpense extends \DomainException
     public const string STATE = 'state';
     public const string REVIEW_REASON = 'review_reason';
     public const string FROZEN = 'frozen';
+    public const string RECURRENCE = 'recurrence';
+    public const string PROPOSAL = 'proposal';
+    public const string SOURCE = 'source';
 
     public function __construct(public readonly string $reason)
     {
