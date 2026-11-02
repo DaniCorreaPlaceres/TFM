@@ -25,6 +25,11 @@ final class DoctrineAdvisoryMembershipRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($membership);
     }
 
+    public function findById(string $id): ?AdvisoryMembership
+    {
+        return $this->find($id);
+    }
+
     public function findForAccountAndFirm(Account $account, string $advisoryFirmId): ?AdvisoryMembership
     {
         return $this->findOneBy([

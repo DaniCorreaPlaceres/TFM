@@ -35,6 +35,7 @@ trait PreparesAccountSchema
     protected static function emptyAccounts(): void
     {
         $connection = static::getContainer()->get(Connection::class);
+        $connection->executeStatement('DELETE FROM advisory_employee_permission');
         $connection->executeStatement('DELETE FROM advisory_client_invitation');
         $connection->executeStatement('DELETE FROM advisory_client_link');
         $connection->executeStatement('DELETE FROM advisory_invitation');
