@@ -20,10 +20,12 @@ Exponer `GET /api/v1/health` y un contrato OpenAPI mínimo, con errores `applica
 - Cada respuesta bajo `/api/` incluye la cabecera `X-Request-Id` con un UUID generado por el servidor.
 - Cada solicitud bajo `/api/` deja una línea de log con ese `requestId`.
 - Una ruta o método de API inexistente responde `Content-Type: application/problem+json` con `type`, `title`, `status` y `requestId`. El `requestId` del cuerpo coincide con la cabecera. El detalle no incluye trazas ni mensajes internos.
-- `GET /` no pasa a problem+json: sigue siendo la bienvenida de Symfony.
+- `GET /` no pasa a problem+json. En esta tarea era la bienvenida de Symfony. La portada posterior la sustituye y mantiene el HTML.
 - `backend/openapi/openapi.yaml` describe ese contrato en OpenAPI 3.0 y una prueba comprueba que el documento contiene la ruta, la cabecera y el esquema de error.
 - `GET /nginx-health` sigue comprobando Nginx, no la aplicación.
 
 ## Resultado
 
 Comprobado el 18 de octubre de 2026 en `feature/e0-contrato-api`. `php vendor/bin/phpunit` superó 5 pruebas. `GET /api/v1/health` respondió 200 `{"status":"ok"}` con `X-Request-Id`, y el log de desarrollo registró esa solicitud. Una ruta desconocida respondió 404 `application/problem+json` con el mismo `requestId` en cuerpo y cabecera. `GET /nginx-health` sigue respondiendo 200 `ok`. La app Flutter no llama a la API. La ficha de evidencia queda para E0.7.
+
+La bienvenida de Symfony en `GET /` quedó sustituida por la [portada](landing.md). La raíz sigue siendo HTML y no usa `application/problem+json`.

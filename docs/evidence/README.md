@@ -19,13 +19,14 @@ E0.7 registró EVI-0001 a EVI-0004 con resultados ya observados. E0.8 añadió E
 - [EVI-0011](EVI-0011/record.md): cerrar las demás sesiones web. Comprobado en local y aceptado el 1 de noviembre de 2026. El refresh no se ejecutó. Quedó integrada con la pull request #22.
 - [EVI-0012](EVI-0012/record.md): alta de una asesoría e invitación de un empleado. Comprobado en local el 1 de noviembre de 2026 y aceptado el 2 de noviembre de 2026. El segundo factor sigue siendo opcional para todos. Quedó integrada en `develop` con la pull request #23. Los registros de GitHub de esa pull request no se copiaron.
 - [EVI-0013](EVI-0013/record.md): vínculo entre una entidad fiscal y una asesoría. Comprobado en local y aceptado el 2 de noviembre de 2026. Quedó integrado en `develop` con la pull request #24. Los registros de GitHub de esa pull request no se copiaron.
-- [EVI-0014](EVI-0014/record.md): permiso del empleado para ver las entidades vinculadas. Comprobado en local y aceptado el 2 de noviembre de 2026. La rama no está integrada.
+- [EVI-0014](EVI-0014/record.md): permiso del empleado para ver las entidades vinculadas. Comprobado en local y aceptado el 2 de noviembre de 2026. Quedó integrado en `develop` con la pull request #25. Los registros de GitHub de esa pull request no se copiaron.
+- [EVI-0015](EVI-0015/record.md): categorías de un nivel y registro manual del gasto. Comprobado en local y aceptado el 2 de noviembre de 2026. `feature/e4-gastos` no está integrada.
 
 El índice está en [index.csv](index.csv).
 
 ## Revisión humana
 
-El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008, EVI-0009, EVI-0010 y EVI-0011 el 1 de noviembre de 2026. EVI-0012, EVI-0013 y EVI-0014 quedaron aceptadas el 2 de noviembre de 2026. Esa aceptación no promociona `develop` a `main` ni cierra E1 ni E2. Las pull requests #17, #19, #20, #21, #22, #23 y #24 están integradas en `develop`. `feature/e2-permisos` no está integrada.
+El responsable del TFM aceptó EVI-0001 a EVI-0007 el 25 de octubre de 2026, incluidas las pruebas que siguen sin ejecutarse, y EVI-0008, EVI-0009, EVI-0010 y EVI-0011 el 1 de noviembre de 2026. EVI-0012, EVI-0013, EVI-0014 y EVI-0015 quedaron aceptadas el 2 de noviembre de 2026. Esa aceptación no promociona `develop` a `main` ni cierra E1, E2, E3 ni E4. Las pull requests #17, #19, #20, #21, #22, #23, #24, #25 y #26 están integradas en `develop`. Los registros de GitHub de #25 y #26 no se copiaron. `feature/e4-gastos` no está integrada.
 
 ## Qué no se rellena
 

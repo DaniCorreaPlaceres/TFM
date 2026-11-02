@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gastos — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Gastos</h1>
+    {% if not entityReady %}
+        <p>Elige antes una entidad fiscal.</p>
+        <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
+    {% else %}
+        <p>Registra facturas recibidas, tickets y otros gastos. La base y la cuota salen de las líneas.</p>
+        {% if error %}
+            <p class="error" role="alert">Error: {{ error }}</p>
+        {% endif %}
+        {% if savedExpense %}
+            <p class="ok">El gasto ha quedado guardado.</p>
+        {% endif %}
+        {% if savedCategory %}
+            <p class="ok">La categoría ha quedado guardada.</p>
+        {% endif %}
+
+        <h2>Categorías</h2>
+        <ul>
+            {% for category in allCategories %}
+                <li>
+                    {{ category.name }}
+                    {% if category.isDefault %}(de serie){% endif %}
+                    {% if category.isActive %}
+                        <form method="post" action="{{ path('expense_category_deactivate', {id: category.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('desactivar-categoria') }}">
+                            <button type="submit">Desactivar</button>
+                        </form>
+                    {% else %}
+                        Desactivada
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <form method="post" action="{{ path('expense_category') }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('categoria') }}">
+            <label for="nombre">Nueva categoría</label>
+            <input id="nombre" name="nombre" type="text" maxlength="60" required>
+            <button type="submit">Añadir categoría</button>
+        </form>
+
+        <h2>Gastos registrados</h2>
+        {% if expenses is empty %}
+            <p>Todavía no hay gastos.</p>
+        {% else %}
+            <ul>
+                {% for expense in expenses %}
+                    <li>
+                        {{ expense.documentNo }}
+                        · {{ expense.kindLabel }}
+                        · {{ expense.snapshotName }} ({{ expense.snapshotTaxId }})
+                        · {{ expense.snapshotCategory }}
+                        · {{ expense.paymentMethodLabel }}
+                        · {{ expense.issuedOn|date('d/m/Y') }}
+                        · base {{ expense.base|euros }}
+                        · cuota {{ expense.tax|euros }}
+                        · total {{ expense.total|euros }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>Nuevo gasto</h2>
+        {% if suppliers is empty %}
+            <p>Crea antes un proveedor.</p>
+            <p><a href="{{ path('contacts') }}">Contactos</a></p>
+        {% else %}
+            <form method="post" action="{{ path('expenses') }}" novalidate>
+                <input type="hidden" name="_token" value="{{ csrf_token('gasto') }}">
+                <label for="tipo">Tipo (obligatorio)</label>
+                <select id="tipo" name="tipo" required>
+                    {% for code, label in kinds %}
+                        <option value="{{ code }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <label for="contacto">Proveedor (obligatorio)</label>
+                <select id="contacto" name="contacto" required>
+                    {% for supplier in suppliers %}
+                        <option value="{{ supplier.id }}">{{ supplier.displayName }} ({{ supplier.taxId }})</option>
+                    {% endfor %}
+                </select>
+                <label for="categoria">Categoría (obligatoria)</label>
+                <select id="categoria" name="categoria" required>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="metodo">Método de pago (obligatorio)</label>
+                <select id="metodo" name="metodo" required>
+                    {% for code, label in methods %}
+                        <option value="{{ code }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <label for="numero">Número (obligatorio)</label>
+                <input id="numero" name="numero" type="text" maxlength="40" required>
+                <label for="fecha">Fecha (obligatoria)</label>
+                <input id="fecha" name="fecha" type="date" required>
+                <h3>Líneas</h3>
+                {% for n in 1..2 %}
+                    <fieldset>
+                        <label>Descripción <input name="descripcion[]" type="text" maxlength="180"></label>
+                        <label>Cantidad <input name="cantidad[]" type="text" inputmode="decimal"></label>
+                        <label>Precio <input name="precio[]" type="text" inputmode="decimal"></label>
+                        <label>Impuesto (%) <input name="iva[]" type="text" inputmode="decimal"></label>
+                        <label>Retención (%) <input name="retencion[]" type="text" inputmode="decimal"></label>
+                    </fieldset>
+                {% endfor %}
+                <p class="ayuda">El porcentaje es el de la factura recibida. Aselto no calcula aquí el modelo fiscal. Las líneas vacías no se guardan.</p>
+                <button type="submit">Guardar gasto</button>
+            </form>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aselto — Tus finanzas bajo control{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="Aselto reúne la actividad del autónomo y el trabajo de su asesoría. Cada entidad queda separada. Tus finanzas bajo control.">
+{% endblock %}
+
+{% block cuerpo %}
+    <div class="portada">
+        <a class="saltar" href="#contenido">Saltar al contenido</a>
+        <header class="cabecera-portada">
+            <a class="marca-app" href="{{ path('landing') }}">
+                <span class="monograma" aria-hidden="true">A</span>
+                <span>Aselto</span>
+            </a>
+            <nav class="nav-portada" aria-label="Presentación">
+                <a href="#autonomos">Autónomos</a>
+                <a href="#asesorias">Asesorías</a>
+                <a href="#empezar">Cómo se empieza</a>
+            </nav>
+            {% include 'inicio/_acciones.html.twig' %}
+        </header>
+
+        <main id="contenido">
+            <div class="marco">
+                <section class="hero-portada">
+                    <div class="hero-texto">
+                        <p class="eslogan">Tus finanzas bajo control</p>
+                        <h1>El autónomo y su asesoría, con la misma información.</h1>
+                        <p>Aselto guarda cada actividad en su entidad. Tú organizas ingresos, gastos y documentos. Tu asesoría trabaja solo con los clientes que la autorizan. Los datos de una entidad no se mezclan con los de otra.</p>
+                        {% include 'inicio/_acciones.html.twig' %}
+                    </div>
+                    <div class="vitrina" aria-hidden="true">
+                        <div class="vitrina-barra">
+                            <span class="monograma">A</span>
+                            <strong>Aselto</strong>
+                        </div>
+                        <div class="vitrina-cuerpo">
+                            <p class="vitrina-hola">Tu espacio</p>
+                            <p class="vitrina-nota">Cada actividad, en su entidad.</p>
+                            <div class="vitrina-fila">
+                                <span>Ingresos</span>
+                                <strong>Sin movimientos</strong>
+                            </div>
+                            <div class="vitrina-fila">
+                                <span>Gastos</span>
+                                <strong>Sin movimientos</strong>
+                            </div>
+                            <div class="vitrina-fila">
+                                <span>Documentos</span>
+                                <strong>Por revisar</strong>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <ul class="promesas">
+                    <li>Cada actividad, en su entidad</li>
+                    <li>La asesoría solo ve lo que autorizas</li>
+                    <li>Nada cuenta hasta que una persona lo confirma</li>
+                </ul>
+
+                <section class="audiencias" aria-label="A quién va dirigido">
+                    <article id="autonomos" class="tarjeta tarjeta-oficio">
+                        <p class="oficio" aria-hidden="true">A</p>
+                        <h2>Para autónomos</h2>
+                        <p>Menos papeles sueltos y menos veces la misma factura por correo. Organizas tu actividad sin ser contable.</p>
+                        <ul>
+                            <li>Cada actividad es una entidad, con su nombre y su NIF. Puedes tener varias y elegir cuál está activa.</li>
+                            <li>Ingresos, gastos, facturas y justificantes quedan en esa entidad, separados de cualquier otra.</li>
+                            <li>Si un documento se lee solo, los datos quedan propuestos. Tú los revisas y los confirmas antes de que cuenten.</li>
+                            <li>Cuando haya cálculos automáticos, serán los modelos 130, 303 y 420, en su ámbito. No habrá otros modelos ni una presentación de impuestos por ti.</li>
+                            <li>Puedes usarlo por tu cuenta o invitar a una asesoría. Esa entidad tiene como mucho una asesoría activa.</li>
+                        </ul>
+                    </article>
+                    <article id="asesorias" class="tarjeta tarjeta-oficio">
+                        <p class="oficio" aria-hidden="true">B</p>
+                        <h2>Para asesorías</h2>
+                        <p>Menos persecución de justificantes. Tus clientes traen la documentación de su actividad y tú decides quién de tu equipo la ve.</p>
+                        <ul>
+                            <li>Crea la asesoría e invita a tu equipo por correo. Quien no pertenece no la ve.</li>
+                            <li>Una asesoría puede llevar varias entidades. Cada una sigue siendo de su titular.</li>
+                            <li>La administradora invita a las entidades y decide si un empleado ve sus nombres. Sin ese permiso, no los ve.</li>
+                            <li>La lectura automática no cierra un registro. Una persona confirma los datos antes de que cuenten.</li>
+                            <li>El segundo factor es opcional. Si lo activas, recibes códigos de recuperación de un solo uso.</li>
+                        </ul>
+                    </article>
+                </section>
+
+                <section id="empezar">
+                    <h2>Cómo se empieza</h2>
+                    <p class="subtitulo">La misma cuenta sirve para los dos caminos. Dentro eliges si creas una entidad, una asesoría o las dos.</p>
+                    <ol class="pasos">
+                        <li class="tarjeta">
+                            <p class="numero" aria-hidden="true">1</p>
+                            <h3>1. Crea la cuenta</h3>
+                            <p>Confirmas el correo y ya puedes entrar.</p>
+                        </li>
+                        <li class="tarjeta">
+                            <p class="numero" aria-hidden="true">2</p>
+                            <h3>2. Abre tu sitio</h3>
+                            <p>Si trabajas por cuenta propia, creas tu entidad. Si llevas una asesoría, creas la asesoría e invitas a tu equipo.</p>
+                        </li>
+                        <li class="tarjeta">
+                            <p class="numero" aria-hidden="true">3</p>
+                            <h3>3. Trabajad juntos</h3>
+                            <p>Cuando queráis, uno invita al otro. El enlace caduca a los 7 días. Esa entidad queda con una sola asesoría activa.</p>
+                        </li>
+                    </ol>
+                </section>
+
+                <section class="confianza" aria-label="Cómo se tratan los datos">
+                    <h2>Cómo se tratan los datos</h2>
+                    <div class="rejilla">
+                        <article class="tarjeta">
+                            <h3>Cada entidad, separada</h3>
+                            <p>Una cuenta no lee ni cambia la entidad de otra persona.</p>
+                        </article>
+                        <article class="tarjeta">
+                            <h3>Una persona confirma</h3>
+                            <p>Lo que proponga una lectura automática no cuenta hasta que alguien lo revisa y lo confirma.</p>
+                        </article>
+                        <article class="tarjeta">
+                            <h3>Sin un «al día» vacío</h3>
+                            <p>Si el sistema no puede comprobar una cifra o una obligación, no dice que esté hecha.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="audiencias" aria-label="Qué está abierto">
+                    <article class="tarjeta">
+                        <h2>Desde el primer día</h2>
+                        <ul>
+                            <li>Crear la cuenta y confirmar el correo.</li>
+                            <li>Crear entidades y elegir la activa.</li>
+                            <li>Crear una asesoría, invitar al equipo y vincular entidades.</li>
+                            <li>Activar un segundo factor, si quieres.</li>
+                            <li>Registrar contactos, ingresos y gastos de la entidad activa.</li>
+                        </ul>
+                    </article>
+                    <article class="tarjeta">
+                        <h2>En las siguientes entregas</h2>
+                        <ul>
+                            <li>Los documentos de la entidad.</li>
+                            <li>La lectura de facturas y tickets, siempre pendiente de confirmación.</li>
+                            <li>Los modelos 130, 303 y 420.</li>
+                            <li>La aplicación del móvil conectada con esta web.</li>
+                        </ul>
+                        <p class="ayuda">Esas pantallas explican que todavía no hay datos. No hay importes de ejemplo.</p>
+                    </article>
+                </section>
+
+                <section class="cierre-portada">
+                    <h2>Empieza por la cuenta</h2>
+                    <p>La entidad y la asesoría se crean dentro, cuando hayas confirmado el correo.</p>
+                    {% include 'inicio/_acciones.html.twig' %}
+                </section>
+            </div>
+        </main>
+
+        <footer class="pie-portada">
+            <p><strong>Aselto</strong>. Tus finanzas bajo control.</p>
+        </footer>
+    </div>
+{% endblock %}

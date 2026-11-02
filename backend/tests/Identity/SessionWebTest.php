@@ -57,7 +57,7 @@ final class SessionWebTest extends WebTestCase
         self::assertStringContainsString('samesite=lax', $header);
         self::assertStringNotContainsString('secure', $header);
         $client->followRedirect();
-        self::assertSelectorTextContains('h1', 'Has entrado');
+        self::assertSelectorTextContains('h1', 'Inicio');
         self::assertSelectorTextContains('main', 'persona@example.com');
 
         $client->submit($client->getCrawler()->selectButton('Salir')->form());
@@ -142,6 +142,41 @@ final class SessionWebTest extends WebTestCase
         }
         $this->login($client, $email, 'clave-equivocada');
         self::assertSelectorTextContains('.error', 'Demasiados intentos');
+    }
+
+    public function testElInicioEnseñaElMapaSinImportes(): void
+    {
+        $client = $this->client();
+        $this->register($client, 'persona@example.com');
+        $this->confirm($client);
+        $this->login($client, 'persona@example.com', 'clave-local-segura');
+        $client->followRedirect();
+
+        self::assertSelectorTextContains('h1', 'Inicio');
+        self::assertSelectorTextContains('main', 'Todavía no has elegido una entidad fiscal');
+        self::assertSelectorTextContains('nav', 'Ingresos y gastos');
+        self::assertStringNotContainsString('€', $client->getCrawler()->filter('body')->text());
+
+        $client->clickLink('Ingresos y gastos');
+        self::assertSelectorTextContains('h1', 'Ingresos');
+        self::assertSelectorTextContains('main', 'Elige antes una entidad fiscal');
+
+        $client->clickLink('Documentos');
+        self::assertSelectorTextContains('main', 'Todavía no se pueden subir archivos');
+
+        $client->clickLink('Ayuda');
+        self::assertSelectorTextContains('h1', 'Ayuda');
+    }
+
+    public function testElMapaSinSesionVuelveAEntrar(): void
+    {
+        $client = $this->client();
+        $client->request('GET', '/ingresos');
+        self::assertResponseRedirects('/entrar');
+        $client->request('GET', '/documentos');
+        self::assertResponseRedirects('/entrar');
+        $client->request('GET', '/ayuda');
+        self::assertResponseRedirects('/entrar');
     }
 
     private function client(): KernelBrowser

@@ -22,14 +22,15 @@ final class HealthTest extends WebTestCase
         self::assertStringContainsString($requestId, (string) file_get_contents(static::getContainer()->getParameter('kernel.logs_dir').'/test.log'));
     }
 
-    public function testLaBienvenidaNoUsaProblemJson(): void
+    public function testLaRaizEsHtmlYNoUsaProblemJson(): void
     {
         $client = static::createClient();
         $client->request('GET', '/');
 
         $response = $client->getResponse();
 
-        self::assertSame(404, $response->getStatusCode());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringStartsWith('text/html', (string) $response->headers->get('Content-Type'));
         self::assertStringNotContainsString('application/problem+json', (string) $response->headers->get('Content-Type'));
     }
 
