@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingresos — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Ingresos de {{ fiscalEntity.legalName }}</h1>
+    <p>Vista de la asesoría. Los cambios los hace el titular.</p>
+    {% if incomes is empty %}
+        <p>Todavía no hay ingresos.</p>
+    {% else %}
+        <ul>
+            {% for income in incomes %}
+                <li>
+                    <a href="{{ path('advisory_income', {id: firm.id, entityId: fiscalEntity.id, incomeId: income.id}) }}">{{ income.invoiceNo ?: 'Sin número' }}</a>
+                    · {{ income.snapshotName }}
+                    · {{ income.total|euros }}
+                    · {{ income.paymentStatusLabel }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p><a href="{{ path('advisory', {id: firm.id}) }}">Volver a la asesoría</a></p>
+{% endblock %}

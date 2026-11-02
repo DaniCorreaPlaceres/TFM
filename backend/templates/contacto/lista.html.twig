@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contactos — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Contactos</h1>
+    {% if not entityReady %}
+        <p>Elige antes una entidad fiscal.</p>
+        <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
+    {% else %}
+        <p>Un contacto puede ser cliente, proveedor o ambos. El NIF se comprueba con su dígito de control.</p>
+        {% if saved %}
+            <p>Contacto guardado.</p>
+        {% endif %}
+        {% if error %}
+            <p class="error" role="alert">Error: {{ error }}</p>
+        {% endif %}
+
+        <form method="get" action="{{ path('contacts') }}">
+            <label for="q">Buscar</label>
+            <input id="q" name="q" type="search" value="{{ query }}">
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if contacts is empty %}
+            <p>Todavía no hay contactos.</p>
+        {% else %}
+            <ul>
+                {% for contact in contacts %}
+                    <li>
+                        <p>{{ contact.displayName }} ({{ contact.taxId }})</p>
+                        <form method="post" action="{{ path('contact_update', {id: contact.id}) }}" novalidate>
+                            <input type="hidden" name="_token" value="{{ csrf_token('contacto') }}">
+                            <label for="nombre-{{ contact.id }}">Nombre (obligatorio)</label>
+                            <input id="nombre-{{ contact.id }}" name="nombre" type="text" required maxlength="180" value="{{ editingId == contact.id ? nombre : contact.displayName }}">
+                            <label for="nif-{{ contact.id }}">NIF (obligatorio)</label>
+                            <input id="nif-{{ contact.id }}" name="nif" type="text" required maxlength="20" autocapitalize="characters" value="{{ editingId == contact.id ? nif : contact.taxId }}">
+                            <label><input type="checkbox" name="cliente" value="1" {{ (editingId == contact.id ? cliente : contact.client) ? 'checked' : '' }}> Cliente</label>
+                            <label><input type="checkbox" name="proveedor" value="1" {{ (editingId == contact.id ? proveedor : contact.supplier) ? 'checked' : '' }}> Proveedor</label>
+                            <button type="submit">Guardar contacto</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>Nuevo contacto</h2>
+        <form method="post" action="{{ path('contacts') }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('contacto') }}">
+            <label for="nombre">Nombre (obligatorio)</label>
+            <input id="nombre" name="nombre" type="text" required maxlength="180" value="{{ editingId ? '' : nombre }}">
+            <label for="nif">NIF (obligatorio)</label>
+            <input id="nif" name="nif" type="text" required maxlength="20" autocapitalize="characters" value="{{ editingId ? '' : nif }}">
+            <p class="ayuda">NIF, NIE o CIF, con su dígito de control.</p>
+            <label><input type="checkbox" name="cliente" value="1" {{ (not editingId and cliente) ? 'checked' : '' }}> Cliente</label>
+            <label><input type="checkbox" name="proveedor" value="1" {{ (not editingId and proveedor) ? 'checked' : '' }}> Proveedor</label>
+            <button type="submit">Guardar contacto</button>
+        </form>
+        <p><a href="{{ path('incomes') }}">Ingresos y gastos</a></p>
+    {% endif %}
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}

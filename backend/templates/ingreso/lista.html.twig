@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingresos — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Ingresos</h1>
+    {% if not entityReady %}
+        <p>Elige antes una entidad fiscal.</p>
+        <p><a href="{{ path('fiscal_entities') }}">Entidades</a></p>
+    {% else %}
+        <p>Registra facturas emitidas fuera de Aselto y otros ingresos. Los gastos se registran en una entrega posterior.</p>
+        {% if quarterClosed %}
+            <p>Trimestre cerrado.</p>
+        {% endif %}
+        {% if error %}
+            <p class="error" role="alert">Error: {{ error }}</p>
+        {% endif %}
+
+        <form method="get" action="{{ path('incomes') }}">
+            <label for="q">Buscar</label>
+            <input id="q" name="q" type="search" value="{{ query }}">
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if incomes is empty %}
+            <p>Todavía no hay ingresos.</p>
+        {% else %}
+            <ul>
+                {% for income in incomes %}
+                    <li>
+                        <a href="{{ path('income_show', {id: income.id}) }}">{{ income.invoiceNo ?: 'Sin número' }}</a>
+                        · {{ income.snapshotName }} ({{ income.snapshotTaxId }})
+                        · {{ income.issuedOn|date('d/m/Y') }}
+                        · {{ income.total|euros }}
+                        · {{ income.paymentStatusLabel }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>Nuevo ingreso</h2>
+        {% if clients is empty %}
+            <p>Crea antes un cliente.</p>
+            <p><a href="{{ path('contacts') }}">Contactos</a></p>
+        {% else %}
+            <form method="post" action="{{ path('incomes') }}" novalidate>
+                <input type="hidden" name="_token" value="{{ csrf_token('ingreso') }}">
+                <label for="contacto">Cliente (obligatorio)</label>
+                <select id="contacto" name="contacto" required>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}" {{ contacto == client.id ? 'selected' : '' }}>{{ client.displayName }} ({{ client.taxId }})</option>
+                    {% endfor %}
+                </select>
+                <label for="numero">Número</label>
+                <input id="numero" name="numero" type="text" maxlength="40" value="{{ numero }}">
+                <label for="fecha">Fecha (obligatoria)</label>
+                <input id="fecha" name="fecha" type="date" required value="{{ fecha }}">
+                <label for="vencimiento">Vencimiento</label>
+                <input id="vencimiento" name="vencimiento" type="date" value="{{ vencimiento }}">
+                <h3>Líneas</h3>
+                {% for draft in drafts %}
+                    <fieldset>
+                        <label>Descripción <input name="descripcion[]" type="text" maxlength="180" value="{{ draft.description }}"></label>
+                        <label>Cantidad <input name="cantidad[]" type="text" inputmode="decimal" value="{{ draft.quantity }}"></label>
+                        <label>Precio <input name="precio[]" type="text" inputmode="decimal" value="{{ draft.unitPrice }}"></label>
+                        <label>Impuesto (%) <input name="iva[]" type="text" inputmode="decimal" value="{{ draft.taxRate }}"></label>
+                        <label>Retención (%) <input name="retencion[]" type="text" inputmode="decimal" value="{{ draft.withholdingRate }}"></label>
+                    </fieldset>
+                {% endfor %}
+                <p class="ayuda">El porcentaje es el de la factura. Aselto no calcula aquí el modelo fiscal. Las líneas vacías no se guardan.</p>
+                <button type="submit">Guardar ingreso</button>
+            </form>
+        {% endif %}
+
+        <h2>Cerrar trimestre</h2>
+        <form method="post" action="{{ path('income_close_quarter') }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('cerrar-trimestre') }}">
+            <label for="anio">Año</label>
+            <input id="anio" name="anio" type="number" min="2000" max="2100" required value="2026">
+            <label for="trimestre">Trimestre</label>
+            <select id="trimestre" name="trimestre">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+            </select>
+            <p class="ayuda">Un trimestre cerrado no admite cambios en los ingresos de esas fechas.</p>
+            <button type="submit">Cerrar trimestre</button>
+        </form>
+        {% if quarters is not empty %}
+            <ul>
+                {% for quarter in quarters %}
+                    <li>Cerrado: {{ quarter.year }} T{{ quarter.quarter }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p><a href="{{ path('income_import') }}">Importar CSV</a></p>
+        <p><a href="{{ path('contacts') }}">Contactos</a></p>
+    {% endif %}
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}

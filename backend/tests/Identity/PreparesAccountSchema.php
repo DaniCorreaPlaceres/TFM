@@ -35,6 +35,13 @@ trait PreparesAccountSchema
     protected static function emptyAccounts(): void
     {
         $connection = static::getContainer()->get(Connection::class);
+        $connection->executeStatement('DELETE FROM income_attachment');
+        $connection->executeStatement('DELETE FROM income_action');
+        $connection->executeStatement('DELETE FROM income_payment');
+        $connection->executeStatement('DELETE FROM income_line');
+        $connection->executeStatement('DELETE FROM income');
+        $connection->executeStatement('DELETE FROM contact');
+        $connection->executeStatement('DELETE FROM closed_quarter');
         $connection->executeStatement('DELETE FROM advisory_client_invitation');
         $connection->executeStatement('DELETE FROM advisory_client_link');
         $connection->executeStatement('DELETE FROM advisory_invitation');
