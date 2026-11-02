@@ -77,6 +77,11 @@ class Expense
         private string $reviewState = 'borrador',
         #[ORM\Column(length: 240, nullable: true)]
         private ?string $reviewReason = null,
+        #[ORM\Column(length: 16, nullable: true)]
+        private ?string $recurrence = null,
+        #[ORM\ManyToOne(targetEntity: self::class)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+        private ?Expense $sourceExpense = null,
     ) {
         $this->lines = new ArrayCollection();
         $this->payments = new ArrayCollection();
@@ -367,6 +372,30 @@ class Expense
     public function acceptsPayment(): bool
     {
         return $this->isCurrent() && Amount::compare($this->balance(), '0.00') > 0;
+    }
+
+    public function isMonthly(): bool
+    {
+        return 'mensual' === $this->recurrence;
+    }
+
+    public function sourceExpense(): ?Expense
+    {
+        return $this->sourceExpense;
+    }
+
+    public function setMonthly(bool $monthly): void
+    {
+        $this->assertCurrent();
+        $this->recurrence = $monthly ? 'mensual' : null;
+    }
+
+    public function linkSource(Expense $source): void
+    {
+        if ($source->id() === $this->id() || !$source->belongsTo($this->fiscalEntity)) {
+            throw new InvalidExpense(InvalidExpense::SOURCE);
+        }
+        $this->sourceExpense = $source;
     }
 
     public function pay(

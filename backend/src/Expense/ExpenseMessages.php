@@ -27,6 +27,9 @@ final class ExpenseMessages
             InvalidExpense::STATE => 'Esa transición de revisión no es válida.',
             InvalidExpense::REVIEW_REASON => 'Escribe el motivo de la revisión.',
             InvalidExpense::FROZEN => 'Este gasto ya no admite cambios.',
+            InvalidExpense::RECURRENCE => 'Elige si el gasto se repite cada mes.',
+            InvalidExpense::PROPOSAL => 'Ya hay una propuesta para ese mes.',
+            InvalidExpense::SOURCE => 'La propuesta no puede enlazarse con ese gasto.',
             default => 'No se ha podido guardar el gasto.',
         };
     }

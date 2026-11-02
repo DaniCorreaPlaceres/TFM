@@ -14,8 +14,13 @@ use App\Expense\DecideExpenseDeduction;
 use App\Expense\DefaultExpenseCategories;
 use App\Expense\EnsureExpenseCategories;
 use App\Expense\ExpenseAccess;
+use App\Expense\ExpenseDuplicates;
 use App\Expense\InvalidExpense;
+use App\Expense\MarkExpenseRecurrence;
+use App\Expense\NextMonth;
 use App\Expense\PayExpense;
+use App\Expense\ProposalNumber;
+use App\Expense\ProposeExpense;
 use App\Expense\RegisterExpense;
 use App\Expense\ReviewExpense;
 use App\Expense\SaveExpenseCategory;
@@ -246,6 +251,102 @@ final class ExpenseBehaviorTest extends TestCase
         }
     }
 
+    public function testElDuplicadoSeAvisaYLaPropuestaNaceEnBorrador(): void
+    {
+        self::assertSame('2026-02-28', NextMonth::of(new \DateTimeImmutable('2026-01-31'))->format('Y-m-d'));
+        self::assertSame('2024-02-29', NextMonth::of(new \DateTimeImmutable('2024-01-31'))->format('Y-m-d'));
+        self::assertSame('G-1-P', ProposalNumber::from('G-1'));
+        self::assertSame(40, mb_strlen(ProposalNumber::from(str_repeat('A', 40))));
+
+        [$account, $entity, $ensure, $register, $mark, $propose, $pay, $deactivate, $categories, $contacts, $expenses] = $this->duplicates();
+        ($ensure)($entity);
+        $supplier = Contact::open($entity, 'Papelería Norte', 'B12345674', false, true, new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $contacts->save($supplier);
+        $otherSupplier = Contact::open($entity, 'Tinta Sur', '12345678Z', false, true, new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $contacts->save($otherSupplier);
+        $material = $this->named($categories->allForEntity($entity), 'Material');
+        $first = $register($account, $entity, $supplier->id(), $material->id(), 'factura', 'tarjeta', 'G-1', new \DateTimeImmutable('2026-11-02'), [
+            $this->row('Folios', '2', '100,00', '21', '0'),
+        ]);
+        $second = $register($account, $entity, $supplier->id(), $material->id(), 'ticket', 'efectivo', 'g-1', new \DateTimeImmutable('2026-11-03'), [
+            $this->row('Clips', '1', '10', '0', '0'),
+        ]);
+        $stored = $expenses->forEntity($entity);
+        $matches = ExpenseDuplicates::matching($second, $stored);
+        self::assertCount(1, $matches);
+        self::assertSame($first->id(), $matches[0]->id());
+        self::assertSame('242.00', $first->total());
+        self::assertSame('10.00', $second->total());
+
+        $third = $register($account, $entity, $supplier->id(), $material->id(), 'factura', 'tarjeta', 'G-9', new \DateTimeImmutable('2026-11-02'), [
+            $this->row('Folios', '2', '100,00', '21', '0'),
+        ]);
+        self::assertSame($first->id(), ExpenseDuplicates::matching($third, $expenses->forEntity($entity))[0]->id());
+
+        $foreign = $register($account, $entity, $otherSupplier->id(), $material->id(), 'factura', 'tarjeta', 'G-1', new \DateTimeImmutable('2026-11-02'), [
+            $this->row('Folios', '2', '100,00', '21', '0'),
+        ]);
+        self::assertSame([], ExpenseDuplicates::matching($foreign, $expenses->forEntity($entity)));
+
+        $pay($account, $entity, $first->id(), '50,00', new \DateTimeImmutable('2026-11-02'), 'transferencia', 'P-1', Uuid::v7()->toRfc4122());
+        ($deactivate)($account, $entity, $material->id());
+        $mark($account, $entity, $first->id(), true);
+        self::assertTrue($first->isMonthly());
+        $proposal = $propose($account, $entity, $first->id());
+        self::assertSame('borrador', $proposal->reviewState());
+        self::assertFalse($proposal->isDefinitive());
+        self::assertNull($proposal->baseDeductible());
+        self::assertSame('0.00', $proposal->paid());
+        self::assertSame('242.00', $proposal->total());
+        self::assertSame('200.00', $proposal->base());
+        self::assertSame('42.00', $proposal->tax());
+        self::assertSame('2026-12-02', $proposal->issuedOn()->format('Y-m-d'));
+        self::assertSame('G-1-P', $proposal->documentNo());
+        $origin = $proposal->sourceExpense();
+        self::assertNotNull($origin);
+        self::assertSame($first->id(), $origin->id());
+        self::assertSame('50.00', $first->paid());
+        self::assertSame('242.00', $first->total());
+        try {
+            $propose($account, $entity, $first->id());
+            self::fail('La misma propuesta no se crea dos veces.');
+        } catch (InvalidExpense $exception) {
+            self::assertSame(InvalidExpense::PROPOSAL, $exception->reason);
+        }
+        $linked = 0;
+        foreach ($expenses->forEntity($entity) as $expense) {
+            $source = $expense->sourceExpense();
+            if (null !== $source && $source->id() === $first->id()) {
+                ++$linked;
+            }
+        }
+        self::assertSame(1, $linked);
+
+        $second->review('rechazado', 'No es de la actividad');
+        try {
+            $mark($account, $entity, $second->id(), true);
+            self::fail('Un gasto rechazado no se marca como mensual.');
+        } catch (InvalidExpense $exception) {
+            self::assertSame(InvalidExpense::FROZEN, $exception->reason);
+        }
+
+        $other = Account::register('otra@example.com', 'hash', new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        try {
+            $propose($other, $entity, $first->id());
+            self::fail('Otra cuenta no crea la propuesta.');
+        } catch (InvalidExpense $exception) {
+            self::assertSame(InvalidExpense::FORBIDDEN, $exception->reason);
+        }
+        $linked = 0;
+        foreach ($expenses->forEntity($entity) as $expense) {
+            $source = $expense->sourceExpense();
+            if (null !== $source && $source->id() === $first->id()) {
+                ++$linked;
+            }
+        }
+        self::assertSame(1, $linked);
+    }
+
     /**
      * @return array{0: Account, 1: FiscalEntity, 2: EnsureExpenseCategories, 3: SaveExpenseCategory, 4: DeactivateExpenseCategory, 5: RegisterExpense, 6: InMemoryExpenseCategoryRepository, 7: InMemoryContactRepository}
      */
@@ -337,6 +438,37 @@ final class ExpenseBehaviorTest extends TestCase
             new ReviewExpense($access, $expenses, $store),
             $categories,
             $contacts,
+        ];
+    }
+
+    /**
+     * @return array{0: Account, 1: FiscalEntity, 2: EnsureExpenseCategories, 3: RegisterExpense, 4: MarkExpenseRecurrence, 5: ProposeExpense, 6: PayExpense, 7: DeactivateExpenseCategory, 8: InMemoryExpenseCategoryRepository, 9: InMemoryContactRepository, 10: InMemoryExpenseRepository}
+     */
+    private function duplicates(): array
+    {
+        $categories = new InMemoryExpenseCategoryRepository();
+        $expenses = new InMemoryExpenseRepository();
+        $contacts = new InMemoryContactRepository();
+        $memberships = new InMemoryFiscalEntityMembershipRepository();
+        $store = new InMemoryRegistrationStore();
+        $clock = new MockClock('2026-11-02T10:00:00Z');
+        $access = new ExpenseAccess($memberships);
+        $account = Account::register('titular@example.com', 'hash', new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $entity = FiscalEntity::open('Taller Norte', 'B12345674', new \DateTimeImmutable('2026-11-02T10:00:00Z'));
+        $memberships->save(FiscalEntityMembership::hold($entity, $account));
+
+        return [
+            $account,
+            $entity,
+            new EnsureExpenseCategories($categories, $store, $clock),
+            new RegisterExpense($access, $contacts, $categories, $expenses, $store, $clock),
+            new MarkExpenseRecurrence($access, $expenses, $store),
+            new ProposeExpense($access, $expenses, $store, $clock),
+            new PayExpense($access, $expenses, $store),
+            new DeactivateExpenseCategory($access, $categories, $store),
+            $categories,
+            $contacts,
+            $expenses,
         ];
     }
 

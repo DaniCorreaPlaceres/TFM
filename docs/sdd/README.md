@@ -40,5 +40,6 @@ Estas fichas se reconstruyeron el 18 de octubre de 2026 a partir del plan y de l
 - [E4 Categorías y registro del gasto](e4-gastos.md)
 - [E4 Deducibilidad del gasto](e4-deducibilidad.md)
 - [E4 Pagos y revisión del gasto](e4-revision.md)
+- [E4 Duplicados y recurrentes del gasto](e4-duplicados.md)
 - [Front web de Aselto](front-aselto.md)
 - [Portada pública](landing.md)

@@ -1,0 +1,36 @@
+2026-11-02, feature/e4-duplicados, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 263.
+PHPStan: No errors.
+PHPUnit: OK (73 tests, 1241 assertions).
+
+La prueba de dominio:
+- El 31 de enero de 2026 cae el 28 de febrero. El 31 de enero de 2024 cae el 29 de febrero.
+- El mismo proveedor y el mismo número, aunque cambien las mayúsculas, avisan. Los dos gastos siguen guardados.
+- El mismo proveedor, la misma fecha y el mismo total avisan aunque el número sea distinto.
+- Otro proveedor con el mismo número no avisa.
+- La propuesta nace en borrador, no es definitiva, no copia el pago ni la deducibilidad y conserva la base, la cuota y el total.
+- Su fecha es el 2 de diciembre de 2026 y su número es G-1-P. El gasto de origen no cambia.
+- Pedirla otra vez no crea una segunda.
+- Un gasto rechazado no se marca como mensual.
+- Otra cuenta no crea la propuesta.
+
+La prueba web:
+- El segundo G-7 queda guardado y la página avisa del primero. Siguen los dos importes.
+- Un formulario caducado no marca el gasto como mensual.
+- La propuesta G-7-P queda el 3 de diciembre de 2026, en borrador, y dice que no es definitiva hasta revisarla.
+- Pedirla otra vez responde 422 y sigue habiendo una sola propuesta.
+- Otra cuenta recibe 404 y la respuesta no contiene el número de la propuesta ni el proveedor.
+
+Navegador en http://127.0.0.1:8080:
+- G-1 seguía revisado y definitivo, con base 200,00 €, cuota 42,00 €, total 242,00 €, 100,00 € anotados y saldo 142,00 €.
+- La propuesta G-1-P quedó el 2 de diciembre de 2026, en borrador y no definitiva, con los mismos importes, sin pagos y sin la deducibilidad decidida.
+- Pedirla otra vez respondió que ya hay una propuesta para ese mes.
+- Un segundo G-1, del 4 de noviembre y de 10,00 €, quedó guardado y avisó del primero. El primero también avisó del segundo.
+- La otra cuenta no se recorrió en el navegador.
+
+La migración Version20261102233000 está aplicada en la base local. Al aplicarla fueron 1 migración y 3 consultas.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit. La rama feature/e4-duplicados no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.
