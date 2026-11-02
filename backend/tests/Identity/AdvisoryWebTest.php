@@ -22,7 +22,7 @@ final class AdvisoryWebTest extends WebTestCase
         $this->confirm($client);
         $this->login($client, 'admin-asesoria@example.com');
         $client->followRedirect();
-        $client->clickLink('Asesorías');
+        $client->clickLink('Mi asesoría');
         $client->request('POST', '/asesorias', [
             '_token' => 'caducado',
             'name' => 'Norte Asesores',

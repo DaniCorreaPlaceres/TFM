@@ -27,7 +27,7 @@ final class CloseOtherSessionsWebTest extends WebTestCase
         $this->useCookies($first, []);
         $this->login($first, 'sesiones@example.com');
         $first->followRedirect();
-        self::assertSelectorTextContains('h1', 'Has entrado');
+        self::assertSelectorTextContains('h1', 'Inicio');
         $other = $this->cookies($first);
 
         $this->useCookies($first, $current);
@@ -35,7 +35,7 @@ final class CloseOtherSessionsWebTest extends WebTestCase
         $first->submit($first->getCrawler()->selectButton('Cerrar las demás sesiones')->form());
         self::assertResponseRedirects('/sesion?cerradas=1');
         $first->followRedirect();
-        self::assertSelectorTextContains('h1', 'Has entrado');
+        self::assertSelectorTextContains('h1', 'Inicio');
         self::assertSelectorTextContains('main', 'Las demás sesiones se han cerrado');
         $current = $this->cookies($first);
 
