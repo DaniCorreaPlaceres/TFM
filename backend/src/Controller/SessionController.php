@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Account;
 use App\Identity\ActiveFiscalEntity;
+use App\Identity\AdvisoryClientLinkRepository;
 use App\Identity\CloseOtherWebSessions;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ final class SessionController extends AbstractController
     public function __construct(
         private readonly ActiveFiscalEntity $active,
         private readonly CloseOtherWebSessions $closeOthers,
+        private readonly AdvisoryClientLinkRepository $clientLinks,
     ) {
     }
 
@@ -39,11 +41,13 @@ final class SessionController extends AbstractController
         }
 
         $fiscalEntity = $this->active->resolve($account, $request);
+        $link = null !== $fiscalEntity ? $this->clientLinks->findByFiscalEntity($fiscalEntity) : null;
 
         return $this->render('sesion/dentro.html.twig', [
             'email' => $account->email(),
             'secondFactor' => $account->requiresSecondFactor(),
             'entityName' => $fiscalEntity?->legalName(),
+            'advisoryName' => $link?->advisoryFirm()->name(),
             'othersClosed' => $request->query->getBoolean('cerradas'),
         ]);
     }

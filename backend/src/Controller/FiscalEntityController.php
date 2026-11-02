@@ -6,9 +6,12 @@ namespace App\Controller;
 
 use App\Entity\Account;
 use App\Identity\ActiveFiscalEntity;
+use App\Identity\AdvisoryClientLinkRepository;
 use App\Identity\CreateFiscalEntity;
 use App\Identity\FiscalEntityMembershipRepository;
+use App\Identity\InvalidAdvisory;
 use App\Identity\InvalidFiscalEntity;
+use App\Identity\InviteAdvisoryForEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +23,8 @@ final class FiscalEntityController extends AbstractController
         private readonly CreateFiscalEntity $create,
         private readonly ActiveFiscalEntity $active,
         private readonly FiscalEntityMembershipRepository $memberships,
+        private readonly InviteAdvisoryForEntity $inviteAdvisory,
+        private readonly AdvisoryClientLinkRepository $clientLinks,
     ) {
     }
 
@@ -53,15 +58,38 @@ final class FiscalEntityController extends AbstractController
             }
         }
 
-        $current = $this->active->resolve($account, $request);
+        return $this->renderList($request, $account, $error);
+    }
 
-        return $this->render('entidad/lista.html.twig', [
-            'error' => $error,
-            'legalName' => $request->request->getString('legal_name'),
-            'taxId' => $request->request->getString('tax_id'),
-            'memberships' => $this->memberships->findForAccount($account),
-            'activeId' => $current?->id(),
-        ], new Response(status: null === $error ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY));
+    #[Route('/entidades/invitar-asesoria', name: 'fiscal_entity_invite_advisory', methods: ['POST'])]
+    public function inviteAdvisoryFirm(Request $request): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+
+        $current = $this->active->resolve($account, $request);
+        if (!$this->isCsrfTokenValid('invitar-asesoria-cliente', $request->request->getString('_token'))) {
+            return $this->renderList($request, $account, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+        if (null === $current) {
+            return $this->renderList($request, $account, 'Elige antes una entidad fiscal.');
+        }
+
+        try {
+            ($this->inviteAdvisory)($account, $current, $request->request->getString('advisory_email'));
+
+            return $this->redirectToRoute('fiscal_entities', ['asesoria' => '1']);
+        } catch (InvalidAdvisory $exception) {
+            $error = match ($exception->reason) {
+                InvalidAdvisory::EMAIL => 'El correo no es válido.',
+                InvalidAdvisory::ALREADY_LINKED => 'Esta entidad ya tiene una asesoría activa.',
+                default => 'No se ha podido enviar la invitación.',
+            };
+
+            return $this->renderList($request, $account, $error);
+        }
     }
 
     #[Route('/entidades/{id}/elegir', name: 'fiscal_entity_select', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
@@ -81,6 +109,23 @@ final class FiscalEntityController extends AbstractController
         }
 
         return $this->redirectToRoute('account_session');
+    }
+
+    private function renderList(Request $request, Account $account, ?string $error): Response
+    {
+        $current = $this->active->resolve($account, $request);
+        $link = null !== $current ? $this->clientLinks->findByFiscalEntity($current) : null;
+
+        return $this->render('entidad/lista.html.twig', [
+            'error' => $error,
+            'legalName' => $request->request->getString('legal_name'),
+            'taxId' => $request->request->getString('tax_id'),
+            'advisoryEmail' => $request->request->getString('advisory_email'),
+            'memberships' => $this->memberships->findForAccount($account),
+            'activeId' => $current?->id(),
+            'activeAdvisory' => $link?->advisoryFirm()->name(),
+            'advisoryInvited' => $request->query->getBoolean('asesoria'),
+        ], new Response(status: null === $error ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 
     private function currentAccount(): ?Account

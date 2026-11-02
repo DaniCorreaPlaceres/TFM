@@ -19,6 +19,9 @@
                     {{ membership.fiscalEntity.legalName }} ({{ membership.fiscalEntity.taxId }})
                     {% if membership.fiscalEntity.id == activeId %}
                         Activa
+                        {% if activeAdvisory %}
+                            · Asesoría activa: {{ activeAdvisory }}
+                        {% endif %}
                     {% else %}
                         <form method="post" action="{{ path('fiscal_entity_select', {id: membership.fiscalEntity.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('elegir-entidad') }}">
@@ -28,6 +31,21 @@
                 </li>
             {% endfor %}
         </ul>
+    {% endif %}
+
+    {% if advisoryInvited %}
+        <p>Hemos enviado la invitación. Caduca a los 7 días.</p>
+    {% endif %}
+
+    {% if activeId and not activeAdvisory %}
+        <h2>Invitar asesoría</h2>
+        <form method="post" action="{{ path('fiscal_entity_invite_advisory') }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('invitar-asesoria-cliente') }}">
+            <label for="advisory_email">Correo de la asesoría (obligatorio)</label>
+            <input id="advisory_email" name="advisory_email" type="email" required value="{{ advisoryEmail }}">
+            <p class="ayuda">Escribe el correo de quien administra la asesoría. El enlace caduca a los 7 días. El segundo factor sigue siendo opcional.</p>
+            <button type="submit">Invitar asesoría</button>
+        </form>
     {% endif %}
 
     <h2>Nueva entidad</h2>

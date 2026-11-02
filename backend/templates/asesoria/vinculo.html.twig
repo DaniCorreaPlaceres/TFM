@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vincular — Aselto{% endblock %}
+
+{% block body %}
+    <h1>Vincular</h1>
+    {% if error %}
+        <p class="error" role="alert">Error: {{ error }}</p>
+    {% endif %}
+    {% if summary %}
+        <p>{{ summary }}</p>
+        {% if choices is not empty %}
+            <form method="post" novalidate>
+                <input type="hidden" name="_token" value="{{ csrf_token('aceptar-vinculo') }}">
+                {% for choice in choices %}
+                    <label>
+                        <input type="radio" name="target" value="{{ choice.id }}" required>
+                        {{ choice.label }}
+                    </label>
+                {% endfor %}
+                <button type="submit">Aceptar vínculo</button>
+            </form>
+        {% elseif emptyChoice %}
+            <p>{{ emptyChoice }}</p>
+        {% endif %}
+    {% endif %}
+    <p><a href="{{ path('account_session') }}">Volver a la sesión</a></p>
+{% endblock %}

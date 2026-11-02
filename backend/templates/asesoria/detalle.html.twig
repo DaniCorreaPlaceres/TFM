@@ -21,6 +21,31 @@
     </ul>
 
     {% if isAdmin %}
+        <h2>Entidades vinculadas</h2>
+        {% if clients is empty %}
+            <p>Todavía no hay entidades vinculadas.</p>
+        {% else %}
+            <ul>
+                {% for link in clients %}
+                    <li>{{ link.fiscalEntity.legalName }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if entityInvited %}
+            <p>Hemos enviado la invitación a la entidad. Caduca a los 7 días.</p>
+        {% endif %}
+        {% if clientError %}
+            <p class="error" role="alert">Error: {{ clientError }}</p>
+        {% endif %}
+        <h2>Invitar entidad</h2>
+        <form method="post" action="{{ path('advisory_invite_entity', {id: firm.id}) }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('invitar-entidad') }}">
+            <label for="entity_email">Correo del titular (obligatorio)</label>
+            <input id="entity_email" name="entity_email" type="email" required value="{{ clientEmail }}">
+            <p class="ayuda">La persona entra con este correo para aceptar. Si esa entidad ya tiene una asesoría activa, no podrá vincularse. El segundo factor sigue siendo opcional.</p>
+            <button type="submit">Invitar entidad</button>
+        </form>
+
         <h2>Invitar empleado</h2>
         <form method="post" action="{{ path('advisory_invite', {id: firm.id}) }}" novalidate>
             <input type="hidden" name="_token" value="{{ csrf_token('invitar-asesoria') }}">

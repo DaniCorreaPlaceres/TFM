@@ -16,8 +16,8 @@
 | Intervención humana | El responsable aceptó esta ficha el 2 de noviembre de 2026. |
 | Tiempo observado | No registrado. |
 | Iteraciones de IA | No registradas. |
-| Defectos | El vínculo con una entidad fiscal, los permisos por empleado, la desvinculación y la bandeja no se ejecutaron. La rama no está integrada. |
-| Commit / PR / CI | Commit `dd63f66` en `feature/e2-asesoria`. Sin pull request. GitHub no se ha ejecutado para esta ficha. La rama no está integrada. |
+| Defectos | El vínculo con una entidad fiscal, los permisos por empleado, la desvinculación y la bandeja no formaban parte de esta ficha. |
+| Commit / PR / CI | Commit `dd63f66` en `feature/e2-asesoria`. La ficha se aceptó antes de la pull request. Después quedó integrada en `develop` con la pull request #23, merge `e8c8786`. Los registros de GitHub de esa pull request no se copiaron aquí. |
 | Conclusión | En local, la administradora crea la asesoría e invita. Quien confirma el correo invitado queda como empleada, sin segundo factor, y no abre otra asesoría. Otra cuenta no ve el nombre y una empleada no invita. Un formulario caducado no crea, no invita y no acepta. |
 | Responsable de aprobación | Responsable del TFM, 2026-11-02. |
 
