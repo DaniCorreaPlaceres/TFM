@@ -19,6 +19,17 @@ final class InMemoryAdvisoryMembershipRepository implements AdvisoryMembershipRe
         $this->memberships[] = $membership;
     }
 
+    public function findById(string $id): ?AdvisoryMembership
+    {
+        foreach ($this->memberships as $membership) {
+            if ($membership->id() === $id) {
+                return $membership;
+            }
+        }
+
+        return null;
+    }
+
     public function findForAccountAndFirm(Account $account, string $advisoryFirmId): ?AdvisoryMembership
     {
         foreach ($this->memberships as $membership) {

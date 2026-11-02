@@ -42,6 +42,7 @@ trait PreparesAccountSchema
         $connection->executeStatement('DELETE FROM income');
         $connection->executeStatement('DELETE FROM contact');
         $connection->executeStatement('DELETE FROM closed_quarter');
+        $connection->executeStatement('DELETE FROM advisory_employee_permission');
         $connection->executeStatement('DELETE FROM advisory_client_invitation');
         $connection->executeStatement('DELETE FROM advisory_client_link');
         $connection->executeStatement('DELETE FROM advisory_invitation');

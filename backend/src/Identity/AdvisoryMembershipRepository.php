@@ -12,6 +12,8 @@ interface AdvisoryMembershipRepository
 {
     public function save(AdvisoryMembership $membership): void;
 
+    public function findById(string $id): ?AdvisoryMembership;
+
     public function findForAccountAndFirm(Account $account, string $advisoryFirmId): ?AdvisoryMembership;
 
     public function findForFirmAndEmail(AdvisoryFirm $advisoryFirm, string $email): ?AdvisoryMembership;

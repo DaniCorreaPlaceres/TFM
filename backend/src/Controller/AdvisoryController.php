@@ -8,6 +8,7 @@ use App\Entity\Account;
 use App\Entity\AdvisoryMembership;
 use App\Identity\AcceptAdvisoryInvitation;
 use App\Identity\AdvisoryClientLinkRepository;
+use App\Identity\AdvisoryEmployeePermissionRepository;
 use App\Identity\AdvisoryInvitationRepository;
 use App\Identity\AdvisoryMembershipRepository;
 use App\Identity\CreateAdvisoryFirm;
@@ -15,6 +16,7 @@ use App\Identity\InvalidAdvisory;
 use App\Identity\InviteAdvisoryEmployee;
 use App\Identity\InviteEntityForAdvisory;
 use App\Identity\JoinPendingAdvisoryInvitations;
+use App\Identity\SetEmployeeEntityView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +33,8 @@ final class AdvisoryController extends AbstractController
         private readonly AdvisoryInvitationRepository $invitations,
         private readonly InviteEntityForAdvisory $inviteEntity,
         private readonly AdvisoryClientLinkRepository $clientLinks,
+        private readonly SetEmployeeEntityView $setEntityView,
+        private readonly AdvisoryEmployeePermissionRepository $permissions,
     ) {
     }
 
@@ -198,6 +202,37 @@ final class AdvisoryController extends AbstractController
         }
     }
 
+    #[Route('/asesorias/{id}/permiso-entidades', name: 'advisory_employee_permission', methods: ['POST'], requirements: ['id' => '[0-9a-fA-F-]{36}'])]
+    public function changeEntityView(Request $request, string $id): Response
+    {
+        $account = $this->currentAccount();
+        if (!$account instanceof Account) {
+            return $this->redirectToRoute('account_login');
+        }
+
+        $membership = $this->memberships->findForAccountAndFirm($account, $id);
+        if (null === $membership || !$membership->isAdmin()) {
+            throw $this->createNotFoundException('Asesoría no encontrada.');
+        }
+
+        if (!$this->isCsrfTokenValid('permiso-entidades', $request->request->getString('_token'))) {
+            return $this->renderDetail($request, $membership, null, '', null, '', Response::HTTP_UNPROCESSABLE_ENTITY, 'El formulario ha caducado. Vuelve a enviarlo.');
+        }
+
+        try {
+            ($this->setEntityView)(
+                $account,
+                $id,
+                $request->request->getString('membership_id'),
+                '1' === $request->request->getString('granted'),
+            );
+        } catch (InvalidAdvisory) {
+            throw $this->createNotFoundException('Asesoría no encontrada.');
+        }
+
+        return $this->redirectToRoute('advisory', ['id' => $id, 'permiso' => '1']);
+    }
+
     private function renderDetail(
         Request $request,
         AdvisoryMembership $membership,
@@ -206,8 +241,10 @@ final class AdvisoryController extends AbstractController
         ?string $clientError,
         string $clientEmail,
         int $status = Response::HTTP_OK,
+        ?string $permissionError = null,
     ): Response {
         $firm = $membership->advisoryFirm();
+        $canViewClients = $membership->isAdmin() || null !== $this->permissions->findForMembership($membership);
 
         return $this->render('asesoria/detalle.html.twig', [
             'firm' => $firm,
@@ -216,7 +253,11 @@ final class AdvisoryController extends AbstractController
             'error' => $error,
             'email' => $email,
             'invited' => $request->query->getBoolean('invitada'),
-            'clients' => $membership->isAdmin() ? $this->clientLinks->findByFirm($firm) : [],
+            'clients' => $canViewClients ? $this->clientLinks->findByFirm($firm) : [],
+            'canViewClients' => $canViewClients,
+            'grantedIds' => $membership->isAdmin() ? $this->permissions->grantedMembershipIds($firm) : [],
+            'permissionError' => $permissionError,
+            'permissionSaved' => $request->query->getBoolean('permiso'),
             'clientError' => $clientError,
             'clientEmail' => $clientEmail,
             'entityInvited' => $request->query->getBoolean('entidad'),

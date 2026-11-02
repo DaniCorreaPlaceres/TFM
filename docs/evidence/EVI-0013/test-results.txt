@@ -35,4 +35,4 @@ La migración Version20261102004000 se aplicó a la base local: 1 migración y 7
 
 La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
 
-Sin commit. La rama feature/e2-vinculo no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.
+El commit 0bdce35 está en feature/e2-vinculo. La ficha se aceptó el 2 de noviembre de 2026, antes de la pull request. Después quedó integrada en develop con la pull request #24, merge ed36910. Los registros de GitHub de esa pull request no se copiaron aquí.

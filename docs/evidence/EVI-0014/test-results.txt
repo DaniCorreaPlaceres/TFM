@@ -1,0 +1,35 @@
+2026-11-02, feature/e2-permisos, dentro del contenedor PHP 8.4.26.
+
+PHP-CS-Fixer: 0 archivos por corregir, de 163.
+PHPStan: No errors.
+PHPUnit: OK (60 tests, 718 assertions).
+
+Antes de las pruebas de la presentación web que comparte este árbol, PHPUnit había pasado con 56 pruebas y 648 aserciones.
+
+La prueba de dominio:
+- Una empleada no concede ni retira el permiso.
+- Quien administra otra asesoría no lo concede.
+- Concederlo sobre quien administra queda rechazado.
+- Concederlo dos veces deja una sola fila.
+- Retirarlo cuando no hay fila no cambia nada.
+
+La prueba web:
+- Sin la concesión, la empleada no ve el nombre de la entidad ni puede invitar una entidad.
+- Un formulario caducado no concede el permiso.
+- Al concederlo, la página dice que ha quedado guardado y la empleada ve el nombre.
+- Con la concesión, la empleada sigue sin invitar una entidad y sin ver el formulario del permiso.
+- Otra cuenta recibe 404 y la respuesta no contiene el nombre de la entidad ni el de la asesoría.
+- Al retirarlo, la empleada deja de ver el nombre.
+
+Navegador en http://127.0.0.1:8080:
+- Quien administra Norte Nav Asesores concede ver las entidades.
+- La primera respuesta de ?permiso=1 fue un error 500 de Twig sobre el bloque body de base.html.twig. La plantilla de la asesoría tiene un solo bloque body. Tras borrar var/cache/dev, la misma dirección dice que el permiso ha quedado guardado y la empleada figura con «ve las entidades».
+- La empleada ve Taller Norte Nav y Taller Sur Nav. No ve invitar una entidad ni conceder el permiso.
+- Quien administra retira la concesión. La empleada vuelve a entrar y ya no ve esos nombres.
+- El formulario caducado y la cuenta que no pertenece no se repitieron en el navegador.
+
+La migración Version20261102015000 está aplicada en la base local. Al aplicarla fueron 1 migración y 2 consultas.
+
+La app Flutter no se ejecutó en local. Esta entrega no la modifica y sigue sin llamar a la API.
+
+Sin commit. La rama feature/e2-permisos no está integrada. GitHub no se ha ejecutado para esta ficha. El responsable aceptó la ficha el 2 de noviembre de 2026.
